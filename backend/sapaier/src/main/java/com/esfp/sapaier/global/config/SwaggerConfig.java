@@ -10,7 +10,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 
 @Configuration
-@OpenAPIDefinition(servers = {@Server(url = "https://j9b310.p.ssafy.io", description = "Default Server Url")})
+@OpenAPIDefinition(servers = {@Server(url = "https://k9b301.p.ssafy.io", description = "Default Server Url")})
 public class SwaggerConfig {
 
 	@Bean
