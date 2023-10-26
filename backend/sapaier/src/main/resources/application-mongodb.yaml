@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      host: k9b301.p.ssafy.io
+      port: 27017
+      username: sapieradmin
+      password: esfpb301sapier!
+      authentication-database: admin
+      database: admin
+      uri: mongodb://sapieradmin:esfpb301sapier!@k9b301.p.ssafy.io:27017/?authSource=admin&authMechanism=SCRAM-SHA-1
