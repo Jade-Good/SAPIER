@@ -48,11 +48,12 @@ public class SecurityConfig {
 
 		//인가 URL 패턴 설정 세부url --> 포괄 url 순으로 설정할것.
 		httpSecurity
-			.authorizeHttpRequests(c -> {
-				c.requestMatchers(HttpMethod.GET, GET_LIST).permitAll(); //권한 필요없는 GET 허용 리스트 설정
-				c.requestMatchers(HttpMethod.POST, POST_LIST).permitAll(); //권한 필요없는 POST 허용 리스트 설정
-				c.requestMatchers("/**").hasAnyRole("PARENT", "CHILD", "GUEST");//권한 별 접근 URL 설정
-				c.anyRequest().authenticated();  //그 외에 대한 URL에 대해서는 Authentication이 필요함을 설정
+			.authorizeHttpRequests(customAuthorization -> {
+				customAuthorization
+					.requestMatchers(HttpMethod.GET, GET_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
+					.requestMatchers(HttpMethod.POST, POST_LIST).permitAll() //권한 필요없는 POST 허용 리스트 설정
+					.requestMatchers("/**").hasAnyRole("PARENT", "CHILD", "GUEST")//권한 별 접근 URL 설정
+					.anyRequest().authenticated();  //그 외에 대한 URL에 대해서는 Authentication이 필요함을 설정
 			});
 
 
