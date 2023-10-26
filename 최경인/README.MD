@@ -21,3 +21,8 @@
 ## :taxi: 5 : 2023.10.23(월)
 > FE 개발을 위해서 까먹은 Vue.js 학습중 
 
+## :taxi: 6 : 2023.10.26(목)
+> Youtube Vue.js 강의 -완-
+
+> BE :  Spring Collection 개발준비를 위한 Rest API 파일 구조 세팅 완료
+
