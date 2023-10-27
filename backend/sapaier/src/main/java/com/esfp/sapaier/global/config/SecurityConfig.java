@@ -1,20 +1,17 @@
 package com.esfp.sapaier.global.config;
 
-import org.springframework.cglib.core.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer.AuthorizationManagerRequestMatcherRegistry;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.esfp.sapaier.global.auth.repository.OAuth2AuthorizationRequestRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,14 +22,21 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private static final String[] GET_LIST = {"/api/oauth2/authorization", "/api/login/oauth2/code/**",
-		"/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**", "/api-docs/swagger-config", "/api/v1/balances/*/chatting"};
+	private final String[] SWAGGER_URI_LIST = {
+		"/swagger-ui/**",
+		"/api-docs/**"
+	};
 
-	private static final String[] POST_LIST = {"/api/v1/balances/*/chatting"};
+	private final String[] LOGIN_URI_LIST = {
+		"/api/oauth2/authorization",
+		"/api/login/oauth2/code/**"
+	};
+
+	private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
+
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-
 
 		//기본설정 (httpBasic vs formLogin 기억안나면 다시 검색해보기)
 		httpSecurity
@@ -50,28 +54,28 @@ public class SecurityConfig {
 		httpSecurity
 			.authorizeHttpRequests(customAuthorization -> {
 				customAuthorization
-					.requestMatchers(HttpMethod.GET, GET_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
-					.requestMatchers(HttpMethod.POST, POST_LIST).permitAll() //권한 필요없는 POST 허용 리스트 설정
+					.requestMatchers(HttpMethod.GET, SWAGGER_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
+					.requestMatchers(HttpMethod.GET, LOGIN_URI_LIST).permitAll() //권한 필요없는 POST 허용 리스트 설정
 					.requestMatchers("/**").hasAnyRole("PARENT", "CHILD", "GUEST")//권한 별 접근 URL 설정
 					.anyRequest().authenticated();  //그 외에 대한 URL에 대해서는 Authentication이 필요함을 설정
 			});
 
 
-		// //인증 (Oauth2)
-		// httpSecurity
-		// 	.oauth2Login() //Oauth2 인증방식을 사용한다.
-		// 	.authorizationEndpoint()
-		// 	.baseUri("/api/oauth2/authorization")
-		// 	.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
-		// 	.and()
-		// 	.redirectionEndpoint()
-		// 	.baseUri("/api/login/oauth2/code/*")
-		// 	.and()
-		// 	.userInfoEndpoint()
-		// 	.userService(customOAuth2UserService)
-		// 	.and()
-		// 	.successHandler(oAuth2AuthenticationSuccessHandler())
-		// 	.failureHandler(oAuth2AuthenticationFailureHandler()).permitAll(); //인증 실패시에 대한 handler는 인증/인가 필요X
+		//인증 (Oauth2)
+		httpSecurity
+			.oauth2Login() //Oauth2 인증방식을 사용한다.
+			.authorizationEndpoint()
+			.baseUri("/api/oauth2/authorization")
+			.authorizationRequestRepository(oAuth2AuthorizationRequestRepository)
+			.and()
+			.redirectionEndpoint()
+			.baseUri("/api/login/oauth2/code/*")
+			.and()
+			.userInfoEndpoint()
+			.userService(customOAuth2UserService)
+			.and()
+			.successHandler(oAuth2AuthenticationSuccessHandler())
+			.failureHandler(oAuth2AuthenticationFailureHandler()).permitAll(); //인증 실패시에 대한 handler는 인증/인가 필요X
 
 		// //예외처리
 		// httpSecurity
