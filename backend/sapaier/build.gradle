@@ -23,15 +23,17 @@ repositories {
 
 dependencies {
 
+    //Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    //JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     //Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
 
     //Security & Oauth2.0
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -43,6 +45,11 @@ dependencies {
 
     //Spring Data MongoDB
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+    // JWT
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 }
 
 tasks.named('test') {
