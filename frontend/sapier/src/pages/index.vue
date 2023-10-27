@@ -15,9 +15,12 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div>
-    <div text-4xl>
-      <div i-carbon-campsite inline-block />
+  <div py>
+    <img mx-5 width="200" src="public/logo.svg">
+  </div>
+  <div bg-gray>
+    <div bg-gray text-4xl>
+      <div inline-block />
     </div>
     <p>
       <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
