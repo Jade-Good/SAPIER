@@ -26,3 +26,6 @@
 
 > BE :  Spring Collection 개발준비를 위한 Rest API 파일 구조 세팅 완료
 
+## :taxi: 7 : 2023.10.27(금)
+> spring data mongodb 를 사용하여 개발을 진행중인데 생각대로 잘 로직이 안짜져서 고민이다
+
