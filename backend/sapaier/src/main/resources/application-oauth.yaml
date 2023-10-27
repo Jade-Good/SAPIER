@@ -1,0 +1,31 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id:
+            client-secret:
+            redirect-uri: http://j9b310.p.ssafy.io/api/login/oauth2/code/google
+            scope:
+              - email
+              - profile
+
+          github:
+            client-id: ed8cfc2da5d30d505a56
+            client-secret: a903bf2c81dc8ef609f7f500a851cc3e6d775078
+            redirect-uri: http://j9b310.p.ssafy.io/api/login/oauth2/code/github
+
+
+# Spring Secuirty의 spring-boot-starter-oauth2-client를 이용하면
+# OAuth2 인증코드를 자동으로 발급 받을 수 있다. 이때 redirect_uri를 작성하면
+# 바로 OAuth를 제공해주는 사이트의 로그인페이지로 이동 할 수 있다.
+# redirect-uri : {base_uri}/login/oauth2/code/{registrationId}에 맞춰서 작성해야한다.
+# google,github,facebook같은 유명한 외국회사는 provider를 제공하지만
+# naver, kakao같은 국내회사는 provider를 따로 작성해야함.
+
+
+
+
+
+
