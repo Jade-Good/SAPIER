@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import com.esfp.sapaier.domain.user.model.dto.UserDto;
+import com.esfp.sapaier.domain.user.model.vo.Role;
 import com.esfp.sapaier.global.auth.model.vo.OAuth2Provider;
 
 import lombok.AccessLevel;
@@ -39,9 +40,13 @@ public class User {
 
 	private OAuth2Provider socialProvider;
 
+	private String profileImageUrl;
+
 	private Long countOfApiRequest;
 
 	private List<String> workspaces;
+
+	private Role role;
 
 	public void addApiRequestCount(){
 
@@ -60,6 +65,7 @@ public class User {
 		String nickname,
 		String email,
 		String socialId,
+		String profileImageUrl,
 		OAuth2Provider socialProvider){
 
 		this.uuid = UUID.randomUUID().toString();
@@ -67,8 +73,11 @@ public class User {
 		this.email = email;
 		this.socialId = socialId;
 		this.socialProvider = socialProvider;
+		this.profileImageUrl = profileImageUrl;
 		this.countOfApiRequest = 0L;
 		this.workspaces = new ArrayList<>();
+		this.role = Role.USER;
+
 	}
 
 	public UserDto convertToDto(){
@@ -80,6 +89,7 @@ public class User {
 			.socialProvider(this.socialProvider)
 			.countOfApiRequest(this.countOfApiRequest)
 			.workspaces(this.workspaces)
+			.profileImageUrl(this.profileImageUrl)
 			.build();
 	}
 
