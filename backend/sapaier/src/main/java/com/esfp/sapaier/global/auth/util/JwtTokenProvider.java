@@ -33,11 +33,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class JwtTokenProvider {
-	private static final String AUTHORITIES_KEY = "Authorization";
-	private static final String BEARER_TYPE = "Bearer";
-	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L;
-	private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L;
-	private static final int REFRESH_TOKEN_EXPIRE_TIME_COOKIE = 365 * 24 * 60 * 60;
+
+
+	public final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L;
+	public final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L;
+	public final int REFRESH_TOKEN_EXPIRE_TIME_COOKIE = 365 * 24 * 60 * 60;
+
+
+	private final String BEARER_TYPE = "Bearer";
 	private final Key key;
 
 	public JwtTokenProvider(
@@ -47,26 +50,22 @@ public class JwtTokenProvider {
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
 
-	public int getRefreshTokenExpireTimeCookie() {
-		return REFRESH_TOKEN_EXPIRE_TIME_COOKIE;
-	}
-
-	public JwtToken createToken(String id, String role) {
+	public JwtToken createToken(String uuid, String role) {
 
 		String accessToken = Jwts
 			.builder()
-			.setSubject(id)
+			.setSubject(uuid)
 			.setIssuedAt(new Date())
-			.claim(AUTHORITIES_KEY, role)
+			.claim("ROLE", role)
 			.signWith(key, SignatureAlgorithm.HS256)
 			.setExpiration(new Date(LocalDateTime.now().getSecond() + ACCESS_TOKEN_EXPIRE_TIME))
 			.compact();
 
 		String refreshToken = Jwts
 			.builder()
-			.setSubject(id)
+			.setSubject(uuid)
 			.setIssuedAt(new Date())
-			.claim(AUTHORITIES_KEY, role)
+			.claim("ROLE", role)
 			.signWith(key, SignatureAlgorithm.HS256)
 			.setExpiration(new Date(LocalDateTime.now().getSecond() + REFRESH_TOKEN_EXPIRE_TIME))
 			.compact();
@@ -83,14 +82,14 @@ public class JwtTokenProvider {
 	public Authentication getAuthentication(String accessToken) {
 		Claims claims = parseClaims(accessToken);
 
-		if (claims.get(AUTHORITIES_KEY) == null) {
+		if (claims.get("ROLE") == null) {
 			throw new RuntimeException("권한이 없습니다.");
 		}
 
 		Collection<? extends GrantedAuthority> authorities = Arrays
 			.stream(
 				claims
-					.get(AUTHORITIES_KEY)
+					.get("ROLE")
 					.toString()
 					.split(","))
 			.map(authority -> new SimpleGrantedAuthority("ROLE_" + authority))

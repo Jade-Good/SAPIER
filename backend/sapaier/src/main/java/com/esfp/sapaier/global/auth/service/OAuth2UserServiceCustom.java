@@ -50,11 +50,19 @@ public class OAuth2UserServiceCustom extends DefaultOAuth2UserService {
 
 	private User registerUser(OAuth2Provider oAuth2Provider, OAuth2UserInfoResponse oAuth2UserInfoResponse){
 
+		String profileImageUrl = "";
+		if(oAuth2Provider.equals(OAuth2Provider.GITHUB))
+			profileImageUrl = oAuth2UserInfoResponse.getAttributes().get("avatar_url").toString();
+		if(oAuth2Provider.equals(OAuth2Provider.GOOGLE))
+			profileImageUrl = oAuth2UserInfoResponse.getAttributes().get("picture").toString();
+
+
 		User newUser =  User.builder()
 			.email(oAuth2UserInfoResponse.getEmail())
 			.nickname(oAuth2UserInfoResponse.getNickname())
 			.socialProvider(oAuth2Provider)
 			.socialId(oAuth2UserInfoResponse.getId())
+			.profileImageUrl(profileImageUrl)
 			.build();
 
 		userRepository.save(newUser);
