@@ -23,13 +23,13 @@ pipeline{
 				dir('backend'){
 					sh 'echo "Docker Container Stop"'
 					//도커 컴포즈 다운
-					// sh 'curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose'
+					sh 'curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose'
 					//해당 도커 컴포즈 다운한 경로로 권한 설정
-					// sh 'chmod -R 777 /usr/local/bin'
-					// sh 'chmod +x /usr/local/bin/docker-compose'
+					sh 'chmod -R 777 /usr/local/bin'
+					sh 'chmod +x /usr/local/bin/docker-compose'
 					//기존 백그라운드에 돌아가던 컨테이너 중지
-					// sh 'docker-compose -f docker-compose-prod.yml down'
-					sh 'docker-compose -f /var/jenkins_home/workspace/test3/docker-compose-prod.yml down'
+					sh 'docker-compose -f docker-compose-prod.yml down'
+					// sh 'docker-compose -f /var/jenkins_home/workspace/test3/docker-compose-prod.yml down'
 				}
 			}
 			post{
