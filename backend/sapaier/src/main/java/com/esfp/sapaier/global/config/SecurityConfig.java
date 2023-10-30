@@ -9,12 +9,16 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.esfp.sapaier.global.auth.exception.RestAuthenticationEntryPoint;
 import com.esfp.sapaier.global.auth.handler.OAuth2AuthenticationFailureHandler;
 import com.esfp.sapaier.global.auth.handler.OAuth2AuthenticationSuccessHandler;
+import com.esfp.sapaier.global.auth.handler.TokenAccessDeniedHandler;
 import com.esfp.sapaier.global.auth.repository.OAuth2AuthorizationRequestRepository;
+import com.esfp.sapaier.global.auth.service.JwtAuthenticationFilter;
 import com.esfp.sapaier.global.auth.service.OAuth2UserServiceCustom;
 
 import lombok.RequiredArgsConstructor;
@@ -40,6 +44,9 @@ public class SecurityConfig {
 	private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
 	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 	private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -79,17 +86,16 @@ public class SecurityConfig {
 				.successHandler(oAuth2AuthenticationSuccessHandler)
 				.failureHandler(oAuth2AuthenticationFailureHandler).permitAll();}); //인증 실패시에 대한 handler는 인증/인가 필요X
 
-		// //예외처리
-		// httpSecurity
-		// 	.exceptionHandling()
-		// 	.authenticationEntryPoint(new RestAuthenticationEntryPoint())
-		// 	.accessDeniedHandler(tokenAccessDeniedHandler);
+		//예외처리
+		httpSecurity
+			.exceptionHandling(c -> {c
+				.authenticationEntryPoint(new RestAuthenticationEntryPoint())
+				.accessDeniedHandler(tokenAccessDeniedHandler);
+			});
 
-
-		// //커스텀필터
-		// httpSecurity
-		// 	.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, memberRepository, memberAuthRepository),
-		// 		UsernamePasswordAuthenticationFilter.class);
+		//커스텀필터
+		httpSecurity
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 
 		return httpSecurity.build();

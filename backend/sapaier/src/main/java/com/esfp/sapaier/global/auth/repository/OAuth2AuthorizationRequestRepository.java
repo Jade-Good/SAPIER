@@ -19,10 +19,10 @@ import lombok.RequiredArgsConstructor;
 public class OAuth2AuthorizationRequestRepository implements
 	AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
-	public String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2AuthRequest";
-	public String REDIRECT_URI_PARAM_COOKIE_NAME = "redirectUri";
-	public String REFRESH_TOKEN = "refreshToken";
-	public int COOKIE_EXPIRE_TIME = 2100000000;
+	public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2AuthRequest";
+	public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirectUri";
+	public static final String REFRESH_TOKEN = "refreshToken";
+	public static final int COOKIE_EXPIRE_TIME = 2100000000;
 
 
 	private final CookieManager cookieManager;

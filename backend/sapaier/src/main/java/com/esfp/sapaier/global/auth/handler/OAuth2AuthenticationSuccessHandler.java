@@ -64,7 +64,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		Authentication authentication) {
 
 		String targetUrl = cookieManager
-			.getCookie(request, oAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
+			.getCookie(request, OAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
 			.orElse(new Cookie("redirectUri", getDefaultTargetUrl()))
 			.getValue();
 
@@ -79,12 +79,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 		log.info("successHanlder : " + loginUser.getUuid());
 
-		cookieManager.deleteCookie(request, response, oAuth2AuthorizationRequestRepository.REFRESH_TOKEN);
+		cookieManager.deleteCookie(request, response, OAuth2AuthorizationRequestRepository.REFRESH_TOKEN);
 		cookieManager.addCookie(
 			response,
-			oAuth2AuthorizationRequestRepository.REFRESH_TOKEN,
+			OAuth2AuthorizationRequestRepository.REFRESH_TOKEN,
 			tokenInfo.getRefreshToken(),
-			jwtTokenProvider.REFRESH_TOKEN_EXPIRE_TIME_COOKIE);
+			JwtTokenProvider.REFRESH_TOKEN_EXPIRE_TIME_COOKIE);
 
 		// memberAuthService.login(
 		// 	MemberAuthDto.builder()
