@@ -23,11 +23,11 @@ const { t } = useI18n()
   <div bg-gray200 py-4>
     <div px-40 py-40>
       <div text-4xl>
-        싸피 + API = sAPIer
+        SSAFY + API = SAPIer!
       </div>
       <p>
         <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-          SSSSSSSSSSAPIER
+          SAPIER
         </a>
       </p>
       <p>
