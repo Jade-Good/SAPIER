@@ -2,7 +2,7 @@ version: "3" #Compose 파일 버전
 services: # 서비스 정의 시작. 각 서비스는 별도 컨테이너로 실행
   server:
     image: spr-back:latest #이미지 이름
-    container-name: spr_back #컨테이너 이름
+    container_name: spr_back #컨테이너 이름
     build:
       context: ./backend/sapaier # 컨테이너와 호스트 간의 포트 매핑 설정(외부 연결 가능하게)
       args:
