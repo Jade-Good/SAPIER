@@ -13,15 +13,19 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class CookieManager {
 	public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
+
 		Cookie[] cookies = request.getCookies();
 
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (name.equals(cookie.getName())) {
-					return Optional.of(cookie);
-				}
+		if(cookies == null)
+			return Optional.empty();
+
+
+		for (Cookie cookie : cookies) {
+			if (name.equals(cookie.getName())) {
+				return Optional.of(cookie);
 			}
 		}
+
 		return Optional.empty();
 	}
 
@@ -34,19 +38,21 @@ public class CookieManager {
 		response.addCookie(cookie);
 	}
 
-	public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+	public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String targetName) {
 		Cookie[] cookies = request.getCookies();
 
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (name.equals(cookie.getName())) {
-					cookie.setValue("");
-					cookie.setPath("/");
-					cookie.setMaxAge(0);
-					response.addCookie(cookie);
-				}
+		if(cookies == null)
+			return;
+
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals(targetName)) {
+				cookie.setValue("");
+				cookie.setPath("/");
+				cookie.setMaxAge(0);
+				response.addCookie(cookie);
 			}
 		}
+
 	}
 
 	public String serialize(Object obj) {

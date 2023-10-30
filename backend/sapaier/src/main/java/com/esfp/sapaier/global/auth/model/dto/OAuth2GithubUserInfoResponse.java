@@ -9,16 +9,12 @@ public class OAuth2GithubUserInfoResponse extends OAuth2UserInfoResponse {
 	}
 	@Override
 	public String getId() {
-		return null;
+		return attributes.get("id").toString();
 	}
 
 	@Override
-	public String getNickname() {
-		return null;
-	}
+	public String getNickname() {return attributes.get("name").toString();}
 
 	@Override
-	public String getEmail() {
-		return null;
-	}
+	public String getEmail() { return attributes.get("email").toString();}
 }

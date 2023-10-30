@@ -6,12 +6,16 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.esfp.sapaier.global.auth.handler.OAuth2AuthenticationFailureHandler;
+import com.esfp.sapaier.global.auth.handler.OAuth2AuthenticationSuccessHandler;
 import com.esfp.sapaier.global.auth.repository.OAuth2AuthorizationRequestRepository;
+import com.esfp.sapaier.global.auth.service.OAuth2UserServiceCustom;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +36,10 @@ public class SecurityConfig {
 		"/api/login/oauth2/code/**"
 	};
 
+	private final OAuth2UserServiceCustom oAuth2UserServiceCustom;
 	private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
-
+	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+	private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -52,30 +58,26 @@ public class SecurityConfig {
 
 		//인가 URL 패턴 설정 세부url --> 포괄 url 순으로 설정할것.
 		httpSecurity
-			.authorizeHttpRequests(customAuthorization -> {
-				customAuthorization
+			.authorizeHttpRequests(c -> {c
 					.requestMatchers(HttpMethod.GET, SWAGGER_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
 					.requestMatchers(HttpMethod.GET, LOGIN_URI_LIST).permitAll() //권한 필요없는 POST 허용 리스트 설정
 					.requestMatchers("/**").hasAnyRole("PARENT", "CHILD", "GUEST")//권한 별 접근 URL 설정
-					.anyRequest().authenticated();  //그 외에 대한 URL에 대해서는 Authentication이 필요함을 설정
-			});
+					.anyRequest().authenticated(); });  //그 외에 대한 URL에 대해서는 Authentication이 필요함을 설정
 
 
 		//인증 (Oauth2)
+		//Oauth2 인증방식을 사용한다.
 		httpSecurity
-			.oauth2Login() //Oauth2 인증방식을 사용한다.
-			.authorizationEndpoint()
-			.baseUri("/api/oauth2/authorization")
-			.authorizationRequestRepository(oAuth2AuthorizationRequestRepository)
-			.and()
-			.redirectionEndpoint()
-			.baseUri("/api/login/oauth2/code/*")
-			.and()
-			.userInfoEndpoint()
-			.userService(customOAuth2UserService)
-			.and()
-			.successHandler(oAuth2AuthenticationSuccessHandler())
-			.failureHandler(oAuth2AuthenticationFailureHandler()).permitAll(); //인증 실패시에 대한 handler는 인증/인가 필요X
+			.oauth2Login(oAuth2LoginConfigurer -> {oAuth2LoginConfigurer
+				.authorizationEndpoint(c -> {c
+						.baseUri("/api/oauth2/authorization")
+						.authorizationRequestRepository(oAuth2AuthorizationRequestRepository);})
+				.redirectionEndpoint(c -> { c
+					.baseUri("/api/login/oauth2/code/*");})
+				.userInfoEndpoint(c -> {c
+					.userService(oAuth2UserServiceCustom);})
+				.successHandler(oAuth2AuthenticationSuccessHandler)
+				.failureHandler(oAuth2AuthenticationFailureHandler).permitAll();}); //인증 실패시에 대한 handler는 인증/인가 필요X
 
 		// //예외처리
 		// httpSecurity
