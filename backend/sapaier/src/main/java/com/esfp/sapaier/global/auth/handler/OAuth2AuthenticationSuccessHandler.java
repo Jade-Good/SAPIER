@@ -68,21 +68,16 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			.orElse(new Cookie("redirectUri", getDefaultTargetUrl()))
 			.getValue();
 
-		OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken)authentication;
+		UserPrincipal loginUserPrincipal = ((UserPrincipal)authentication.getPrincipal());
 
-		OAuth2Provider socialProvider = OAuth2Provider
-			.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
-
-		UserPrincipal loginUser = ((UserPrincipal)authentication.getPrincipal());
-
-		User user = memberRepository.findUserBySocialId(loginUser.getIdToken())
+		User loginUser = memberRepository.findUserBySocialId(loginUserPrincipal.getName())
 			.orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
 
 		JwtToken tokenInfo = jwtTokenProvider.createToken(
-			user.getUuid(),
-			user.getRole().name());
+			loginUser.getUuid(),
+			loginUser.getRole().name());
 
-		log.info("successHanlder : " + user.getUuid());
+		log.info("successHanlder : " + loginUser.getUuid());
 
 		cookieManager.deleteCookie(request, response, oAuth2AuthorizationRequestRepository.REFRESH_TOKEN);
 		cookieManager.addCookie(
@@ -110,16 +105,16 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		oAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
 	}
 
-	private boolean hasAuthority(Collection<? extends GrantedAuthority> authorities, String authority) {
-		if (authorities == null) {
-			return false;
-		}
-
-		for (GrantedAuthority grantedAuthority : authorities) {
-			if (authority.equals(grantedAuthority.getAuthority())) {
-				return true;
-			}
-		}
-		return false;
-	}
+	// private boolean hasAuthority(Collection<? extends GrantedAuthority> authorities, String authority) {
+	// 	if (authorities == null) {
+	// 		return false;
+	// 	}
+	//
+	// 	for (GrantedAuthority grantedAuthority : authorities) {
+	// 		if (authority.equals(grantedAuthority.getAuthority())) {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return false;
+	// }
 }
