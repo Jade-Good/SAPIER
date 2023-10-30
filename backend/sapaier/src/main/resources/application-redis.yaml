@@ -1,0 +1,11 @@
+spring:
+  data:
+    redis:
+      lettuce:
+        pool:
+          max-active: 5
+          max-idle: 5
+          min-idle: 2
+      host: k9b301.p.ssafy.io:6379
+      port: 6379
+      password: esfpb301sapier!
