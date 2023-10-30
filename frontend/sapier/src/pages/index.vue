@@ -6,9 +6,11 @@ const user = useUserStore()
 const name = ref(user.savedName)
 
 const router = useRouter()
-function go() {
+function start() {
   if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
+    router.push(`/main`)
+  else
+    router.push(`/login`)
 }
 
 const { t } = useI18n()
@@ -16,39 +18,40 @@ const { t } = useI18n()
 
 <template>
   <div py>
-    <img mx-5 width="200" src="public/logo.svg">
+    <img mx-5 width="200" src="../../public/logo.svg">
   </div>
-  <div bg-gray>
-    <div bg-gray text-4xl>
-      <div inline-block />
-    </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
-    </p>
-    <p>
-      <em text-sm opacity-75>{{ t('intro.desc') }}</em>
-    </p>
+  <div bg-gray200 py-4>
+    <div px-40 py-40>
+      <div text-4xl>
+        싸피 + API = sAPIer
+      </div>
+      <p>
+        <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
+          SSSSSSSSSSAPIER
+        </a>
+      </p>
+      <p>
+        <em text-sm opacity-75>{{ t('intro.desc') }}</em>
+      </p>
 
-    <div py-4 />
+      <div py-4 />
 
-    <TheInput
+      <!-- <TheInput
       v-model="name"
       :placeholder="t('intro.whats-your-name')"
       autocomplete="false"
       @keydown.enter="go"
     />
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
+    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label> -->
 
-    <div>
-      <button
-        m-3 text-sm btn
-        :disabled="!name"
-        @click="go"
-      >
-        {{ t('button.go') }}
-      </button>
+      <div>
+        <button
+          m-3 text-sm btn
+          @click="start"
+        >
+          {{ t('button.start') }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
