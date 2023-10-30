@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.stereotype.Service;
 
+import com.esfp.sapaier.domain.user.model.vo.Role;
 import com.esfp.sapaier.global.auth.model.vo.OAuth2Provider;
 
 import lombok.Builder;
@@ -27,7 +28,11 @@ public class UserDto {
 
 	private OAuth2Provider socialProvider;
 
+	private String profileImageUrl;
+
 	private Long countOfApiRequest;
 
 	private List<String> workspaces;
+
+	private Role role;
 }
