@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -28,6 +30,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -35,9 +38,9 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtTokenProvider {
 
 
-	public final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L;
-	public final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L;
-	public final int REFRESH_TOKEN_EXPIRE_TIME_COOKIE = 365 * 24 * 60 * 60;
+	public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L;
+	public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L;
+	public static final int REFRESH_TOKEN_EXPIRE_TIME_COOKIE = 365 * 24 * 60 * 60;
 
 
 	private final String BEARER_TYPE = "Bearer";
@@ -79,6 +82,16 @@ public class JwtTokenProvider {
 			.build();
 	}
 
+	public JwtToken refreshToken(String refreshToken){
+
+		Claims claims = parseClaims(refreshToken);
+
+		String uuid = claims.getSubject();
+		String role = claims.get("ROLE").toString();
+
+		return this.createToken(uuid,role);
+	}
+
 	public Authentication getAuthentication(String accessToken) {
 		Claims claims = parseClaims(accessToken);
 
@@ -98,69 +111,29 @@ public class JwtTokenProvider {
 		UserDetails principal = new User(claims.getSubject(), "", authorities);
 		return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
 	}
+	public String resolveToken(String bearerToken) {
 
-	public Claims parseClaims(String accessToken) {
-		try {
-			return Jwts
-				.parserBuilder()
-				.setSigningKey(key)
-				.build()
-				.parseClaimsJws(accessToken)
-				.getBody();
-		} catch (ExpiredJwtException e) {
-			return e.getClaims();
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
+			bearerToken = bearerToken.substring(7);
+			log.info("JWT Authentication Filter : 토큰 정보 : {}", bearerToken);
+			return bearerToken;
+		} else{
+			throw new NoSuchElementException("토큰이 비어 있습니다.");
 		}
 	}
 
-	public String validateToken(String token) {
-		try {
-			Jwts
-				.parserBuilder()
-				.setSigningKey(key)
-				.build()
-				.parseClaimsJws(token);
-			return "valid";
-		} catch (MalformedJwtException e) {
-			log.info("MalformedJwtException");
-			return "invalid";
-		} catch (ExpiredJwtException e) {
-			log.info("ExpiredJwtException");
-			return "isExpired";
-		} catch (UnsupportedJwtException e) {
-			log.info("UnsupportedJwtException");
-			return "isUnsupporeted";
-		} catch (IllegalArgumentException e) {
-			log.info("IllegalArgumentException");
-			return "isIllegal";
-		} catch (SignatureException	e) {
-			log.info("SignatureException");
-		}
-		return "isSignature";
-	}
+	public Claims parseClaims(String jwtToken) throws
+		MalformedJwtException,
+		ExpiredJwtException,
+		UnsupportedJwtException,
+		IllegalArgumentException,
+		SignatureException{
 
-	public boolean getIsExipired(String accessToken) {
-		Date expiration = Jwts
+		return Jwts
 			.parserBuilder()
 			.setSigningKey(key)
 			.build()
-			.parseClaimsJws(accessToken)
-			.getBody()
-			.getExpiration();
-
-		long now = new Date().getTime();
-		return (expiration.getTime() - now) > 0;
-	}
-
-	public String getMemberUUID(String accessToken) {
-		StringTokenizer st = new StringTokenizer(accessToken);
-
-		if (st.countTokens() >= 2)
-			st.nextToken();
-
-		String jwtToken = st.nextToken();
-
-		Claims claims = this.parseClaims(jwtToken);
-
-		return claims.get("sub").toString();
+			.parseClaimsJws(jwtToken)
+			.getBody();
 	}
 }
