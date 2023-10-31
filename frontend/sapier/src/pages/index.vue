@@ -10,7 +10,8 @@ function start() {
   if (name.value)
     router.push(`/main`)
   else
-    router.push(`/login`)
+    router.push(`/main`)
+    // router.push(`/login`)
 }
 
 const { t } = useI18n()
@@ -18,7 +19,7 @@ const { t } = useI18n()
 
 <template>
   <div py>
-    <img mx-5 width="200" src="../../public/logo.svg">
+    <img mx-5 width="200" src="/logo.svg">
   </div>
   <div bg-gray200 py-4>
     <div px-40 py-40>
@@ -36,17 +37,9 @@ const { t } = useI18n()
 
       <div py-4 />
 
-      <!-- <TheInput
-      v-model="name"
-      :placeholder="t('intro.whats-your-name')"
-      autocomplete="false"
-      @keydown.enter="go"
-    />
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label> -->
-
       <div>
         <button
-          m-3 text-sm btn
+          m-3 bg-bluegray-400 text-sm btn
           @click="start"
         >
           {{ t('button.start') }}
