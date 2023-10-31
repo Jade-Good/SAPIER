@@ -53,4 +53,10 @@ public class CollectionController {
     public ResponseEntity<?> deleteCollection(){
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/request")
+    public ResponseEntity<?> test(){
+        collectionService.test();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
