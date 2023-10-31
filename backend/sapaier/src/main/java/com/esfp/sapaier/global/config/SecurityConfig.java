@@ -98,8 +98,8 @@ public class SecurityConfig {
 						.accessDeniedHandler(tokenAccessDeniedHandler);}); //인증 예외 처리
 
 		//커스텀필터
-		httpSecurity
-			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		// httpSecurity
+		// 	.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
 	}
