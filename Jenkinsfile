@@ -58,12 +58,12 @@ pipeline{
 		stage('Set Permissions'){
 			steps{
 				//스크립트 파일에 실행권한 추가
-				sh 'chmod +x /var/jenkins_home/workspace/test3/start-prod.sh'
+				sh 'chmod +x /var/jenkins_home/workspace/sapier-pipeline/start-prod.sh'
 			}
 		}
 		stage('Execute start-prod.sh Script'){
 			steps{
-				sh '/var/jenkins_home/workspace/test3/start-prod.sh'
+				sh '/var/jenkins_home/workspace/sapier-pipeline/start-prod.sh'
 			}
 		}
 	}
