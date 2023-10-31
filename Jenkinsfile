@@ -1,4 +1,10 @@
 pipeline{
+	//docker hub credentials 정보
+	environment{
+		repository = "wonjunchun/jenkins"
+		DOCKERHUB_CREDENTIALS = credentials('dockerhub-jenkins')
+		dockerImage = ''
+	}
 	agent any
 	stages{
 		//준비단계 -> Merge된 git파일을 webhook에서 감지하여 가져옴
@@ -91,6 +97,8 @@ pipeline{
 		}
 		stage('Execute start-prod.sh Script'){
 			steps{
+				//docker hub login
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 				sh '/var/jenkins_home/workspace/sapier-pipeline/start-prod.sh'
 			}
 		}
