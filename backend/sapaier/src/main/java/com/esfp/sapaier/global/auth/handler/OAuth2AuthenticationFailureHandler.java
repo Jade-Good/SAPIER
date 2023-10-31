@@ -3,6 +3,8 @@ package com.esfp.sapaier.global.auth.handler;
 import java.io.IOException;
 import java.util.Optional;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -27,11 +29,13 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
 	private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
 	private final CookieManager cookieManager;
 
+
 	@Override
 	public void onAuthenticationFailure(
 		HttpServletRequest request,
 		HttpServletResponse response,
 		AuthenticationException exception) throws IOException {
+
 
 
 		String targetUrl = cookieManager
