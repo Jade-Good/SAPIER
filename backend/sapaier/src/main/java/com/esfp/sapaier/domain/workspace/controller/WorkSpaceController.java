@@ -20,10 +20,10 @@ public class WorkSpaceController {
 
 
     //workspace 목록 조회
-    @GetMapping("api/v1/workspaces/{workspaceIdx}")
-    public WorkSpace searchWorkSpace(@PathVariable String workspaceIdx){
-        return workSpaceService.searchWorkSpace(workspaceIdx);
-    }
+//    @GetMapping("api/v1/workspaces/{workspaceIdx}")
+//    public WorkSpace searchWorkSpace(@PathVariable String workspaceIdx){
+//        return workSpaceService.searchWorkSpace(workspaceIdx);
+//    }
 
 
     //워크스페이스 생성
