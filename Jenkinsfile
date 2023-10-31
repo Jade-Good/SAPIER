@@ -45,8 +45,36 @@ pipeline{
 			steps{
 				sh 'echo "Remove Docker"'
 				//정지된 도커 컨테이너 찾아서 컨테이너 ID로 삭제
-				//TODO : 해당 부분 쉘스크립트 작성하기
-
+				//spr로 시작하는 컨테이너 전부 삭제
+				sh '''
+					result=$( docker container ls -a --filter "name=spr*" -q)
+					if [ -n "$result" ]
+					then
+						docker rm $(docker container ls -a --filter "name=ttp*" -q)
+					else
+						echo "No such containers"
+					fi
+				'''
+				//spr로 시작하는 이미지 찾아서 삭제
+				sh '''
+					result=$( docker images -f "reference=spr*" -q )
+					if [ -n "$result"]
+					then
+						docker rmi -f $(docker images -f "reference=spr*" -q)
+					else
+						echo "No such container images"
+					fi
+				'''
+				//안쓰는 이미지 -> <none> 태그 찾아서 삭제함
+				sh '''
+					result=$(docker images -f "dangling=true" -q)
+					if [ -n "$result" ]
+					then
+						docker rmi -f $(docker images -f "dangling=true" -q)
+					else
+						echo "No such container images"
+					fi
+				'''
 			}
 			post{
 				failure{
