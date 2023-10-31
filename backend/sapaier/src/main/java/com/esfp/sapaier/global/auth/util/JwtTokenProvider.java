@@ -4,7 +4,7 @@ import com.esfp.sapaier.global.auth.model.vo.JwtToken;
 
 import java.security.Key;
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.NoSuchElementException;
@@ -12,9 +12,9 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +30,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -95,27 +94,26 @@ public class JwtTokenProvider {
 	public Authentication getAuthentication(String accessToken) {
 		Claims claims = parseClaims(accessToken);
 
-		if (claims.get("ROLE") == null) {
-			throw new RuntimeException("권한이 없습니다.");
+		if (claims.get("ROLE") == null)
+			throw new InsufficientAuthenticationException("권한이 없습니다.");
+
+
+		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+		StringTokenizer st = new StringTokenizer(claims.get("ROLE").toString(),",");
+		while(st.hasMoreTokens()){
+			String role = st.nextToken();
+			authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
 		}
 
-		Collection<? extends GrantedAuthority> authorities = Arrays
-			.stream(
-				claims
-					.get("ROLE")
-					.toString()
-					.split(","))
-			.map(authority -> new SimpleGrantedAuthority("ROLE_" + authority))
-			.collect(Collectors.toList());
-
 		UserDetails principal = new User(claims.getSubject(), "", authorities);
+
 		return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
 	}
 	public String resolveToken(String bearerToken) {
 
 		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
 			bearerToken = bearerToken.substring(7);
-			log.info("JWT Authentication Filter : 토큰 정보 : {}", bearerToken);
 			return bearerToken;
 		} else{
 			throw new NoSuchElementException("토큰이 비어 있습니다.");

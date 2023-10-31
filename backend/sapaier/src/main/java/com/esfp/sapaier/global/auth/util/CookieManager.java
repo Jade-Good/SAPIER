@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
+import com.esfp.sapaier.global.auth.model.dto.CookieDto;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,16 +31,21 @@ public class CookieManager {
 		return Optional.empty();
 	}
 
-	public void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
-		Cookie cookie = new Cookie(name, value);
+	public void addCookie(HttpServletResponse response, CookieDto cookieDto) {
+
+		Cookie cookie = new Cookie(cookieDto.getName(), cookieDto.getValue());
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
-		cookie.setMaxAge(maxAge);
+		cookie.setMaxAge(cookieDto.getMaxAge());
 
 		response.addCookie(cookie);
 	}
 
-	public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String targetName) {
+	public void deleteCookie(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		String targetName) {
+
 		Cookie[] cookies = request.getCookies();
 
 		if(cookies == null)
@@ -54,6 +61,18 @@ public class CookieManager {
 		}
 
 	}
+
+	public void updateCookie(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		String targetName,
+		CookieDto newCookieDto){
+
+		deleteCookie(request,response,targetName);
+		addCookie(response,newCookieDto);
+
+	}
+
 
 	public String serialize(Object obj) {
 		return Base64.getUrlEncoder().encodeToString(SerializationUtils.serialize(obj));

@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
 	private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
+
 	private final CookieManager cookieManager;
 
 
@@ -37,14 +38,12 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
 		AuthenticationException exception) throws IOException {
 
 
+		log.info("[OAuth2AuthenticationFailureHandler] function : onAuthenticationFailure | message : 인증 실패 리다이렉트");
 
 		String targetUrl = cookieManager
 			.getCookie(request, OAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
 			.orElse(new Cookie("redirectUri","/"))
 			.getValue();
-
-
-		log.error("OAuth2 에러 : {} ", exception.getMessage());
 
 		targetUrl = UriComponentsBuilder
 			.fromUriString(targetUrl)
