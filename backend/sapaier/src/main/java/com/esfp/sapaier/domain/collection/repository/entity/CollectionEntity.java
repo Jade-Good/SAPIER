@@ -68,4 +68,17 @@ public class CollectionEntity {
 		this.path = path;
 	}
 
+	@Override
+	public String toString() {
+		return "CollectionEntity{" +
+			"collectionId='" + collectionId + '\'' +
+			", path='" + path + '\'' +
+			", name='" + name + '\'' +
+			", user=" + user +
+			", apiList=" + apiList +
+			", collectionList=" + collectionList +
+			", createdTime=" + createdTime +
+			", modifiedTime=" + modifiedTime +
+			'}';
+	}
 }
