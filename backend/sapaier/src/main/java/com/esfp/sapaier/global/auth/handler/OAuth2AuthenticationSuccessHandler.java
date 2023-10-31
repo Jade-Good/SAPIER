@@ -1,29 +1,24 @@
 package com.esfp.sapaier.global.auth.handler;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.esfp.sapaier.domain.user.repository.UserRepository;
 import com.esfp.sapaier.domain.user.repository.entity.User;
-import com.esfp.sapaier.global.auth.model.dto.OAuth2UserInfoResponse;
+import com.esfp.sapaier.global.auth.model.dto.CookieDto;
+import com.esfp.sapaier.global.auth.model.dto.UserAuthDto;
 import com.esfp.sapaier.global.auth.model.vo.JwtToken;
-import com.esfp.sapaier.global.auth.model.vo.OAuth2Provider;
 import com.esfp.sapaier.global.auth.model.vo.UserPrincipal;
 import com.esfp.sapaier.global.auth.repository.OAuth2AuthorizationRequestRepository;
+import com.esfp.sapaier.global.auth.repository.UserAuthRepository;
+import com.esfp.sapaier.global.auth.repository.entity.UserAuth;
 import com.esfp.sapaier.global.auth.util.CookieManager;
 import com.esfp.sapaier.global.auth.util.JwtTokenProvider;
-import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,9 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
+
 	private final JwtTokenProvider jwtTokenProvider;
-	private final UserRepository memberRepository;
 	private final CookieManager cookieManager;
+
+	private final UserRepository userRepository;
+	private final UserAuthRepository userAuthRepository;
+
 
 	@Override
 	public void onAuthenticationSuccess(
@@ -47,14 +46,40 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		HttpServletResponse response,
 		Authentication authentication) throws IOException {
 
+
+
+
+		log.info("[OAuth2AuthenticationSuccessHandler] function : onAuthenticationSuccess | message : 인증 성공 리다이렉트");
+
 		String targetUrl = determineTargetUrl(request, response, authentication);
 
 		if (response.isCommitted()) {
-			log.error("Response has already been committed. Unable to redirect to " + targetUrl);
+			log.info("[OAuth2AuthenticationSuccessHandler] function : onAuthenticationSuccess | error : response is already committed()");
 			return;
 		}
 
+		User loginUser = loadUserFromAuthentication(authentication);
+
+		JwtToken token = jwtTokenProvider.createToken(
+			loginUser.getUuid(),
+			loginUser.getRole().name());
+
+		login(loginUser.getUuid(), loginUser.getKey(), token.getRefreshToken());
+
+		CookieDto newCookie = CookieDto.builder()
+			.name(OAuth2AuthorizationRequestRepository.REFRESH_TOKEN)
+			.value(token.getRefreshToken())
+			.maxAge(JwtTokenProvider.REFRESH_TOKEN_EXPIRE_TIME_COOKIE)
+			.build();
+
+		cookieManager.updateCookie(
+			request,
+			response,
+			OAuth2AuthorizationRequestRepository.REFRESH_TOKEN,
+			newCookie);
+
 		clearAuthenticationAttributes(request, response);
+
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
 	}
 
@@ -65,41 +90,29 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 		String targetUrl = cookieManager
 			.getCookie(request, OAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
-			.orElse(new Cookie("redirectUri", getDefaultTargetUrl()))
+			.orElse(new Cookie(OAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME, getDefaultTargetUrl()))
 			.getValue();
 
-		UserPrincipal loginUserPrincipal = ((UserPrincipal)authentication.getPrincipal());
-
-		User loginUser = memberRepository.findUserBySocialId(loginUserPrincipal.getName())
-			.orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
-
-		JwtToken tokenInfo = jwtTokenProvider.createToken(
-			loginUser.getUuid(),
-			loginUser.getRole().name());
-
-		log.info("successHanlder : " + loginUser.getUuid());
-
-		cookieManager.deleteCookie(request, response, OAuth2AuthorizationRequestRepository.REFRESH_TOKEN);
-		cookieManager.addCookie(
-			response,
-			OAuth2AuthorizationRequestRepository.REFRESH_TOKEN,
-			tokenInfo.getRefreshToken(),
-			JwtTokenProvider.REFRESH_TOKEN_EXPIRE_TIME_COOKIE);
-
-		// memberAuthService.login(
-		// 	MemberAuthDto.builder()
-		// 		.memberUUID(bySocialId.getUuid())
-		// 		.memberIdx(bySocialId.getIdx())
-		// 		.memberRefreshToken(tokenInfo.getRefreshToken())
-		// 		.build());
-
 		return UriComponentsBuilder.fromUriString(targetUrl)
-			.queryParam("accessToken", tokenInfo.getAccessToken())
-			.queryParam("refreshToken", tokenInfo.getRefreshToken())
 			.build()
 			.toUriString();
 	}
 
+	private void login(String userUuid, String userKey, String refreshToken){
+
+		userAuthRepository.save(UserAuth.builder()
+			.userUuid(userUuid)
+			.userKey(userKey)
+			.refreshToken(refreshToken)
+			.build());
+	}
+
+	private User loadUserFromAuthentication(Authentication authentication){
+		String userKey = ((UserPrincipal)authentication.getPrincipal()).getUserKey();
+		User user = userRepository.findUserByKey(userKey)
+			.orElseThrow(() -> new NoSuchElementException("회원 정보가 존재하지 않습니다"));
+		return user;
+	}
 	protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
 		super.clearAuthenticationAttributes(request);
 		oAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);

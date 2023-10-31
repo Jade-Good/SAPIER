@@ -6,6 +6,7 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Repository;
 
+import com.esfp.sapaier.global.auth.model.dto.CookieDto;
 import com.esfp.sapaier.global.auth.util.CookieManager;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 
@@ -51,20 +52,26 @@ public class OAuth2AuthorizationRequestRepository implements
 			cookieManager.deleteCookie(request, response, REFRESH_TOKEN);
 
 		} else {
-			cookieManager.addCookie(
-				response,
-				OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
-				cookieManager.serialize(authorizationRequest),
-				COOKIE_EXPIRE_TIME);
+
+			CookieDto cookieDto = CookieDto.builder()
+					.name(OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
+					.value(cookieManager.serialize(authorizationRequest))
+					.maxAge(COOKIE_EXPIRE_TIME)
+					.build();
+
+			cookieManager.addCookie(response, cookieDto);
 
 			String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
 
 			if (StringUtils.isNotBlank(redirectUriAfterLogin)) {
-				cookieManager.addCookie(
-					response,
-					REDIRECT_URI_PARAM_COOKIE_NAME,
-					redirectUriAfterLogin,
-					COOKIE_EXPIRE_TIME);
+
+				cookieDto = CookieDto.builder()
+					.name(REDIRECT_URI_PARAM_COOKIE_NAME)
+					.value(redirectUriAfterLogin)
+					.maxAge(COOKIE_EXPIRE_TIME)
+					.build();
+
+				cookieManager.addCookie(response, cookieDto);;
 			}
 		}
 	}

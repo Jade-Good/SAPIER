@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class User {
 
 	@MongoId
-	private String id;
+	private String key;
 
 	@Indexed(unique = true)
 	private String uuid;

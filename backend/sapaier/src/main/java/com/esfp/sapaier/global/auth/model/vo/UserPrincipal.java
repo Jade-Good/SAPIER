@@ -34,12 +34,16 @@ public class UserPrincipal implements OidcUser, OAuth2User {
 	private final OidcUserInfo userInfo;
 
 	@Builder
-	public UserPrincipal (UserDto userInfo, Map<String, Object> attributes){
-		this.name = userInfo.getSocialId();
+	public UserPrincipal (String key, String role, Map<String, Object> attributes){
+		this.name = key;
 		this.idToken = null;
 		this.attributes = attributes;
-		this.authorities = Collections.singletonList(new SimpleGrantedAuthority(userInfo.getRole().name()));
+		this.authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
 		this.claims = new HashMap<>();
 		this.userInfo = new OidcUserInfo(claims);
+	}
+
+	public String getUserKey(){
+		return this.name;
 	}
 }
