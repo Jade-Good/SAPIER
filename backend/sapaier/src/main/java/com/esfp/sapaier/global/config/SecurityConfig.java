@@ -63,13 +63,21 @@ public class SecurityConfig {
 		httpSecurity
 			.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); //인증정보를 세션에 저장하지 않는다. JWT 토큰으로만 인증할때 사용
 
-		//인가 URL 패턴 설정 세부url --> 포괄 url 순으로 설정할것.
+		// //인가 URL 패턴 설정 세부url --> 포괄 url 순으로 설정할것.
+		// httpSecurity
+		// 	.authorizeHttpRequests(c -> {c
+		// 			.requestMatchers(HttpMethod.GET, SWAGGER_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
+		// 			.requestMatchers(HttpMethod.GET, LOGIN_URI_LIST).permitAll() //권한 필요없는 POST 허용 리스트 설정
+		// 			.requestMatchers("/**").hasAnyRole("PARENT", "CHILD", "GUEST")//권한 별 접근 URL 설정
+		// 			.anyRequest().authenticated(); });  //그 외에 대한 URL에 대해서는 Authentication이 필요함을 설정
+
+		//TEST
 		httpSecurity
 			.authorizeHttpRequests(c -> {c
-					.requestMatchers(HttpMethod.GET, SWAGGER_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
-					.requestMatchers(HttpMethod.GET, LOGIN_URI_LIST).permitAll() //권한 필요없는 POST 허용 리스트 설정
-					.requestMatchers("/**").hasAnyRole("PARENT", "CHILD", "GUEST")//권한 별 접근 URL 설정
-					.anyRequest().authenticated(); });  //그 외에 대한 URL에 대해서는 Authentication이 필요함을 설정
+						.requestMatchers(HttpMethod.GET, "/**").permitAll()
+						.requestMatchers(HttpMethod.POST, "/**").permitAll()
+						.requestMatchers(HttpMethod.PATCH, "/**").permitAll()
+						.requestMatchers(HttpMethod.DELETE, "/**").permitAll();});
 
 
 		//인증 (Oauth2)
@@ -84,19 +92,14 @@ public class SecurityConfig {
 				.userInfoEndpoint(c -> {c
 					.userService(oAuth2UserServiceCustom);})
 				.successHandler(oAuth2AuthenticationSuccessHandler)
-				.failureHandler(oAuth2AuthenticationFailureHandler).permitAll();}); //인증 실패시에 대한 handler는 인증/인가 필요X
-
-		//예외처리
-		httpSecurity
+				.failureHandler(oAuth2AuthenticationFailureHandler).permitAll();}) //인증 실패시에 대한 handler는 인증/인가 필요X
 			.exceptionHandling(c -> {c
-				.authenticationEntryPoint(new RestAuthenticationEntryPoint())
-				.accessDeniedHandler(tokenAccessDeniedHandler);
-			});
+						.authenticationEntryPoint(new RestAuthenticationEntryPoint())
+						.accessDeniedHandler(tokenAccessDeniedHandler);}); //인증 예외 처리
 
 		//커스텀필터
 		httpSecurity
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
 
 		return httpSecurity.build();
 	}
