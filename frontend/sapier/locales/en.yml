@@ -12,4 +12,6 @@ intro:
   hi: Hi, {name}!
   aka: Also known as
   whats-your-name: What's your name?
+main:
+  search-now: Search with SAPIER now!
 not-found: Not found
