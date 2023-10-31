@@ -20,6 +20,7 @@ import com.esfp.sapaier.global.auth.handler.TokenAccessDeniedHandler;
 import com.esfp.sapaier.global.auth.repository.OAuth2AuthorizationRequestRepository;
 import com.esfp.sapaier.global.auth.service.JwtAuthenticationFilter;
 import com.esfp.sapaier.global.auth.service.OAuth2UserServiceCustom;
+import com.esfp.sapaier.global.auth.util.CustomFilterFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class SecurityConfig {
 	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 	private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
-	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final CustomFilterFactory customFilterFactory;
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 
 	@Bean
@@ -99,7 +100,7 @@ public class SecurityConfig {
 
 		//커스텀필터
 		// httpSecurity
-		// 	.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		// 	.addFilterBefore(customFilterFactory.createJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
 	}
