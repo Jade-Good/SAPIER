@@ -6,10 +6,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -18,8 +16,7 @@ import com.esfp.sapaier.global.auth.handler.OAuth2AuthenticationFailureHandler;
 import com.esfp.sapaier.global.auth.handler.OAuth2AuthenticationSuccessHandler;
 import com.esfp.sapaier.global.auth.handler.TokenAccessDeniedHandler;
 import com.esfp.sapaier.global.auth.repository.OAuth2AuthorizationRequestRepository;
-import com.esfp.sapaier.global.auth.service.JwtAuthenticationFilter;
-import com.esfp.sapaier.global.auth.service.OAuth2UserServiceCustom;
+import com.esfp.sapaier.global.auth.service.CustomOAuth2UserService;
 import com.esfp.sapaier.global.auth.util.CustomFilterFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -41,7 +38,7 @@ public class SecurityConfig {
 		"/api/login/oauth2/code/**"
 	};
 
-	private final OAuth2UserServiceCustom oAuth2UserServiceCustom;
+	private final CustomOAuth2UserService customOAuth2UserService;
 	private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
 	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 	private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
@@ -91,7 +88,7 @@ public class SecurityConfig {
 				.redirectionEndpoint(c -> { c
 					.baseUri("/api/login/oauth2/code/*");})
 				.userInfoEndpoint(c -> {c
-					.userService(oAuth2UserServiceCustom);})
+					.userService(customOAuth2UserService);})
 				.successHandler(oAuth2AuthenticationSuccessHandler)
 				.failureHandler(oAuth2AuthenticationFailureHandler).permitAll();}) //인증 실패시에 대한 handler는 인증/인가 필요X
 			.exceptionHandling(c -> {c

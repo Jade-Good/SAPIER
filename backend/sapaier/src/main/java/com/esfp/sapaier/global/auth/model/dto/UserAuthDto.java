@@ -13,4 +13,12 @@ public class UserAuthDto {
 	private String userKey;
 	private String refreshToken;
 
+	@Override
+	public String toString() {
+		return "UserAuthDto{" +
+			"userUuid='" + userUuid + '\'' +
+			", userKey='" + userKey + '\'' +
+			", refreshToken='" + refreshToken + '\'' +
+			'}';
+	}
 }
