@@ -58,7 +58,7 @@ pipeline{
 				//spr로 시작하는 이미지 찾아서 삭제
 				sh '''
 					result=$( docker images -f "reference=spr*" -q )
-					if [ -n "$result"]
+					if [ -n "$result" ]
 					then
 						docker rmi -f $(docker images -f "reference=spr*" -q)
 					else
