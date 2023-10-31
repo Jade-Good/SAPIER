@@ -1,6 +1,6 @@
 #! /bin/bash
 # 현재 프로젝트에 있는 docker-compose
-docker-compose -f docker-compose-prod.yml pull
+sudo docker-compose -f docker-compose-prod.yml pull
 
 echo "pull 완료"
 
