@@ -19,21 +19,39 @@ function githubLogin(){
 
 <template>
   
-  <button m-3 bg-bluegray-400 text-sm btn @click="googleLogin">
-    구글로그인
-  </button>
-         
-        
-  <button m-3 bg-bluegray-400 text-sm btn @click="githubLogin">
-    깃헙로그인
-  </button>
+  <div class="social_login_button_container">
+    
+    
+      <button class="social_login_button">
+        <img src="./btn_google_siginIn.png" @click="googleLogin"/>
+      </button>
+  
+          
+  
+      <button class="social_login_button">
+        <img src="./btn_github_siginIn.png" @click="githubLogin"/>
+      </button>
+
+  </div>
 
 </template>
 
 
 
 
+<style scoped>
+.social_login_button_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  background-color: red;
+}
 
-<style>
+.social_login_button{
+  margin-top: 1em;
+  width: 70%;
+  background-color: black;
+}
 </style>
 
