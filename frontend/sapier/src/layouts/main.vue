@@ -1,6 +1,6 @@
 <template>
   <TheNav />
-  <div flex>
+  <div flex class="mid">
     <WorkspaceList />
     <UserInfo w-60 />
     <MainInfo w-full />
@@ -12,3 +12,9 @@
       [Default Layout]
     </div> -->
 </template>
+
+<style>
+.mid {
+  height: calc(100% - 70px);
+}
+</style>

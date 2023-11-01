@@ -8,7 +8,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <nav flex flex-justify-between border-b-2 class="stroke" p1rem py-3>
+  <nav class="nav" flex flex-justify-between border-b-2 p1rem py-3>
     <div>
       <RouterLink to="/">
         <img width="120" src="/logo.svg" mt-1>
@@ -41,7 +41,8 @@ const { t } = useI18n()
 </template>
 
 <style scoped>
-.stroke{
-    border-color: #B6B6B6;
+.nav{
+  height: 70px;
+  border-color: #B6B6B6;
 }
 </style>
