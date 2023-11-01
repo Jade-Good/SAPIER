@@ -114,15 +114,6 @@ public class JwtTokenProvider {
 
 		return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
 	}
-	public String resolveToken(String bearerToken) {
-
-		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
-			bearerToken = bearerToken.substring(7);
-			return bearerToken;
-		} else{
-			throw new NoSuchElementException("토큰이 비어 있습니다.");
-		}
-	}
 
 	public Claims parseClaims(String jwtToken) throws
 		MalformedJwtException,
