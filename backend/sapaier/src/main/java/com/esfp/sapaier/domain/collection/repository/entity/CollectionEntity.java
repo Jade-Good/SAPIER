@@ -1,51 +1,49 @@
 package com.esfp.sapaier.domain.collection.repository.entity;
 
-import com.esfp.sapaier.domain.user.repository.entity.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@AllArgsConstructor
 @Document(collection = "Collection")
 public class CollectionEntity {
 
-    @Id
-    private String collectionId;
-    private String path;
-    private String name;
-    private User user;
-   // private List<리퀘스트엔티티들어갈예정> apiList;
-    @CreatedDate
-    private LocalDateTime createdTime;
-    @LastModifiedDate
-    private LocalDateTime modifiedTime;
+	@MongoId
+	private String collectionId;
+	private String collectionName;
 
+	private List<RequestEntity> apiList;
+	private List<CollectionEntity> collectionList;
 
-    @Builder
-    public CollectionEntity (String path){
-        this.path = path;
-    }
+	@CreatedDate
+	private LocalDateTime createdTime;
+	@LastModifiedDate
+	private LocalDateTime modifiedTime;
 
-    @Builder
-    public CollectionEntity(String path, String name ) {   //, User user){
-        this.path = path;
-//        this.user = user;
-        this.name = name;
-    }
+	@Builder
+	public CollectionEntity(String collectionName , List<CollectionEntity> collectionList) {
+		this.collectionName = collectionName;
+		this.collectionList = collectionList;
+	}
 
-    public void update(String name){
-        this.name = name;
-    }
-
-    public void updatePath(String path){
-        this.path = path;
-    }
-
+	@Override
+	public String toString() {
+		return "CollectionEntity{" +
+			"collectionId='" + collectionId + '\'' +
+			", collectionName='" + collectionName + '\'' +
+			", apiList=" + apiList +
+			", collectionList=" + collectionList +
+			", createdTime=" + createdTime +
+			", modifiedTime=" + modifiedTime +
+			'}';
+	}
 }
