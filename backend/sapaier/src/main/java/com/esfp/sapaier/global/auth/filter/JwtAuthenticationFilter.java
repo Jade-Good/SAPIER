@@ -43,7 +43,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		try {
 			log.info("[JwtAuthenticationFilter] function : doFilterInternal | message : 토큰 인증 시도");
 
-			String jwtToken = jwtTokenProvider.resolveToken(request.getHeader("Authorization"));
+			String jwtToken = cookieManager
+				.getCookie(request, OAuth2AuthorizationRequestRepository.ACCESS_TOKEN)
+				.orElseThrow(() -> new NoSuchElementException("Access Token이 존재하지 않습니다"))
+				.getValue();
+
 
 			Authentication authentication = jwtTokenProvider.getAuthentication(jwtToken);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -66,9 +70,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				request,
 				response,
 				newCookie);
-
-
-			response.setHeader("x-access-token", newToken.getAccessToken());
 
 			Authentication authentication = jwtTokenProvider.getAuthentication(newToken.getAccessToken());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
