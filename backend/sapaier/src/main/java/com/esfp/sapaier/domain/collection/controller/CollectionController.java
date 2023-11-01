@@ -1,10 +1,10 @@
 package com.esfp.sapaier.domain.collection.controller;
 
 import com.esfp.sapaier.domain.collection.service.CollectionService;
-import com.esfp.sapaier.domain.collection.service.dto.request.CollectionListRequestDto;
-import com.esfp.sapaier.domain.collection.service.dto.request.CreateCollectionRequestDto;
-import com.esfp.sapaier.domain.collection.service.dto.request.ModifyCollectionRequestDto;
-import com.esfp.sapaier.domain.collection.service.dto.response.CollectionResponseDto;
+import com.esfp.sapaier.domain.collection.model.dto.request.CollectionListRequestDto;
+import com.esfp.sapaier.domain.collection.model.dto.request.CreateCollectionRequestDto;
+import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequestDto;
+import com.esfp.sapaier.domain.collection.model.dto.response.CollectionResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
