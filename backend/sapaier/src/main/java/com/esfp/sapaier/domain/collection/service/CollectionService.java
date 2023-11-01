@@ -3,8 +3,10 @@ package com.esfp.sapaier.domain.collection.service;
 import com.esfp.sapaier.domain.collection.exception.NoCollectionException;
 import com.esfp.sapaier.domain.collection.repository.CollectionRepository;
 import com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity;
+import com.esfp.sapaier.domain.collection.service.dto.request.CollectionListRequest;
 import com.esfp.sapaier.domain.collection.service.dto.request.CreateCollectionRequest;
 import com.esfp.sapaier.domain.collection.service.dto.request.ModifyCollectionRequest;
+import com.esfp.sapaier.domain.collection.service.dto.response.CollectionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,8 +37,17 @@ public class CollectionService {
 		collectionRepository.save(new CollectionEntity(collectionName,collectionList));
 	}
 
-	public void allCollectionList(){
+	public List<CollectionResponse> allCollectionList(CollectionListRequest collectionListRequest){
+		List<String> topCollectionIdList = collectionListRequest.getCollectionId();
+		List<CollectionResponse> responseList = new ArrayList<CollectionResponse>();
 
+		for (String collectionId : topCollectionIdList) {
+			CollectionEntity collection = collectionRepository.findById(collectionId)
+					.orElseThrow(() -> new NoCollectionException(NO_COLLECTION_EXCEPTION));
+
+			responseList.add(new CollectionResponse(collection));
+		}
+		return responseList;
 	}
 
 	@Transactional
