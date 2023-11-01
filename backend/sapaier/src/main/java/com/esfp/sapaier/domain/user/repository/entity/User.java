@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-@Document
+@Document(collection = "User")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class User {

@@ -39,8 +39,8 @@ public class UserPrincipal implements OidcUser, OAuth2User {
 		this.idToken = null;
 		this.attributes = attributes;
 		this.authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
-		this.claims = new HashMap<>();
-		this.userInfo = new OidcUserInfo(claims);
+		this.claims = null;
+		this.userInfo = null;
 	}
 
 	public String getUserKey(){

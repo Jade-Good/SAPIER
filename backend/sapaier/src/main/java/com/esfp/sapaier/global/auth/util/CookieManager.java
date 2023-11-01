@@ -65,10 +65,9 @@ public class CookieManager {
 	public void updateCookie(
 		HttpServletRequest request,
 		HttpServletResponse response,
-		String targetName,
 		CookieDto newCookieDto){
 
-		deleteCookie(request,response,targetName);
+		deleteCookie(request,response,newCookieDto.getName());
 		addCookie(response,newCookieDto);
 
 	}
