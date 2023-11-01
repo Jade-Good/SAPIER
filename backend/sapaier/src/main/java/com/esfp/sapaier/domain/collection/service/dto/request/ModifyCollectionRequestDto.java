@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class ModifyCollectionRequest {
+public class ModifyCollectionRequestDto {
     private String collectionId;
     private String collectionName;
     private List<RequestEntity> apiList;
