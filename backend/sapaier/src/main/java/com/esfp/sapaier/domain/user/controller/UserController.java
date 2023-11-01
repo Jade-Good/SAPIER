@@ -3,6 +3,7 @@ package com.esfp.sapaier.domain.user.controller;
 import java.util.NoSuchElementException;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +33,10 @@ public class UserController {
 	private final JwtTokenProvider jwtTokenProvider;
 
 	@GetMapping("/users")
-	public ResponseEntity getUserInfo(
-		@RequestHeader("Authorization") String authorizationToken){
+	public ResponseEntity getUserInfo(@CookieValue String accessToken){
 
 		log.info("[UserController] function : getUserInfo | message : 유저 정보 요청");
 
-		String accessToken = jwtTokenProvider.resolveToken(authorizationToken);
 		String userUuid = jwtTokenProvider.parseClaims(accessToken).getSubject();
 		String userKey = userAuthService.getUserKeyFromUuid(userUuid);
 
