@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from 'axios'
 
-const userInfo = useUserStore()
+const user = useUserStore()
 const isMounted = useMounted()
 
 axios.defaults.withCredentials = true
@@ -11,7 +11,8 @@ if (isMounted) {
     .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/users`)
     .then((res) => {
       console.log(res)
-      userInfo.user = res.data
+      user.userInfo = res.data
+      useStorage('sapier-user', user.userInfo)
     })
     .catch((error) => {
       console.log(error)
