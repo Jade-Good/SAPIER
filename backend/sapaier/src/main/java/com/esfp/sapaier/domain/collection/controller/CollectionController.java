@@ -1,10 +1,10 @@
 package com.esfp.sapaier.domain.collection.controller;
 
 import com.esfp.sapaier.domain.collection.service.CollectionService;
-import com.esfp.sapaier.domain.collection.service.dto.request.CollectionListRequest;
-import com.esfp.sapaier.domain.collection.service.dto.request.CreateCollectionRequest;
-import com.esfp.sapaier.domain.collection.service.dto.request.ModifyCollectionRequest;
-import com.esfp.sapaier.domain.collection.service.dto.response.CollectionResponse;
+import com.esfp.sapaier.domain.collection.service.dto.request.CollectionListRequestDto;
+import com.esfp.sapaier.domain.collection.service.dto.request.CreateCollectionRequestDto;
+import com.esfp.sapaier.domain.collection.service.dto.request.ModifyCollectionRequestDto;
+import com.esfp.sapaier.domain.collection.service.dto.response.CollectionResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,19 +22,19 @@ public class CollectionController {
     private final CollectionService collectionService;
 
     @PostMapping
-    public ResponseEntity<Object> registCollectionDocument(@RequestBody CreateCollectionRequest createCollectionRequest){
-        collectionService.createCollectionDocument(createCollectionRequest);
+    public ResponseEntity<Object> registCollectionDocument(@RequestBody CreateCollectionRequestDto createCollectionRequestDto){
+        collectionService.createCollectionDocument(createCollectionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<CollectionResponse>> collectionList(@RequestBody CollectionListRequest collectionListRequest) {
-        return new ResponseEntity<>(collectionService.allCollectionList(collectionListRequest),HttpStatus.OK);
+    public ResponseEntity<List<CollectionResponseDto>> collectionList(@RequestBody CollectionListRequestDto collectionListRequestDto) {
+        return new ResponseEntity<>(collectionService.allCollectionList(collectionListRequestDto),HttpStatus.OK);
     }
 
    @PatchMapping
-    public ResponseEntity<Object> modifyCollection(@RequestBody ModifyCollectionRequest modifyCollectionRequest){
-        collectionService.modifyCollection(modifyCollectionRequest);
+    public ResponseEntity<Object> modifyCollection(@RequestBody ModifyCollectionRequestDto modifyCollectionRequestDto){
+        collectionService.modifyCollection(modifyCollectionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
    }
 }
