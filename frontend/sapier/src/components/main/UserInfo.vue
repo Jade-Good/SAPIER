@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .list{
     background: #C9C9C9;
 }
