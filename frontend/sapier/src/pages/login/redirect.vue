@@ -1,0 +1,4 @@
+<template>
+     <SocialLoginRedirect/>
+ </template>
+ 

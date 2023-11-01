@@ -1,0 +1,6 @@
+<template>
+   <SocialLogin/>
+</template>
+
+
+    
