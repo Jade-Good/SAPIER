@@ -12,10 +12,10 @@ interface UserInfo {
 }
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref < UserInfo | null > (null)
+  const userInfo = ref < UserInfo | null > (null)
 
   return {
-    user,
+    userInfo,
   }
 })
 
