@@ -1,20 +1,19 @@
 package com.esfp.sapaier.domain.collection.service;
 
+import com.esfp.sapaier.domain.collection.exception.NoCollectionException;
+import com.esfp.sapaier.domain.collection.repository.CollectionRepository;
+import com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity;
+import com.esfp.sapaier.domain.collection.service.dto.request.CreateCollectionRequest;
+import com.esfp.sapaier.domain.collection.service.dto.request.ModifyCollectionRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.esfp.sapaier.domain.collection.repository.CollectionRepository;
-import com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity;
-import com.esfp.sapaier.domain.collection.repository.entity.RequestEntity;
-import com.esfp.sapaier.domain.collection.service.dto.request.CreateFolderRequest;
-import com.esfp.sapaier.domain.collection.service.dto.request.DeleteFolderRequest;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,34 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class CollectionService {
 
-	private final CollectionRepository collectionRepository;
-	// TODO: user 정보도 넘겨줘야함
+    private final CollectionRepository collectionRepository;
+    // TODO: 유저가 아니라 워크스페이스
 
-	private static final String NO_COLLECTION_EXCEPTION = "해당하는 collection이 존재하지 않습니다.";
+    private static final String NO_COLLECTION_EXCEPTION = "해당하는 collection이 존재하지 않습니다.";
 
-	@Transactional
-	public void registCollection() {
-		collectionRepository.save(new CollectionEntity("/"));
-	}
-
-	// create blank folder
-	@Transactional
-	public void registFolder(CreateFolderRequest createFolderRequest) {
-
-		// 폴더이름 없을 시 default값 넣어주기
-		String folderName = createFolderRequest.getName();
-		if (Objects.equals(folderName, " ") || folderName == null || folderName.equals("")) {
-			folderName = "New Folder";
-		}
-		String path = createFolderRequest.getPath() + "/" + folderName;
-		collectionRepository.save(new CollectionEntity(path, folderName));
-
-	}
-
-	@Transactional
-	public void deleteFolder(DeleteFolderRequest deleteFolderRequest) {
-
-	}
 
 	public void test() {
 		// RequestEntity request1 = new RequestEntity();
