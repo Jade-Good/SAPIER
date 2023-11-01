@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtTokenProvider {
 
 
-	public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000  * 3L;
+	public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000  * 60 * 5L;
 	public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L;
 
 	public static final int ACCESS_TOKEN_EXPIRE_TIME_COOKIE = 30 * 60;
