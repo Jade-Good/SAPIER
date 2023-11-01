@@ -9,7 +9,7 @@
 
 <style scoped>
 .list{
-    background: #C9C9C9;
-    border-color: #B6B6B6;
+  background: #C9C9C9;
+  border-color: #B6B6B6;
 }
 </style>

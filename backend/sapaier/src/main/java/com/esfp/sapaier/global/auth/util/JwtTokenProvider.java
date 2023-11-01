@@ -39,6 +39,8 @@ public class JwtTokenProvider {
 
 	public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L;
 	public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L;
+
+	public static final int ACCESS_TOKEN_EXPIRE_TIME_COOKIE = 30 * 60;
 	public static final int REFRESH_TOKEN_EXPIRE_TIME_COOKIE = 365 * 24 * 60 * 60;
 
 
@@ -54,13 +56,15 @@ public class JwtTokenProvider {
 
 	public JwtToken createToken(String uuid, String role) {
 
+		Long curTime = new Date().getTime();
+
 		String accessToken = Jwts
 			.builder()
 			.setSubject(uuid)
 			.setIssuedAt(new Date())
 			.claim("ROLE", role)
 			.signWith(key, SignatureAlgorithm.HS256)
-			.setExpiration(new Date(LocalDateTime.now().getSecond() + ACCESS_TOKEN_EXPIRE_TIME))
+			.setExpiration(new Date(curTime + ACCESS_TOKEN_EXPIRE_TIME))
 			.compact();
 
 		String refreshToken = Jwts
@@ -69,7 +73,7 @@ public class JwtTokenProvider {
 			.setIssuedAt(new Date())
 			.claim("ROLE", role)
 			.signWith(key, SignatureAlgorithm.HS256)
-			.setExpiration(new Date(LocalDateTime.now().getSecond() + REFRESH_TOKEN_EXPIRE_TIME))
+			.setExpiration(new Date(curTime + REFRESH_TOKEN_EXPIRE_TIME))
 			.compact();
 
 		return JwtToken
@@ -109,15 +113,6 @@ public class JwtTokenProvider {
 		UserDetails principal = new User(claims.getSubject(), "", authorities);
 
 		return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
-	}
-	public String resolveToken(String bearerToken) {
-
-		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
-			bearerToken = bearerToken.substring(7);
-			return bearerToken;
-		} else{
-			throw new NoSuchElementException("토큰이 비어 있습니다.");
-		}
 	}
 
 	public Claims parseClaims(String jwtToken) throws

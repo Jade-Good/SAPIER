@@ -23,6 +23,7 @@ public class OAuth2AuthorizationRequestRepository implements
 	public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2AuthRequest";
 	public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirectUri";
 	public static final String REFRESH_TOKEN = "refreshToken";
+	public static final String ACCESS_TOKEN = "accessToken";
 	public static final int COOKIE_EXPIRE_TIME = 2100000000;
 
 
@@ -61,7 +62,7 @@ public class OAuth2AuthorizationRequestRepository implements
 
 			cookieManager.addCookie(response, cookieDto);
 
-			String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
+			String redirectUriAfterLogin = request.getParameter("redirect_uri");
 
 			if (StringUtils.isNotBlank(redirectUriAfterLogin)) {
 
@@ -87,5 +88,6 @@ public class OAuth2AuthorizationRequestRepository implements
 		cookieManager.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
 		cookieManager.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
 		cookieManager.deleteCookie(request, response, REFRESH_TOKEN);
+		cookieManager.deleteCookie(request, response, ACCESS_TOKEN);
 	}
 }
