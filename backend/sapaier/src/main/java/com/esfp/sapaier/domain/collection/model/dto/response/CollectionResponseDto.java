@@ -1,4 +1,4 @@
-package com.esfp.sapaier.domain.collection.service.dto.response;
+package com.esfp.sapaier.domain.collection.model.dto.response;
 
 import com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity;
 import com.esfp.sapaier.domain.collection.repository.entity.RequestEntity;
