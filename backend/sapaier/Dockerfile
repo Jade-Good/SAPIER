@@ -1,6 +1,8 @@
-FROM openjdk:17-jdk as builder
+FROM ubuntu:latest
 
 RUN apt-get update && apt-get install -y findutils
+
+FROM openjdk:17-jdk as builder
 
 COPY gradlew .
 COPY gradle gradle
