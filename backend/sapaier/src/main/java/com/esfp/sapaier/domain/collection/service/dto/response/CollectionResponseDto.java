@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class CollectionResponse {
+public class CollectionResponseDto {
 
     private String collectionId;
     private String collectionName;
@@ -18,7 +18,7 @@ public class CollectionResponse {
     private List<CollectionEntity> collectionList;
     private LocalDateTime modifiedTime;
 
-    public CollectionResponse (CollectionEntity collection) {
+    public CollectionResponseDto(CollectionEntity collection) {
         this.collectionId = collection.getCollectionId();
         this.collectionName = collection.getCollectionName();
         this.apiList = collection.getApiList();
