@@ -10,7 +10,7 @@ import com.esfp.sapaier.global.auth.model.vo.OAuth2Provider;
 
 public interface UserRepository extends MongoRepository<User, String> {
 
-	@Query()
+	@Query("{ socialProvider : ?0, socialId : ?1 }")
 	Optional<User> findUserBySocialId(OAuth2Provider provider , String socialId);
 
 	Optional<User> findUserByKey(String id);
