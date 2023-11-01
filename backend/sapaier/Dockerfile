@@ -1,4 +1,8 @@
-FROM openjdk:17 as builder
+#FROM openjdk:17 as builder
+
+FROM ubuntu:latest
+
+RUN apt-get update -y && apt-get install -y openjdk-17-jdk
 
 COPY gradlew .
 COPY gradle gradle
