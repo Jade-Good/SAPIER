@@ -23,10 +23,9 @@ public class WorkSpaceService {
     private final UserDataRepository userDataRepository;
 
 
-//    public WorkSpace searchWorkSpace(String workspaceIdx) {
-//        WorkSpace workSpace = workSpaceRepository.findById(workspaceIdx).orElseThrow(() -> new NoSuchElementException("정보가 존재하지 않습니다"));
-//        return workSpace;
-//    }
+    public List<WorkSpace> WorkSpaceList(String uuid) {
+        return workSpaceRepository.findWorkSpaceList(uuid);
+    }
 
     public void addWorkSpace(WorkSpace workSpace) {
         workSpaceRepository.save(workSpace);
@@ -54,11 +53,12 @@ public class WorkSpaceService {
 
 
     //test : member 1명씩 찾기
-    public List<UserDataDto> searhMember(List<String> memberList) {
+    public List<UserDataDto> searhMember(String workSpaceIdx) {
+        WorkSpace workSpace = workSpaceRepository.findById(workSpaceIdx).orElseThrow(() -> new NoSuchElementException("정보가 존재하지 않습니다"));
         List<UserDataDto> MemberList = new ArrayList<>();
 
-        for (int i = 0; i < memberList.size(); i++) {
-            MemberList.add(userDataRepository.searchMember(memberList.get(i)));
+        for (int i = 0; i < workSpace.getMemberList().size(); i++) {
+            MemberList.add(userDataRepository.searchMember(workSpace.getMemberList().get(i).getUuId()));
         }
 
         return MemberList;

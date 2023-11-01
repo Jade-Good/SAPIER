@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface WorkSpaceRepository extends MongoRepository<WorkSpace, String>, CustomWorkSpaceRepository{
 
@@ -20,4 +22,6 @@ public interface WorkSpaceRepository extends MongoRepository<WorkSpace, String>,
 //    @Query("{'_id': ?0, 'memberList': { $elemMatch: { 'uuId': '1' } } }")
 //    void deleteByUuIdOne(@Param("_id")String workspaceidx);
 
+    @Query("{'memberList.uuId': ?0}")
+    List<WorkSpace> findWorkSpaceList(String uuId);
 }
