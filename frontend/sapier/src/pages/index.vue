@@ -2,15 +2,14 @@
 defineOptions({
   name: 'IndexPage',
 })
-const user = useUserStore()
-const name = ref(user.savedName)
+const userInfo = useUserStore()
 
 const router = useRouter()
 function start() {
-  if (name.value)
+  if (userInfo.user)
     router.push(`/main`)
   else
-    router.push(`/main`)
+    router.push(`/login/oauth`)
     // router.push(`/login`)
 }
 

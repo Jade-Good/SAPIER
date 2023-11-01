@@ -1,4 +1,5 @@
 <template>
-     <SocialLoginRedirect/>
- </template>
- 
+  <SocialLoginRedirect />
+  <RouterView />
+  <TheFooter />
+</template>
