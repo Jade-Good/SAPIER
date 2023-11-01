@@ -1,6 +1,6 @@
 FROM openjdk:17-jdk as builder
 
-RUN apk add --no-cache findutils
+RUN apt-get update && apt-get install -y findutils
 
 COPY gradlew .
 COPY gradle gradle
