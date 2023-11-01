@@ -66,4 +66,31 @@ public class CollectionService {
 		System.out.println(entity.getCollectionList().get(1));
 	}
 
+	@Transactional
+	public void createCollectionDocument(CreateCollectionRequest createCollectionRequest) {
+		String collectionName = createCollectionRequest.getCollectionName();
+        if(Objects.equals(collectionName, " ") || collectionName == null || collectionName.equals("")){
+			collectionName = "New Collection";
+        }
+		List<CollectionEntity> collectionList = new ArrayList<>();
+
+		collectionRepository.save(new CollectionEntity(collectionName,collectionList));
+	}
+
+	public void allCollectionList(){
+
+	}
+
+	@Transactional
+	public void modifyCollection(ModifyCollectionRequest modifyCollectionRequest) {
+		CollectionEntity collection = collectionRepository.findById(modifyCollectionRequest.getCollectionId())
+				.orElseThrow(() -> new NoCollectionException(NO_COLLECTION_EXCEPTION));
+
+		collectionRepository.save(modifyCollectionRequest.modifyToEntity(
+				modifyCollectionRequest.getCollectionId(),
+				modifyCollectionRequest.getCollectionName(),
+				modifyCollectionRequest.getApiList(),
+				modifyCollectionRequest.getCollectionList()
+		));
+	}
 }
