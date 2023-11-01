@@ -1,4 +1,4 @@
-package com.esfp.sapaier.domain.collection.service.dto.request;
+package com.esfp.sapaier.domain.collection.model.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
