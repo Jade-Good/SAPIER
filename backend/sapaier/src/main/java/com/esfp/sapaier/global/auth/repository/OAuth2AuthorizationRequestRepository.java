@@ -7,7 +7,9 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.stereotype.Repository;
 
 import com.esfp.sapaier.global.auth.model.dto.CookieDto;
+import com.esfp.sapaier.global.auth.model.vo.JwtToken;
 import com.esfp.sapaier.global.auth.util.CookieManager;
+import com.esfp.sapaier.global.auth.util.JwtTokenProvider;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 
 import jakarta.servlet.http.Cookie;
@@ -89,5 +91,30 @@ public class OAuth2AuthorizationRequestRepository implements
 		cookieManager.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
 		cookieManager.deleteCookie(request, response, REFRESH_TOKEN);
 		cookieManager.deleteCookie(request, response, ACCESS_TOKEN);
+	}
+
+	public void updateTokenInCookie(HttpServletRequest request, HttpServletResponse response, JwtToken token){
+
+		CookieDto refreshToken = CookieDto.builder()
+			.name(OAuth2AuthorizationRequestRepository.REFRESH_TOKEN)
+			.value(token.getRefreshToken())
+			.maxAge(JwtTokenProvider.REFRESH_TOKEN_EXPIRE_TIME_COOKIE)
+			.build();
+
+		CookieDto accessToken = CookieDto.builder()
+			.name(OAuth2AuthorizationRequestRepository.ACCESS_TOKEN)
+			.value(token.getAccessToken())
+			.maxAge(JwtTokenProvider.ACCESS_TOKEN_EXPIRE_TIME_COOKIE)
+			.build();
+
+		cookieManager.updateCookie(
+			request,
+			response,
+			refreshToken);
+
+		cookieManager.updateCookie(
+			request,
+			response,
+			accessToken);
 	}
 }

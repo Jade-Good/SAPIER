@@ -66,7 +66,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 		clearAuthenticationAttributes(request, response);
 
-		addTokensInCookie(request,response,token);
+		oAuth2AuthorizationRequestRepository.updateTokenInCookie(request,response,token);
 
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
 	}
@@ -106,30 +106,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		oAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
 	}
 
-	private void addTokensInCookie(HttpServletRequest request, HttpServletResponse response, JwtToken token){
-
-		CookieDto refreshToken = CookieDto.builder()
-			.name(OAuth2AuthorizationRequestRepository.REFRESH_TOKEN)
-			.value(token.getRefreshToken())
-			.maxAge(JwtTokenProvider.REFRESH_TOKEN_EXPIRE_TIME_COOKIE)
-			.build();
-
-		CookieDto accessToken = CookieDto.builder()
-			.name(OAuth2AuthorizationRequestRepository.ACCESS_TOKEN)
-			.value(token.getAccessToken())
-			.maxAge(JwtTokenProvider.ACCESS_TOKEN_EXPIRE_TIME_COOKIE)
-			.build();
-
-		cookieManager.updateCookie(
-			request,
-			response,
-			refreshToken);
-
-		cookieManager.updateCookie(
-			request,
-			response,
-			accessToken);
-	}
 
 	// private boolean hasAuthority(Collection<? extends GrantedAuthority> authorities, String authority) {
 	// 	if (authorities == null) {
