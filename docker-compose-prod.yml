@@ -1,4 +1,4 @@
-version: "3" #Compose 파일 버전
+version: '3.0' #Compose 파일 버전
 services: # 서비스 정의 시작. 각 서비스는 별도 컨테이너로 실행
   server:
     image: spr-back:latest #이미지 이름
