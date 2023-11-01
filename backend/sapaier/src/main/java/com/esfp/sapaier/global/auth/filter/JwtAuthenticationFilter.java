@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final CookieManager cookieManager;
 	private final UserAuthRepository userAuthRepository;
+	private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws
@@ -58,18 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 			log.info("[JwtAuthenticationFilter] function : doFilterInternal | message : 토큰 기한 만료");
 
-			JwtToken newToken = refreshToken(request);
-
-			CookieDto newCookie = CookieDto.builder()
-					.name(OAuth2AuthorizationRequestRepository.REFRESH_TOKEN)
-					.value(newToken.getRefreshToken())
-					.maxAge(JwtTokenProvider.REFRESH_TOKEN_EXPIRE_TIME_COOKIE)
-					.build();
-
-			cookieManager.updateCookie(
-				request,
-				response,
-				newCookie);
+			JwtToken newToken = refreshToken(request, response);
 
 			Authentication authentication = jwtTokenProvider.getAuthentication(newToken.getAccessToken());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -92,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-	private JwtToken refreshToken(HttpServletRequest request) {
+	private JwtToken refreshToken(HttpServletRequest request, HttpServletResponse response) {
 
 		log.info("[JwtAuthenticationFilter] function : refreshToken | message : 재발급 시도");
 
@@ -105,6 +95,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			.convertToDto();
 		String refreshTokenInRedis = loginInfo.getRefreshToken();
 
+		log.info("[JwtAuthenticationFilter] function : refreshToken | meesage : 재발급 전 로그인 정보 {}", loginInfo.toString());
 
 		if(Objects.equals(refreshTokenInCookie,refreshTokenInRedis) != true){
 			log.info("[JwtAuthenticationFilter] function : refreshToken | error : Refresh Token 불일치");
@@ -112,12 +103,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			throw new MalformedJwtException("Refresh Token이 유효하지 않습니다");
 		}
 
-
 		JwtToken newToken = jwtTokenProvider.refreshToken(refreshTokenInCookie);
+
+		oAuth2AuthorizationRequestRepository.updateTokenInCookie(request,response,newToken);
 
 		updateLoginInfo(loginInfo, newToken);
 
-		log.info("[JwtAuthenticationFilter] function : refreshToken | message : 재발급 완료 {}", newToken);
+		log.info("[JwtAuthenticationFilter] function : refreshToken | message : 재발급 완료 {}", newToken.getAccessToken());
 
 		return newToken;
 	}
@@ -153,6 +145,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			.refreshToken(newToken.getRefreshToken())
 			.build());
 
+		UserAuthDto loginInfo = userAuthRepository.findById(userAuth.getUserUuid())
+			.orElseThrow(() -> new NoSuchElementException("로그인이 되어있지 않습니다."))
+			.convertToDto();
+
+		log.info("[JwtAuthenticationFilter] function : refreshToken | meesage : 재발급 후 로그인 정보 {}", loginInfo.toString());
 	}
 
 }

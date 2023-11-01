@@ -67,8 +67,19 @@ public class CookieManager {
 		HttpServletResponse response,
 		CookieDto newCookieDto){
 
-		deleteCookie(request,response,newCookieDto.getName());
-		addCookie(response,newCookieDto);
+		Cookie[] cookies = request.getCookies();
+
+		if(cookies == null)
+			return;
+
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals(newCookieDto.getName())) {
+				cookie.setValue(newCookieDto.getValue());
+				cookie.setPath("/");
+				cookie.setMaxAge(newCookieDto.getMaxAge());
+				response.addCookie(cookie);
+			}
+		}
 
 	}
 
