@@ -65,7 +65,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			cookieManager.updateCookie(
 				request,
 				response,
-				OAuth2AuthorizationRequestRepository.REFRESH_TOKEN,
 				newCookie);
 
 
