@@ -56,13 +56,15 @@ public class JwtTokenProvider {
 
 	public JwtToken createToken(String uuid, String role) {
 
+		Long curTime = new Date().getTime();
+
 		String accessToken = Jwts
 			.builder()
 			.setSubject(uuid)
 			.setIssuedAt(new Date())
 			.claim("ROLE", role)
 			.signWith(key, SignatureAlgorithm.HS256)
-			.setExpiration(new Date(LocalDateTime.now().getSecond() + ACCESS_TOKEN_EXPIRE_TIME))
+			.setExpiration(new Date(curTime + ACCESS_TOKEN_EXPIRE_TIME))
 			.compact();
 
 		String refreshToken = Jwts
@@ -71,7 +73,7 @@ public class JwtTokenProvider {
 			.setIssuedAt(new Date())
 			.claim("ROLE", role)
 			.signWith(key, SignatureAlgorithm.HS256)
-			.setExpiration(new Date(LocalDateTime.now().getSecond() + REFRESH_TOKEN_EXPIRE_TIME))
+			.setExpiration(new Date(curTime + REFRESH_TOKEN_EXPIRE_TIME))
 			.compact();
 
 		return JwtToken
