@@ -1,5 +1,7 @@
 FROM openjdk:17-jdk as builder
 
+RUN apk add --no-cache findutils
+
 COPY gradlew .
 COPY gradle gradle
 COPY build.gradle .
