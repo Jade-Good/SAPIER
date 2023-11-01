@@ -1,15 +1,21 @@
 package com.esfp.sapaier.domain.collection.service;
 
+import com.esfp.sapaier.domain.collection.exception.NoCollectionException;
 import com.esfp.sapaier.domain.collection.repository.CollectionRepository;
 import com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity;
-import com.esfp.sapaier.domain.collection.service.dto.request.CreateFolderRequest;
-import com.esfp.sapaier.domain.collection.service.dto.request.DeleteFolderRequest;
+import com.esfp.sapaier.domain.collection.service.dto.request.CollectionListRequest;
+import com.esfp.sapaier.domain.collection.service.dto.request.CreateCollectionRequest;
+import com.esfp.sapaier.domain.collection.service.dto.request.ModifyCollectionRequest;
+import com.esfp.sapaier.domain.collection.service.dto.response.CollectionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,33 +24,42 @@ import java.util.Objects;
 public class CollectionService {
 
     private final CollectionRepository collectionRepository;
-    // TODO: user 정보도 넘겨줘야함
-
     private static final String NO_COLLECTION_EXCEPTION = "해당하는 collection이 존재하지 않습니다.";
-    @Transactional
-    public void registCollection() {
-        collectionRepository.save(new CollectionEntity("/"));
-    }
 
-    // create blank folder
-    @Transactional
-    public void registFolder(CreateFolderRequest createFolderRequest) {
-
-        // 폴더이름 없을 시 default값 넣어주기
-        String folderName = createFolderRequest.getName();
-        if(Objects.equals(folderName, " ") || folderName == null || folderName.equals("")){
-            folderName = "New Folder";
+	@Transactional
+	public void createCollectionDocument(CreateCollectionRequest createCollectionRequest) {
+		String collectionName = createCollectionRequest.getCollectionName();
+        if(Objects.equals(collectionName, " ") || collectionName == null || collectionName.equals("")){
+			collectionName = "New Collection";
         }
-        String path = createFolderRequest.getPath()+"/"+folderName;
-        collectionRepository.save(new CollectionEntity(path,folderName));
+		List<CollectionEntity> collectionList = new ArrayList<>();
 
-    }
+		collectionRepository.save(new CollectionEntity(collectionName,collectionList));
+	}
 
-    @Transactional
-    public void deleteFolder(DeleteFolderRequest deleteFolderRequest) {
+	public List<CollectionResponse> allCollectionList(CollectionListRequest collectionListRequest){
+		List<String> topCollectionIdList = collectionListRequest.getCollectionId();
+		List<CollectionResponse> responseList = new ArrayList<CollectionResponse>();
 
-    }
+		for (String collectionId : topCollectionIdList) {
+			CollectionEntity collection = collectionRepository.findById(collectionId)
+					.orElseThrow(() -> new NoCollectionException(NO_COLLECTION_EXCEPTION));
 
+			responseList.add(new CollectionResponse(collection));
+		}
+		return responseList;
+	}
 
+	@Transactional
+	public void modifyCollection(ModifyCollectionRequest modifyCollectionRequest) {
+		CollectionEntity collection = collectionRepository.findById(modifyCollectionRequest.getCollectionId())
+				.orElseThrow(() -> new NoCollectionException(NO_COLLECTION_EXCEPTION));
 
+		collectionRepository.save(modifyCollectionRequest.modifyToEntity(
+				modifyCollectionRequest.getCollectionId(),
+				modifyCollectionRequest.getCollectionName(),
+				modifyCollectionRequest.getApiList(),
+				modifyCollectionRequest.getCollectionList()
+		));
+	}
 }

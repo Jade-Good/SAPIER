@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class CreateFolderRequest {
-    private String path;
-    private String name;
+public class CreateCollectionRequest {
+    private String collectionName;
 }

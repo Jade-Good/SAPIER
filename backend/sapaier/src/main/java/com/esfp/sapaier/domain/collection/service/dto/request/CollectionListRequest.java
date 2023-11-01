@@ -3,9 +3,10 @@ package com.esfp.sapaier.domain.collection.service.dto.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
-public class ModifyFolderRequest {
-    private String collectionId;
-    private String name;
+public class CollectionListRequest {
+    private List<String> collectionId;
 }
