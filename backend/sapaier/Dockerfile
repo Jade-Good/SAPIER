@@ -22,5 +22,5 @@
 
 # ENTRYPOINT ["java", "-Dspring.profiles.active=${SERVER_MODE}", "-Duser.timezone=Asia/Seoul", "-jar", "/app.jar"]
 FROM openjdk:17-jdk as builder
-COPY --from=builder build/libs/*.jar app.jar
+COPY build/libs/*.jar app.jar
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
