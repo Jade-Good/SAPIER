@@ -48,6 +48,9 @@ public class CookieManager {
 		response.addCookie(cookie);
 
 		if(debug.equals("dev") == true && (cookie.getName().equals("accessToken") || cookie.getName().equals("refreshToken"))){
+
+			log.info("[CookieManager] function : addCookie | message : localhost 도메인 쿠키 생성");
+
 			Cookie cookieForDev = new Cookie(cookieDto.getName(), cookieDto.getValue());
 			cookieForDev.setDomain("localhost");
 			cookieForDev.setPath("/");
