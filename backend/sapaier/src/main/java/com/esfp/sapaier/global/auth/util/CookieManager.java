@@ -1,5 +1,6 @@
 package com.esfp.sapaier.global.auth.util;
 
+import java.net.URL;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -31,12 +32,17 @@ public class CookieManager {
 		return Optional.empty();
 	}
 
-	public void addCookie(HttpServletResponse response, CookieDto cookieDto) {
+	public void addCookie(HttpServletRequest request, HttpServletResponse response, CookieDto cookieDto) {
+
+		String requestDomain =  request.getHeader("Access-Control-Allow-Origin");
 
 		Cookie cookie = new Cookie(cookieDto.getName(), cookieDto.getValue());
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
 		cookie.setMaxAge(cookieDto.getMaxAge());
+
+		if(requestDomain != null && requestDomain.equals("") != true)
+			cookie.setDomain(requestDomain);
 
 		response.addCookie(cookie);
 	}
@@ -80,7 +86,7 @@ public class CookieManager {
 		}
 
 		if(isExit == false){
-			addCookie(response, newCookieDto);
+			addCookie(request, response, newCookieDto);
 			return;
 		}
 
