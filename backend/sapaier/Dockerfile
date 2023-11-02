@@ -21,6 +21,10 @@
 # ENV SERVER_MODE=$SERVER_MODE
 
 # ENTRYPOINT ["java", "-Dspring.profiles.active=${SERVER_MODE}", "-Duser.timezone=Asia/Seoul", "-jar", "/app.jar"]
-FROM openjdk:17-jdk as builder
-COPY build/libs/*.jar app.jar
+FROM openjdk:17-jdk
+# RUN ./gradlew clean
+# RUN ./gradlew build -x test
+ARG *JAR_FILE*=build/libs/*.jar
+COPY ${*JAR_FILE*} app.jar
+EXPOSE 8080
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
