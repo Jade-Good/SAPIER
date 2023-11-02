@@ -34,7 +34,6 @@ public class CookieManager {
 	public void addCookie(HttpServletResponse response, CookieDto cookieDto) {
 
 		Cookie cookie = new Cookie(cookieDto.getName(), cookieDto.getValue());
-		cookie.setDomain("k9b301.p.ssafy.io:8080");
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
 		cookie.setMaxAge(cookieDto.getMaxAge());
