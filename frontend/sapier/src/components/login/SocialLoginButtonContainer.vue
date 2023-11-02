@@ -32,6 +32,7 @@ function githubLogin(){
         <img src="./btn_github_siginIn.png" @click="githubLogin"/>
       </button>
 
+      <div class="social_login_button_container_blacnk_space"></div>
   </div>
 
 </template>
@@ -45,13 +46,26 @@ function githubLogin(){
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  background-color: red;
+  margin-top: 33%;
+
+
+  /* background-color: yellow; */
 }
 
 .social_login_button{
-  margin-top: 1em;
-  width: 70%;
-  background-color: black;
+  
+  margin-top: 1rem;
+  margin-left: 14%;
+  width: 60%;
+  height: auto;
+
+  /* background-color: blue; */
 }
+
+
+.social_login_button_container_blacnk_space{
+  margin-top: 20%;
+}
+
 </style>
 

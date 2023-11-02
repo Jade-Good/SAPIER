@@ -1,9 +1,16 @@
 <template>
-   <div flex justify-center>
       <SocialLoginContainer />
-   </div>
 </template>
 
+
+<style>
+
+body {
+   background-color: #0F4C81;
+}
+
+
+</style>
 
 
     

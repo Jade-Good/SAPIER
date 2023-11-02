@@ -14,8 +14,9 @@
     </div>
     
     <div class="social_login_logo_text">
-        <p >오픈소스 API 테스터</p>
+        <span >오픈소스 API 테스터</span>
     </div>
+
   </div>
 
 </template>
@@ -23,23 +24,32 @@
 
 
 
-<style>
+<style scoped>
 .social_login_logo_container{
-    display:flex;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    height: auto;
-    background-color: yellow;
+
+
+    /* background-color: yellow; */
+    
 }
 
 .social_login_logo_image{
-    width: 30%;
-    height: auto;
+    width: 20%;
+    height: 30%;
+    margin-left: 3%;
+    
+    /* background-color: red; */
 }
 
 .social_login_logo_text{
-    font-size: 3em;
+    width: auto;
+    font-size: 0.5em;
+    margin-left: 10%;
+
+    /* background-color: red; */
 }
 
 </style>
