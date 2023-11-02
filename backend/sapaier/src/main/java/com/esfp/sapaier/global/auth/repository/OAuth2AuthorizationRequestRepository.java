@@ -62,7 +62,7 @@ public class OAuth2AuthorizationRequestRepository implements
 					.maxAge(COOKIE_EXPIRE_TIME)
 					.build();
 
-			cookieManager.addCookie(request,response, cookieDto);
+			cookieManager.addCookie(response, cookieDto);
 
 			String redirectUriAfterLogin = request.getParameter("redirect_uri");
 
@@ -74,7 +74,7 @@ public class OAuth2AuthorizationRequestRepository implements
 					.maxAge(COOKIE_EXPIRE_TIME)
 					.build();
 
-				cookieManager.addCookie(request,response, cookieDto);;
+				cookieManager.addCookie(response, cookieDto);;
 			}
 		}
 	}

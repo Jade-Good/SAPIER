@@ -5,6 +5,7 @@ import java.util.Base64;
 import java.util.Optional;
 import java.util.StringTokenizer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
@@ -18,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class CookieManager {
+
+	@Value("${app.running.mode}") String debug;
+
 	public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
 
 		Cookie[] cookies = request.getCookies();
@@ -35,24 +39,22 @@ public class CookieManager {
 		return Optional.empty();
 	}
 
-	public void addCookie(HttpServletRequest request, HttpServletResponse response, CookieDto cookieDto) {
-
-		String requestDomain =  request.getHeader("host");
-		StringTokenizer st = new StringTokenizer(requestDomain,":");
-		requestDomain = st.nextToken();
-
+	public void addCookie(HttpServletResponse response, CookieDto cookieDto) {
 
 		Cookie cookie = new Cookie(cookieDto.getName(), cookieDto.getValue());
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
 		cookie.setMaxAge(cookieDto.getMaxAge());
-
-		if(requestDomain != null && requestDomain.equals("") != true)
-			cookie.setDomain(requestDomain);
-
-		log.info("[CookieManager] function : addCookie | message : 쿠키 생성 {}", cookieInfo(cookie));
-
 		response.addCookie(cookie);
+
+		if(debug.equals("dev") == true && (cookie.getName().equals("accessToken") || cookie.getName().equals("refreshToken"))){
+			Cookie cookieForDev = new Cookie(cookieDto.getName(), cookieDto.getValue());
+			cookieForDev.setDomain("localhost");
+			cookieForDev.setPath("/");
+			cookieForDev.setHttpOnly(true);
+			cookieForDev.setMaxAge(cookieDto.getMaxAge());
+			response.addCookie(cookie);
+		}
 	}
 
 	public void deleteCookie(
@@ -81,11 +83,6 @@ public class CookieManager {
 		HttpServletResponse response,
 		CookieDto newCookieDto){
 
-
-		String requestDomain =  request.getHeader("host");
-		StringTokenizer st = new StringTokenizer(requestDomain,":");
-		requestDomain = st.nextToken();
-
 		Cookie[] cookies = request.getCookies();
 
 		if(cookies == null)
@@ -99,21 +96,15 @@ public class CookieManager {
 		}
 
 		if(isExit == false){
-			addCookie(request, response, newCookieDto);
+			addCookie(response, newCookieDto);
 			return;
 		}
 
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals(newCookieDto.getName())) {
-
-				if(requestDomain != null && requestDomain.equals("") != true)
-					cookie.setDomain(requestDomain);
 				cookie.setValue(newCookieDto.getValue());
 				cookie.setPath("/");
 				cookie.setMaxAge(newCookieDto.getMaxAge());
-
-				log.info("[CookieManager] function : updateCookie | message : 쿠키 생성 {}", cookieInfo(cookie));
-
 				response.addCookie(cookie);
 			}
 		}
@@ -127,15 +118,5 @@ public class CookieManager {
 
 	public <T> T deserialize(Cookie cookie, Class<T> cls) {
 		return cls.cast(SerializationUtils.deserialize(Base64.getUrlDecoder().decode(cookie.getValue())));
-	}
-
-	private String cookieInfo(Cookie cookie){
-		return "Cookie{" +
-			" domain='" + cookie.getDomain() + '\'' +
-			", path='" + cookie.getPath() + '\'' +
-			", name='" + cookie.getName() + '\'' +
-			", value='" + cookie.getValue() + '\'' +
-			", maxAge=" + cookie.getMaxAge() +
-			'}';
 	}
 }
