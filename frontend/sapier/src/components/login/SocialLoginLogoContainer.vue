@@ -7,14 +7,18 @@
 
 <template>
   
-  <div class="social_login_logo_container">
-   
-    <div class="social_login_logo_image">
-        <img src="./logo_sapier.png" />
+  <div class="social_login_logo_container_blacnk_space">
+
+    <div class="social_login_button_container_blacnk_space"></div>
+
+    <div class="social_login_logo_container_item">
+        <span class="social_login_logo_image">
+            <img src="./logo_sapier.png"/>
+        </span>
     </div>
     
-    <div class="social_login_logo_text">
-        <span >오픈소스 API 테스터</span>
+    <div class="social_login_logo_container_item">
+        <span class="social_login_logo_text">오픈소스 API 테스터</span>
     </div>
 
   </div>
@@ -25,32 +29,33 @@
 
 
 <style scoped>
+
 .social_login_logo_container{
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
 
-
-    /* background-color: yellow; */
-    
 }
 
+.social_login_logo_container_item{
+    display: flex;
+    justify-content: center;
+}
 .social_login_logo_image{
-    width: 20%;
-    height: 30%;
-    margin-left: 3%;
-    
-    /* background-color: red; */
+    width: 60%;
 }
 
 .social_login_logo_text{
-    width: auto;
-    font-size: 0.5em;
-    margin-left: 10%;
-
-    /* background-color: red; */
+    color: #0F4C81;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
+
+.social_login_logo_container_blacnk_space{
+  margin-top: 40%;
+}
+
 
 </style>
 

@@ -7,16 +7,15 @@
   
   </template>
 
-<style>
-
+<style scoped>
 .social_login_container{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     width: 25%;
-    height: auto;
+    height: 75%;
     margin-left: 40%;
-    margin-top: 10%;
+    margin-top: 7%;
     background: white;
     border-radius: 5%;
 }

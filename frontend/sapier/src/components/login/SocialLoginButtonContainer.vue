@@ -22,14 +22,18 @@ function githubLogin(){
   <div class="social_login_button_container">
     
     
-      <button class="social_login_button">
-        <img src="./btn_google_siginIn.png" @click="googleLogin"/>
+      <button class="social_login_button_container_item">
+        <span class="social_login_button">
+          <img src="./btn_google_siginIn.png" @click="googleLogin"/>
+        </span>
       </button>
   
           
   
-      <button class="social_login_button">
-        <img src="./btn_github_siginIn.png" @click="githubLogin"/>
+      <button class="social_login_button_container_item">
+        <span class="social_login_button">
+          <img src="./btn_github_siginIn.png" @click="githubLogin"/>
+        </span>
       </button>
 
       <div class="social_login_button_container_blacnk_space"></div>
@@ -46,22 +50,20 @@ function githubLogin(){
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  margin-top: 33%;
-
-
+  
   /* background-color: yellow; */
 }
 
-.social_login_button{
-  
-  margin-top: 1rem;
-  margin-left: 14%;
-  width: 60%;
-  height: auto;
-
-  /* background-color: blue; */
+.social_login_button_container_item{
+  display: flex;
+  justify-content: center;
 }
 
+.social_login_button{
+  width: 70%;
+  margin-top: 3%;
+
+}
 
 .social_login_button_container_blacnk_space{
   margin-top: 20%;
