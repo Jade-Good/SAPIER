@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CollectionInfo: typeof import('./components/workspace/CollectionInfo.vue')['default']
     MainInfo: typeof import('./components/main/MainInfo.vue')['default']
     README: typeof import('./components/README.md')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -18,6 +19,7 @@ declare module 'vue' {
     TheInput: typeof import('./components/TheInput.vue')['default']
     TheNav: typeof import('./components/TheNav.vue')['default']
     UserInfo: typeof import('./components/main/UserInfo.vue')['default']
+    WorkSpaceInfo: typeof import('./components/workspace/WorkSpaceInfo.vue')['default']
     WorkspaceList: typeof import('./components/WorkspaceList.vue')['default']
   }
 }
