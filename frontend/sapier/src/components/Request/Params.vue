@@ -5,6 +5,7 @@ export default {
       params: [
         { active: true, key: 'exp_cnt', value: 'Y', description: '경험치 포함 조회 여부' },
         { active: false, key: 'max_cnt', value: 10, description: '조회 리스트 개수 최대값' },
+        {},
       ],
     }
   },
@@ -12,9 +13,9 @@ export default {
 </script>
 
 <template>
-  <div class="p-3">
+  <div class="p-3" select-none>
     <p>Query Params</p>
-    <table class="w-full text-left">
+    <table class="w-full text-left" select-none>
       <colgroup>
         <col class="act">
         <col class="key">
@@ -33,6 +34,7 @@ export default {
         <tr v-for="(param, index) in params" :key="index">
           <td>
             <span v-if="param.active">✅</span>
+            <span v-else-if="param.active == null" />
             <span v-else>⬜</span>
           </td>
           <td>
@@ -52,13 +54,12 @@ export default {
 
 <style>
 table, th, td {
-  border: 1px solid black;
+  border: 1px solid 2E2E2E;
   border-collapse: collapse;
 }
 
 th, td {
   padding: 10px 20px;
-  text-align: center;
 }
 
 td:first-child {
