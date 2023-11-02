@@ -1,9 +1,21 @@
+<script>
+export default {
+  data() {
+    return {
+      // page: 'Workspace',
+      // page: 'Collection',
+      page: 'Request',
+    }
+  },
+}
+</script>
+
 <template>
   <TheNav />
   <div flex class="mid">
     <WorkspaceList />
-    <CollectionInfo w-60 />
     <!-- <WorkSpaceInfo w-full /> -->
+    <CollectionInfo w-60 />
     <RequestInfo w-full />
   </div>
   <RouterView />
