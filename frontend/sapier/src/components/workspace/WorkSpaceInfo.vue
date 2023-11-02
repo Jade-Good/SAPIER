@@ -7,6 +7,10 @@ export default {
     OverviewComponent,
     SettingComponent,
   },
+
+  props: {
+    workspaceName: String,
+  },
   data() {
     return {
       currentComponent: OverviewComponent,
@@ -32,7 +36,7 @@ export default {
       <div class="image-container">
         <img src="/person.png">
       </div>
-      <div>my workspace</div>
+      <div>{{ workspaceName }}</div>
     </div>
     <div class="workspaceHead">
       <div class="overviewText" @click="showOverviewComponent">
@@ -65,7 +69,9 @@ export default {
   align-items: center; /* 수평 가운데 정렬 */
   border-bottom: 1px solid #000; /* 밑줄 추가 */
 }
-
+.workspaceHead:hover {
+  cursor: pointer; /* 호버 시 커서를 손가락 아이콘으로 변경 */
+}
 .image-container {
   margin-right: 10px; /* 이미지와 텍스트 사이의 간격을 조절 */
 }

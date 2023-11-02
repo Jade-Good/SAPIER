@@ -20,13 +20,24 @@ if (isMounted) {
     },
     )
 }
+
+function workspaceInfo(workspaceName) {
+  const workspaceInfoUrl = `${import.meta.env.VITE_FRONT_URL}/workspaces/workspace?name=${workspaceName}`
+  window.location.href = workspaceInfoUrl
+}
+
+// const dataToSend = {
+//   param1: ,
+// };
+
+// const hashString = JSON.stringify(dataToSend);
 </script>
 
 <template>
   <div w-18 border-r-2 class="list">
-    <div class="box">
-      <div id="workSpaceListData" class="workspaceId">
-        B101
+    <div v-for="workspace in WorkspaceListInfo.workSpaceInfo" :key="workspace.name" class="box">
+      <div id="workSpaceListData" class="workspaceId" @click="workspaceInfo(workspace.name)">
+        {{ workspace.name }}
       </div>
     </div>
   </div>
@@ -37,8 +48,8 @@ if (isMounted) {
   background: #C9C9C9;
   border-color: #B6B6B6;
   display: flex; /* 부모 요소를 플렉스 컨테이너로 설정 */
-    justify-content: center; /* 수평 가운데 정렬 */
-
+  align-items: center;
+  flex-direction: column;
 }
 .box{
   margin-top: 5px ;

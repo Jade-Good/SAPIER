@@ -6,25 +6,23 @@ const isMounted = useMounted()
 
 axios.defaults.withCredentials = true
 
-if (isMounted) {
-  axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members`)
-    .then((res) => {
-      console.log(res)
-      userInfo.user = res.data
-    })
-    .catch((error) => {
-      console.log(error)
-    },
-    )
-}
+// if (isMounted) {
+//   axios
+//     .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members`)
+//     .then((res) => {
+//       console.log(res)
+//       userInfo.user = res.data
+//     })
+//     .catch((error) => {
+//       console.log(error)
+//     },
+//     )
+// }
 </script>
 
 <template>
   <div class="mainInfo">
     <div class="overview">
-      <!-- overview  document  pinned  collection -->
-
       <div class="maindiv">
         <h5 class="maindivHeader">
           Pinned Collections
