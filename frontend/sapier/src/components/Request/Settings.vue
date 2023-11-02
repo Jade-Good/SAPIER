@@ -13,40 +13,7 @@ export default {
 
 <template>
   <div class="p-3">
-    <p>Query Params</p>
-    <table class="w-full text-left">
-      <colgroup>
-        <col class="act">
-        <col class="key">
-        <col class="val">
-        <col class="desc">
-      </colgroup>
-      <thead>
-        <tr>
-          <th>Active</th>
-          <th>Key</th>
-          <th>Value</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(param, index) in params" :key="index">
-          <td>
-            <span v-if="param.active">✅</span>
-            <span v-else>⬜</span>
-          </td>
-          <td>
-            <input v-model="param.key" placeholder="Key">
-          </td>
-          <td>
-            <input v-model="param.value" placeholder="Value">
-          </td>
-          <td>
-            <input v-model="param.description" placeholder="Description">
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <p>Settings</p>
   </div>
 </template>
 
