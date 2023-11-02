@@ -22,8 +22,8 @@
 
 # ENTRYPOINT ["java", "-Dspring.profiles.active=${SERVER_MODE}", "-Duser.timezone=Asia/Seoul", "-jar", "/app.jar"]
 FROM openjdk:17-jdk
-# RUN ./gradlew clean
-# RUN ./gradlew build -x test
+RUN ./gradlew clean
+RUN ./gradlew build -x test
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 EXPOSE 8080
