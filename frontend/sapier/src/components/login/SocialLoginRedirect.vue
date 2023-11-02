@@ -6,6 +6,8 @@ const isMounted = useMounted()
 
 axios.defaults.withCredentials = true
 
+const route = useRouter();
+
 if (isMounted) {
   axios
     .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/users`)
@@ -13,16 +15,19 @@ if (isMounted) {
       console.log(res)
       user.userInfo = res.data
       useStorage('sapier-user', user.userInfo)
+      route.push("/main");
     })
     .catch((error) => {
       console.log(error)
+      alert("로그인 에러")
+      route.push("/main");
     },
     )
 }
 </script>
 
 <template>
-  <p>대충 로그인 중인 화면</p>
+  
 </template>
 
 <style>
