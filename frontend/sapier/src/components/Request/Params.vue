@@ -52,7 +52,7 @@ export default {
   </div>
 </template>
 
-<style>
+<style scoped>
 table, th, td {
   border: 1px solid 2E2E2E;
   border-collapse: collapse;

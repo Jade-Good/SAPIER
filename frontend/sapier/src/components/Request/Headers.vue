@@ -54,7 +54,7 @@ export default {
 
 <style>
 table, th, td {
-  border: 1px solid black;
+  border: 1px solid var(--color-black);
   border-collapse: collapse;
 }
 

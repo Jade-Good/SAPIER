@@ -17,9 +17,9 @@ export default {
   </div>
 </template>
 
-<style>
+<style scoped>
 table, th, td {
-  border: 1px solid black;
+  border: 1px solid var(--color-black);
   border-collapse: collapse;
 }
 
