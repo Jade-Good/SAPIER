@@ -20,10 +20,11 @@ public class WorkSpaceController {
 
 
     //workspace 목록 조회
-//    @GetMapping("api/v1/workspaces/{workspaceIdx}")
-//    public WorkSpace searchWorkSpace(@PathVariable String workspaceIdx){
-//        return workSpaceService.searchWorkSpace(workspaceIdx);
-//    }
+    @GetMapping("api/v1/workspaces")
+    public List<WorkSpace> WorkSpaceList(@CookieValue String accessToken){//@RequestBody String uuId
+        String userUuid = jwtTokenProvider.parseClaims(accessToken).getSubject();
+        return workSpaceService.WorkSpaceList(userUuid);
+    }
 
 
     //워크스페이스 생성
@@ -45,10 +46,10 @@ public class WorkSpaceController {
     }
 
     //워크스페이스 팀원 목록 조회
-    @GetMapping("api/v1/workspaces/members")
-    public List<UserDataDto> searchMember(@RequestBody List<String> memberList){
+    @GetMapping("api/v1/workspaces/members/{workspaceIdx}")
+    public List<UserDataDto> searchMember(@PathVariable String workspaceIdx){
 
-        return workSpaceService.searhMember(memberList);
+        return workSpaceService.searhMember(workspaceIdx);
 //         return testRepository.findAll();
     }
 
