@@ -15,7 +15,7 @@ spring:
           github:
             client-id: ed8cfc2da5d30d505a56
             client-secret: a903bf2c81dc8ef609f7f500a851cc3e6d775078
-            redirect-uri: http://j9b310.p.ssafy.io/api/login/oauth2/code/github
+            redirect-uri: http://k9b301.p.ssafy.io:8080/api/login/oauth2/code/github
 
 
 # Spring Secuirty의 spring-boot-starter-oauth2-client를 이용하면

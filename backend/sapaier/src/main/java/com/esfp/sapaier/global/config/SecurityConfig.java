@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
-// @EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -108,9 +108,13 @@ public class SecurityConfig {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-		corsConfiguration.addAllowedOriginPattern("*");
-		corsConfiguration.addAllowedHeader("*");
-		corsConfiguration.addAllowedMethod("*");
+
+		corsConfiguration.addAllowedOriginPattern("http://localhost");
+		corsConfiguration.addAllowedOriginPattern("http://localhost:3333");
+		corsConfiguration.addAllowedOriginPattern("localhost:3333");
+		corsConfiguration.addAllowedOriginPattern("localhost");
+		// corsConfiguration.addAllowedHeader("*");
+		// corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.setAllowCredentials(true);
 		source.registerCorsConfiguration("/**", corsConfiguration);
 

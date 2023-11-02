@@ -1,8 +1,11 @@
 package com.esfp.sapaier.global.auth.util;
 
+import java.net.URL;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.StringTokenizer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
@@ -11,9 +14,14 @@ import com.esfp.sapaier.global.auth.model.dto.CookieDto;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class CookieManager {
+
+	@Value("${app.running.mode}") String debug;
+
 	public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
 
 		Cookie[] cookies = request.getCookies();
@@ -37,7 +45,6 @@ public class CookieManager {
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
 		cookie.setMaxAge(cookieDto.getMaxAge());
-
 		response.addCookie(cookie);
 	}
 
@@ -71,6 +78,18 @@ public class CookieManager {
 
 		if(cookies == null)
 			return;
+
+		boolean isExit = false;
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals(newCookieDto.getName())) {
+				isExit = true;
+			}
+		}
+
+		if(isExit == false){
+			addCookie(response, newCookieDto);
+			return;
+		}
 
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals(newCookieDto.getName())) {

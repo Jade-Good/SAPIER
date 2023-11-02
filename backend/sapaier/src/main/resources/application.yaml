@@ -8,3 +8,5 @@ spring:
 logging:
   level:
     org.springframework.security: debug
+
+app.running.mode: dev
