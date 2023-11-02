@@ -12,45 +12,23 @@ export default {
 </script>
 
 <template>
-  <div class="p-3">
-    <p>Query Params</p>
-    <table class="w-full text-left">
-      <colgroup>
-        <col class="act">
-        <col class="key">
-        <col class="val">
-        <col class="desc">
-      </colgroup>
-      <thead>
-        <tr>
-          <th>Active</th>
-          <th>Key</th>
-          <th>Value</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(param, index) in params" :key="index">
-          <td>
-            <span v-if="param.active">✅</span>
-            <span v-else>⬜</span>
-          </td>
-          <td>
-            <input v-model="param.key" placeholder="Key">
-          </td>
-          <td>
-            <input v-model="param.value" placeholder="Value">
-          </td>
-          <td>
-            <input v-model="param.description" placeholder="Description">
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="p-3" h-full flex flex-col>
+    <div flex flex-gap-2>
+      <div w-16 border border-rounded p-1 pl-2>
+        row
+      </div>
+      <div w-16 p-1 pl-2>
+        JSON
+      </div>
+    </div>
+    <div class="bodyTextBox" mt-2 h-full w-full>
+      <br>
+    </div>
+    <div />
   </div>
 </template>
 
-<style>
+<style scoped>
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
@@ -79,5 +57,9 @@ td:first-child {
 
 .desc {
   width: 45%;
+}
+
+.bodyTextBox {
+  border: 1px solid var(--color-gray3);
 }
 </style>
