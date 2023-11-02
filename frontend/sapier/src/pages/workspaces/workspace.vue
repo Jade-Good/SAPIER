@@ -3,7 +3,8 @@
   <div flex class="mid">
     <WorkspaceList />
     <CollectionInfo w-60 />
-    <WorkSpaceInfo w-full />
+    <!-- <WorkSpaceInfo w-full /> -->
+    <RequestInfo w-full />
   </div>
   <RouterView />
 

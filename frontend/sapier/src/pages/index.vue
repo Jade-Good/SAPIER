@@ -9,7 +9,8 @@ function start() {
   if (user.userInfo)
     router.push(`/main`)
   else
-    router.push(`/login/oauth`)
+    router.push(`/main`)
+    // router.push(`/login/oauth`)
     // router.push(`/login`)
 }
 
