@@ -46,18 +46,6 @@ public class CookieManager {
 		cookie.setHttpOnly(true);
 		cookie.setMaxAge(cookieDto.getMaxAge());
 		response.addCookie(cookie);
-
-		if(debug.equals("dev") == true && (cookie.getName().equals("accessToken") || cookie.getName().equals("refreshToken"))){
-
-			log.info("[CookieManager] function : addCookie | message : localhost 도메인 쿠키 생성");
-
-			Cookie cookieForDev = new Cookie(cookieDto.getName(), cookieDto.getValue());
-			cookieForDev.setDomain("localhost");
-			cookieForDev.setPath("/");
-			cookieForDev.setHttpOnly(true);
-			cookieForDev.setMaxAge(cookieDto.getMaxAge());
-			response.addCookie(cookie);
-		}
 	}
 
 	public void deleteCookie(
