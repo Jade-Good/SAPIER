@@ -12,6 +12,18 @@ pipeline{
             }
         }
 
+        stage('Build'){
+            steps{
+                script{
+                    dir('backend/sapaier'){
+                        sh 'chmod +x gradlew'
+                        sh './gradlew clean build'
+                        sh 'ls -al ./build'
+                    }
+                }
+            }
+        }
+
         stage('Docker Delete'){
             steps{
                 script{
@@ -47,17 +59,6 @@ pipeline{
             }
         }
 
-        stage('Build'){
-            steps{
-                script{
-                    dir('backend/sapaier'){
-                        sh 'chmod +x gradlew'
-                        sh './gradlew clean build'
-                        sh 'ls -al ./build'
-                    }
-                }
-            }
-        }
 
         stage('Deploy'){
             steps{
