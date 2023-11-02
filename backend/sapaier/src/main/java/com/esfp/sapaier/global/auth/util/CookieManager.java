@@ -72,6 +72,18 @@ public class CookieManager {
 		if(cookies == null)
 			return;
 
+		boolean isExit = false;
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals(newCookieDto.getName())) {
+				isExit = true;
+			}
+		}
+
+		if(isExit == false){
+			addCookie(response, newCookieDto);
+			return;
+		}
+
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals(newCookieDto.getName())) {
 				cookie.setValue(newCookieDto.getValue());
