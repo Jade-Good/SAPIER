@@ -114,7 +114,13 @@ public class SecurityConfig {
 		corsConfiguration.addAllowedOriginPattern("localhost:3333");
 		corsConfiguration.addAllowedOriginPattern("localhost");
 		// corsConfiguration.addAllowedHeader("*");
-		// corsConfiguration.addAllowedMethod("*");
+		corsConfiguration.addAllowedMethod("GET");
+		corsConfiguration.addAllowedMethod("DELETE");
+		corsConfiguration.addAllowedMethod("POST");
+		corsConfiguration.addAllowedMethod("PATCH");
+		corsConfiguration.addAllowedMethod("HEAD");
+		corsConfiguration.addAllowedMethod("OPTIONS");
+		corsConfiguration.addAllowedMethod("PUT");
 		corsConfiguration.setAllowCredentials(true);
 		source.registerCorsConfiguration("/**", corsConfiguration);
 
