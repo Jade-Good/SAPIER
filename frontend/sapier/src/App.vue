@@ -38,13 +38,20 @@ if (storedUserInfo) {
 <style>
 :root {
 
-  --font-H0: {"size": "96px", "weight": "800"};
-  --font-H1: {"size": "32px", "weight": "800"};
-  --font-H2: {"size": "24px", "weight": "700"};
-  --font-H3: {"size": "24px", "weight": "400"};
-  --font-H4: {"size": "20px", "weight": "400"};
-  --font-H5: {"size": "16px", "weight": "400"};
-  --font-H6: {"size": "16px", "weight": "700"};
+  --font-H0-size: 96px;
+  --font-H0-weight: 800;
+  --font-H1-size: 32px;
+  --font-H1-weight: 800;
+  --font-H2-size: 24px;
+  --font-H2-weight: 700;
+  --font-H3-size: 24px;
+  --font-H3-weight: 400;
+  --font-H4-size: 20px;
+  --font-H4-weight: 400;
+  --font-H5-size: 16px;
+  --font-H5-weight: 400;
+  --font-H6-size: 16px;
+  --font-H6-weight: 700;
 
   --color-blue1: #0F4C81; /* Classic Blue */
   --color-blue2: #658DC6; /* PrOvence */
@@ -66,5 +73,7 @@ if (storedUserInfo) {
   --color-head: #FFA6DE; /* HEAD */
 
   color:var(--color-black);
+
+  user-select: none;
 }
 </style>
