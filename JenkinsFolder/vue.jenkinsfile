@@ -48,7 +48,8 @@ pipeline{
                         //변경된 디렉토리에서 명령어 실행
                         sh 'ls'
                         sh 'echo "Hello from the changed directory"'
-                        sh 'docker build -t ${IMAGE_NAME} -f Dockerfile .'
+                        // sh 'docker build -t ${IMAGE_NAME} -f Dockerfile .'
+                        sh 'docker buildx build . -t vitesse:latest'
                         sh 'docker images'
                         sh 'echo "images build 성공"'
                     }
@@ -59,7 +60,8 @@ pipeline{
             steps{
                 sh 'echo "현재 올라간 컨테이너들"'
                 sh 'docker ps'
-                sh 'docker run -d --name ${CONTAINER_NAME} -p 3000:80 ${IMAGE_NAME}'
+                // sh 'docker run -d --name ${CONTAINER_NAME} -p 3000:80 ${IMAGE_NAME}'
+                sh 'docker run --rm -it -p 3000:80 vitesse:latest'
                 sh 'docker ps'
             }
         }
