@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import axios from 'axios'
+import api from "../../modules/api";
 
 const user = useUserStore()
 const isMounted = useMounted()
 
-axios.defaults.withCredentials = true
-
 const route = useRouter();
 
 if (isMounted) {
-  axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/users`)
+  api
+    .get(`/api/v1/users`)
     .then((res) => {
       console.log(res)
       user.userInfo = res.data
@@ -20,7 +18,7 @@ if (isMounted) {
     .catch((error) => {
       console.log(error)
       alert("로그인 에러")
-      route.push("/main");
+      route.push("/login/oauth");
     },
     )
 }

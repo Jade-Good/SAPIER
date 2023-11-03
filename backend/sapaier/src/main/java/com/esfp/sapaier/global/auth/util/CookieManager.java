@@ -44,11 +44,17 @@ public class CookieManager {
 		Cookie cookie = new Cookie(cookieDto.getName(), cookieDto.getValue());
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
-		// cookie.setSecure(true);
+		if(cookie.getName().equals("accessToken") == true) {
+			cookie.setSecure(true);
+			cookie.setAttribute("SameSite", "None");
+		}
+		if(cookie.getName().equals("refreshToken") == true) {
+			cookie.setSecure(true);
+			cookie.setAttribute("SameSite", "Lax");
+		}
 		cookie.setMaxAge(cookieDto.getMaxAge());
 		response.addCookie(cookie);
 
-		// addSameSiteCookieAttribute(response);
 	}
 
 	public void deleteCookie(
@@ -65,8 +71,15 @@ public class CookieManager {
 			if (cookie.getName().equals(targetName)) {
 				cookie.setValue("");
 				cookie.setPath("/");
-				// cookie.setSecure(true);
-				// cookie.setHttpOnly(true);
+				if(cookie.getName().equals("accessToken") == true) {
+					cookie.setSecure(true);
+					cookie.setAttribute("SameSite", "None");
+				}
+				if(cookie.getName().equals("refreshToken") == true) {
+					cookie.setSecure(true);
+					cookie.setAttribute("SameSite", "Lax");
+				}
+				cookie.setHttpOnly(true);
 				cookie.setMaxAge(0);
 				response.addCookie(cookie);
 			}
@@ -101,14 +114,22 @@ public class CookieManager {
 				cookie.setValue(newCookieDto.getValue());
 				cookie.setPath("/");
 				cookie.setMaxAge(newCookieDto.getMaxAge());
-				// cookie.setSecure(true);
+
+				if(cookie.getName().equals("accessToken") == true) {
+					cookie.setSecure(true);
+					cookie.setAttribute("SameSite", "None");
+				}
+				if(cookie.getName().equals("refreshToken") == true) {
+					cookie.setSecure(true);
+					cookie.setAttribute("SameSite", "Lax");
+				}
+
 				cookie.setHttpOnly(true);
 				response.addCookie(cookie);
 
 			}
 		}
 
-		// addSameSiteCookieAttribute(response);
 	}
 
 
@@ -118,20 +139,5 @@ public class CookieManager {
 
 	public <T> T deserialize(Cookie cookie, Class<T> cls) {
 		return cls.cast(SerializationUtils.deserialize(Base64.getUrlDecoder().decode(cookie.getValue())));
-	}
-
-
-	private void addSameSiteCookieAttribute(HttpServletResponse response) {
-		String sameSitePolicy = "None";
-		Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
-		boolean firstHeader = true;
-		for (String header : headers) {
-			if (firstHeader) {
-				response.setHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=" + sameSitePolicy));
-				firstHeader = false;
-				continue;
-			}
-			response.addHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=" + sameSitePolicy));
-		}
 	}
 }
