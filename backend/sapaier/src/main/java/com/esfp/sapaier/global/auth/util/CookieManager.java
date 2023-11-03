@@ -96,6 +96,7 @@ public class CookieManager {
 				cookie.setValue(newCookieDto.getValue());
 				cookie.setPath("/");
 				cookie.setMaxAge(newCookieDto.getMaxAge());
+				cookie.setHttpOnly(true);
 				response.addCookie(cookie);
 			}
 		}
