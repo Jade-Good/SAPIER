@@ -1,19 +1,24 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
+import type { CollectionInfo } from './collection'
+import type { UserInfo } from './user'
+
 interface WorkSpaceInfo {
   name: string
-  collectionList: string
-  memberList: string
+  collectionList: CollectionInfo[]
+  memberList: UserInfo[]
   modifiedTime: string
 }
 
-export const useWorkspaceStore = defineStore('workspace', () => {
-  const workSpaceInfo = ref < WorkSpaceInfo | null > (null)
+export type { WorkSpaceInfo }
+
+export const useWorkSpaceStore = defineStore('workspace', () => {
+  const workspaceInfo = ref < WorkSpaceInfo | null > (null)
 
   return {
-    workSpaceInfo,
+    workspaceInfo,
   }
 })
 
 if (import.meta.hot)
-  import.meta.hot.accept(acceptHMRUpdate(useWorkspaceStore as any, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useWorkSpaceStore as any, import.meta.hot))

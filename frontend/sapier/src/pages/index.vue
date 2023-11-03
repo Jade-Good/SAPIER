@@ -9,9 +9,8 @@ function start() {
   if (user.userInfo)
     router.push(`/main`)
   else
-    router.push(`/main`)
-    // router.push(`/login/oauth`)
-    // router.push(`/login`)
+    router.push(`/login/oauth`)
+    // router.push(`/main`)
 }
 
 const { t } = useI18n()
