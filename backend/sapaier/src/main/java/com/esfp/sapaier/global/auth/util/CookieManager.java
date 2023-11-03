@@ -2,10 +2,12 @@ package com.esfp.sapaier.global.auth.util;
 
 import java.net.URL;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
@@ -44,6 +46,7 @@ public class CookieManager {
 		Cookie cookie = new Cookie(cookieDto.getName(), cookieDto.getValue());
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
+		cookie.setSecure(true);
 		cookie.setMaxAge(cookieDto.getMaxAge());
 		response.addCookie(cookie);
 	}
@@ -62,6 +65,8 @@ public class CookieManager {
 			if (cookie.getName().equals(targetName)) {
 				cookie.setValue("");
 				cookie.setPath("/");
+				cookie.setSecure(true);
+				cookie.setHttpOnly(true);
 				cookie.setMaxAge(0);
 				response.addCookie(cookie);
 			}
@@ -96,6 +101,7 @@ public class CookieManager {
 				cookie.setValue(newCookieDto.getValue());
 				cookie.setPath("/");
 				cookie.setMaxAge(newCookieDto.getMaxAge());
+				cookie.setSecure(true);
 				cookie.setHttpOnly(true);
 				response.addCookie(cookie);
 			}
