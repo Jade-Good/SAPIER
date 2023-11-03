@@ -19,7 +19,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SettingComponent: typeof import('./components/workspace/SettingComponent.vue')['default']
     Settings: typeof import('./components/Request/Settings.vue')['default']
-    SocialLogin: typeof import('./components/login/SocialLogin.vue')['default']
     SocialLoginButtonContainer: typeof import('./components/login/SocialLoginButtonContainer.vue')['default']
     SocialLoginContainer: typeof import('./components/login/SocialLoginContainer.vue')['default']
     SocialLoginLogoContainer: typeof import('./components/login/SocialLoginLogoContainer.vue')['default']
