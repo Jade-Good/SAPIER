@@ -47,6 +47,8 @@ public class CookieManager {
 		cookie.setSecure(true);
 		cookie.setMaxAge(cookieDto.getMaxAge());
 		response.addCookie(cookie);
+
+		addSameSiteCookieAttribute(response);
 	}
 
 	public void deleteCookie(
@@ -102,9 +104,11 @@ public class CookieManager {
 				cookie.setSecure(true);
 				cookie.setHttpOnly(true);
 				response.addCookie(cookie);
+
 			}
 		}
 
+		addSameSiteCookieAttribute(response);
 	}
 
 
@@ -114,5 +118,20 @@ public class CookieManager {
 
 	public <T> T deserialize(Cookie cookie, Class<T> cls) {
 		return cls.cast(SerializationUtils.deserialize(Base64.getUrlDecoder().decode(cookie.getValue())));
+	}
+
+
+	private void addSameSiteCookieAttribute(HttpServletResponse response) {
+		String sameSitePolicy = "None";
+		Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
+		boolean firstHeader = true;
+		for (String header : headers) {
+			if (firstHeader) {
+				response.setHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=" + sameSitePolicy));
+				firstHeader = false;
+				continue;
+			}
+			response.addHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=" + sameSitePolicy));
+		}
 	}
 }
