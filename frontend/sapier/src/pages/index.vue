@@ -2,15 +2,15 @@
 defineOptions({
   name: 'IndexPage',
 })
-const userInfo = useUserStore()
+const user = useUserStore()
 
 const router = useRouter()
 function start() {
-  if (userInfo.user)
+  if (user.userInfo)
     router.push(`/main`)
   else
     router.push(`/login/oauth`)
-    // router.push(`/login`)
+    // router.push(`/main`)
 }
 
 const { t } = useI18n()

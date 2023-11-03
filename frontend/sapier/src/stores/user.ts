@@ -1,5 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
+import type { WorkspaceInfo } from './workspace'
+
 interface UserInfo {
   uuid: string
   nickname: string
@@ -9,13 +11,16 @@ interface UserInfo {
   profileImageUrl: string
   countOfApiRequest: number
   role: string
+  workspaces: WorkspaceInfo[]
 }
 
+export type { UserInfo }
+
 export const useUserStore = defineStore('user', () => {
-  const user = ref < UserInfo | null > (null)
+  const userInfo = ref < UserInfo | null > (null)
 
   return {
-    user,
+    userInfo,
   }
 })
 
