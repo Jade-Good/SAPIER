@@ -1,12 +1,67 @@
-<script>
+<script lang="ts">
 export default {
   data() {
     return {
-      // requestTap: 'Params',
-      requestTap: 'Headers',
-      // requestTap: 'Body',
-      // requestTap: 'Settings',
+      requestTap: 'Params',
+      selectMethod: 'GET',
+      methodList: [
+        'GET',
+        'POST',
+        'PUT',
+        'PATCH',
+        'DELETE',
+        'HEAD',
+        'OPTIONS',
+      ],
+      isMethodList: false,
     }
+  },
+  methods: {
+    setMethodBtnStyle() {
+      return {
+        /* layout */
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: '0 0.5rem 0 0.8rem',
+        width: '10rem',
+        lineHeight: '2rem',
+
+        /* Style */
+        borderRadius: '5px',
+        outline: this.isMethodList ? '3px solid var(--color-blue2)' : 'none',
+
+        color: 'white',
+        backgroundColor: `var(--color-${this.selectMethod})`,
+
+        fontSize: 'var(--font-H2-size)',
+        fontWeight: 'var(--font-H2-weight)',
+
+        cursor: 'pointer',
+      }
+    },
+    setMethodColor(method: string) {
+      return {
+        width: '14rem',
+        padding: '0.5rem',
+
+        borderRadius: '5px',
+
+        color: `var(--color-${method})`,
+        fontSize: 'var(--font-H2-size)',
+        backgroundColor: method === this.selectMethod ? 'var(--color-gray2)' : 'none',
+
+      }
+    },
+
+    chagneMethod(method: string) {
+      this.setMethodColor(method)
+      this.selectMethod = method
+      this.toggleMethodList()
+    },
+
+    toggleMethodList() {
+      this.isMethodList = !this.isMethodList
+    },
   },
 }
 </script>
@@ -44,12 +99,19 @@ export default {
 
       <div flex-justify-betwee h-14 flex>
         <div w-full flex flex-gap-4 border border-rounded p-2 style="border-color: var(--color-gray4);">
-          <div class="methodBtn">
+          <div :style="setMethodBtnStyle()" @click="toggleMethodList()">
             <div m-1>
-              GET
+              {{ selectMethod }}
             </div>
             <div i-carbon-chevron-down h-full />
           </div>
+
+          <div v-if="isMethodList" class="methodList">
+            <div v-for="(method, idx) in methodList" :key="idx" :style="setMethodColor(method)" @click="chagneMethod(method)">
+              {{ method }}
+            </div>
+          </div>
+
           <div border-l pl-4 style="border-color: var(--color-gray4); font-size: var(--font-H5-size); line-height: 2.5rem;">
             http://i9b108.p.ssafy.io/api/v1/bubble/bubblings
           </div>
@@ -113,23 +175,22 @@ export default {
   }
 }
 
-.methodBtn {
+.methodList {
   /* layout */
-  display: flex;
-  justify-content: space-between;
-  padding: 0 0.5rem 0 0.8rem;
-  width: 10rem;
-  line-height: 2rem;
+  position: absolute;
+  top: 13rem;
+
+  padding: 0.5rem;
 
   /* Style */
   border-radius: 5px;
+  background-color: white;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
 
-  color: white;
-  background-color: var(--color-get);
+}
 
-  font-size: var(--font-H2-size);
-  font-weight: var(--font-H2-weight);
-
+.methodList div:hover {
+  background-color: var(--color-gray1);
 }
 
 .sendBtn {
