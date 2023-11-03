@@ -64,13 +64,13 @@ if (storedUserInfo) {
   --color-gray4: #838383; /* Dark Gray */
   --color-black: #2E2E2E; /* Black */
 
-  --color-del: #E64F47; /* DEL */
-  --color-patch: #EFA44A; /* PATCH */
-  --color-post: #6EC465; /* POST */
-  --color-get: #44A1F8; /* GET */
-  --color-put: #21DEB1; /* PUT */
-  --color-opt: #C98CFF; /* POT */
-  --color-head: #FFA6DE; /* HEAD */
+  --color-DELETE: #E64F47; /* DEL */
+  --color-PATCH: #EFA44A; /* PATCH */
+  --color-POST: #6EC465; /* POST */
+  --color-GET: #44A1F8; /* GET */
+  --color-PUT: #21DEB1; /* PUT */
+  --color-OPTIONS: #C98CFF; /* POT */
+  --color-HEAD: #FFA6DE; /* HEAD */
 
   color:var(--color-black);
 
