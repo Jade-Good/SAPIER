@@ -1,51 +1,131 @@
-<script>
+<script lang="ts">
 export default {
   data() {
     return {
-      // requestTap: 'Params',
-      requestTap: 'Headers',
-      // requestTap: 'Body',
-      // requestTap: 'Settings',
+      requestTap: 'Params',
+      selectMethod: 'GET',
+      methodList: [
+        'GET',
+        'POST',
+        'PUT',
+        'PATCH',
+        'DELETE',
+        'HEAD',
+        'OPTIONS',
+      ],
+      isMethodList: false,
     }
+  },
+  methods: {
+    setMethodBtnStyle() {
+      return {
+        /* layout */
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: '0 0.5rem 0 0.8rem',
+        width: '10rem',
+        lineHeight: '2rem',
+
+        /* Style */
+        borderRadius: '5px',
+        outline: this.isMethodList ? '3px solid var(--color-blue2)' : 'none',
+
+        color: 'white',
+        backgroundColor: `var(--color-${this.selectMethod})`,
+
+        fontSize: 'var(--font-H2-size)',
+        fontWeight: 'var(--font-H2-weight)',
+
+        cursor: 'pointer',
+      }
+    },
+    setMethodColor(method: string) {
+      return {
+        width: '14rem',
+        padding: '0.5rem',
+
+        borderRadius: '5px',
+
+        color: `var(--color-${method})`,
+        fontSize: 'var(--font-H2-size)',
+        backgroundColor: method === this.selectMethod ? 'var(--color-gray2)' : 'none',
+
+      }
+    },
+
+    chagneMethod(method: string) {
+      this.setMethodColor(method)
+      this.selectMethod = method
+      this.toggleMethodList()
+    },
+
+    toggleMethodList() {
+      this.isMethodList = !this.isMethodList
+    },
   },
 }
 </script>
 
 <template>
   <div h-full flex flex-col border>
-    <div name="Request" class="rqeHigh" w-full flex flex-col border border-red p-2>
-      <div flex select-none flex-gap-1 p-3>
-        <p color-gray>
-          Server
-        </p>
-        <p color-gray>
-          /
-        </p>
-        <p color-gray>
-          Bubble
-        </p>
-        <p color-gray>
-          /
-        </p>
-        <p>버블 리스트 조회</p>
-      </div>
-
-      <div flex flex-justify-between>
-        <div w-full flex flex-gap-2 border border-rounded p-2>
-          <div w-30 border border-rounded p-1 pl-2>
-            GET
-          </div>
-          <div border-l p-1 pl-2>
-            <p>http://i9b108.p.ssafy.io/api/v1/bubble/bubblings</p>
-          </div>
+    <div name="Request" class="rqeHigh" w-full flex flex-col border border-red p-3>
+      <div flex flex-justify-between pb-3 pl-3>
+        <div flex flex-gap-1 line-height-9>
+          <p color-gray>
+            Server
+          </p>
+          <p color-gray>
+            /
+          </p>
+          <p color-gray>
+            Bubble
+          </p>
+          <p color-gray>
+            /
+          </p>
+          <p>버블 리스트 조회</p>
         </div>
-
-        <div ml-3 w-30 border border-rounded p-3>
-          Send
+        <div flex flex-gap-3>
+          <div class="grayBtn">
+            <div i-carbon-save />
+            Save
+          </div>
+          <div class="grayBtn">
+            <div i-carbon-copy-file />
+            Copy
+          </div>
         </div>
       </div>
 
-      <div flex select-none flex-gap-5 p-3>
+      <div flex-justify-betwee h-14 flex>
+        <div w-full flex flex-gap-4 border border-rounded p-2 style="border-color: var(--color-gray4);">
+          <div :style="setMethodBtnStyle()" @click="toggleMethodList()">
+            <div m-1>
+              {{ selectMethod }}
+            </div>
+            <div i-carbon-chevron-down h-full />
+          </div>
+
+          <div v-if="isMethodList" class="methodList">
+            <div v-for="(method, idx) in methodList" :key="idx" :style="setMethodColor(method)" @click="chagneMethod(method)">
+              {{ method }}
+            </div>
+          </div>
+
+          <div border-l pl-4 style="border-color: var(--color-gray4); font-size: var(--font-H5-size); line-height: 2.5rem;">
+            http://i9b108.p.ssafy.io/api/v1/bubble/bubblings
+          </div>
+        </div>
+
+        <div class="sendBtn">
+          <div flex flex-gap-2 flex-justify-center>
+            <div i-carbon-send-alt pt-8 />
+            Send
+          </div>
+        </div>
+      </div>
+
+      <div flex flex-gap-5 p-3>
         <div :class="[requestTap !== 'Params' ? 'tap' : 'highlight']" @click="requestTap = 'Params'">
           <p>Params</p>
         </div>
@@ -93,5 +173,60 @@ export default {
   &:hover{
     color:#2E2E2E;
   }
+}
+
+.methodList {
+  /* layout */
+  position: absolute;
+  top: 13rem;
+
+  padding: 0.5rem;
+
+  /* Style */
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
+
+}
+
+.methodList div:hover {
+  background-color: var(--color-gray1);
+}
+
+.sendBtn {
+  /* layout */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+
+  width: 10rem;
+  margin-left: 1rem;
+
+  /* Style */
+  border-radius: 5px;
+
+  font-size: var(--font-H3-size);
+
+  color: white;
+  background-color: var(--color-blue1);
+}
+
+.grayBtn {
+    /* layout */
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    line-height: 1.2rem;
+
+    /* Style */
+    border-radius: 5px;
+
+    color: var(--color-gray3);
+    background-color: var(--color-gray1);
+
+    font-size: var(--font-H5-size);
+    font-weight: var(--font-H5-weight);
 }
 </style>
