@@ -8,7 +8,7 @@ spring:
             client-secret: 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
             redirect-uri: http://sapier.co.kr/api/login/oauth2/code/google
             scope:
-              - email:q:q!
+              - email
               - profile
 
           github:
