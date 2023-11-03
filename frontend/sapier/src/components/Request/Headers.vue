@@ -38,13 +38,13 @@ export default {
             <span v-else>⬜</span>
           </td>
           <td>
-            <input v-model="param.key" placeholder="Key">
+            <input v-model="param.key" placeholder="Key" h-full w-full>
           </td>
           <td>
-            <input v-model="param.value" placeholder="Value">
+            <input v-model="param.value" placeholder="Value" h-full w-full>
           </td>
           <td>
-            <input v-model="param.description" placeholder="Description">
+            <input v-model="param.description" placeholder="Description" h-full w-full>
           </td>
         </tr>
       </tbody>
@@ -52,14 +52,30 @@ export default {
   </div>
 </template>
 
-<style>
+<style scoped>
 table, th, td {
-  border: 1px solid var(--color-black);
+  border: 1px solid var(--color-gray3);
   border-collapse: collapse;
 }
 
-th, td {
-  padding: 10px 20px;
+th {
+  padding: 0.5rem 1rem;
+  height: 3rem;
+}
+
+td {
+  padding: 0.5rem;
+  height: 3rem;
+}
+
+input {
+  padding: 0 0.5rem;
+  text-overflow: ellipsis;
+}
+
+input:focus {
+  outline: 1px solid var(--color-gray3);
+
 }
 
 td:first-child {
