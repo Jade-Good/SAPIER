@@ -22,8 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class CookieManager {
 
-	@Value("${app.running.mode}") String debug;
-
 	public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
 
 		Cookie[] cookies = request.getCookies();
