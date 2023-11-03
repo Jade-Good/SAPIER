@@ -109,11 +109,9 @@ public class SecurityConfig {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 
 
-		corsConfiguration.addAllowedOriginPattern("http://localhost");
+		corsConfiguration.addAllowedOriginPattern("http://192.168.31.175:3333");
 		corsConfiguration.addAllowedOriginPattern("http://localhost:3333");
-		corsConfiguration.addAllowedOriginPattern("localhost:3333");
-		corsConfiguration.addAllowedOriginPattern("localhost");
-		// corsConfiguration.addAllowedHeader("*");
+
 		corsConfiguration.addAllowedMethod("GET");
 		corsConfiguration.addAllowedMethod("DELETE");
 		corsConfiguration.addAllowedMethod("POST");
