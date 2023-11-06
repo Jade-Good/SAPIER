@@ -37,12 +37,10 @@ FROM node:18-alpine
 WORKDIR /app
 COPY . .
 
-RUN npm install -g pnpm
-RUN pnpm i 
 # RUN npm install --force
 
 EXPOSE 3333
 
-RUN pnpm dev
+RUN pm2 start "pnpm dev" --name sapaier-fe
 # RUN npm run dev
 # RUN pnpm run dev
