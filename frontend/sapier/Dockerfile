@@ -30,7 +30,8 @@
 # CMD ["nginx", "-g", "daemon off;"]
 
 # ------------------------------
-FROM node:18-alpine
+FROM node:18-slim
+FROM gplane/pnpm:node18-alpine
 
 COPY . .
 
