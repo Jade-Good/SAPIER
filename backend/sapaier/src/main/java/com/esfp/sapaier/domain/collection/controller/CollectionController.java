@@ -36,7 +36,7 @@ public class CollectionController {
 		return new ResponseEntity<>(collectionService.allCollectionList(collectionListRequestDto), HttpStatus.OK);
 	}
 
-	@PatchMapping
+	@PatchMapping("/modify")
 	public ResponseEntity<Object> modifyCollection(@RequestBody ModifyCollectionRequestDto modifyCollectionRequestDto) {
 		collectionService.modifyCollection(modifyCollectionRequestDto);
 		return new ResponseEntity<>(HttpStatus.OK);
