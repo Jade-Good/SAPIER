@@ -20,15 +20,6 @@ useHead({
   //   },
   // ],
 })
-
-const userStore = useUserStore()
-const storedUserInfo = localStorage.getItem('sapier-user')
-if (storedUserInfo) {
-  const userInfo = JSON.parse(storedUserInfo)
-  userStore.userInfo = userInfo // 로그인 상태 복원
-  console.log(`storedUserInfo: ${userInfo}`)
-  console.log(`userStore: ${userStore.userInfo}`)
-}
 </script>
 
 <template>
