@@ -47,7 +47,7 @@ RUN npm install -g pnpm && pnpm install
 
 EXPOSE 3333
 
-ENTRYPOINT ["pnpm", "dev"]
+ENTRYPOINT ["pnpm", "dev", "--host"]
 
 # RUN npm run dev
 # RUN pnpm run dev
