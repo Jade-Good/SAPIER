@@ -43,7 +43,7 @@ RUN npm install -g pnpm && pnpm install
 
 RUN pnpm build
 
-COPY /app/dist /usr/share/nginx/html
+COPY dist /usr/share/nginx/html
 
 EXPOSE 3333
 
