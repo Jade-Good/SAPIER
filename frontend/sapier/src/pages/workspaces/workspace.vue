@@ -16,7 +16,7 @@ export default {
     <WorkspaceList />
     <!-- <WorkSpaceInfo w-full /> -->
     <CollectionInfo w-60 />
-    <RequestInfo w-full />
+    <RequestInfo h-full w-full />
   </div>
   <RouterView />
 
