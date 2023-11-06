@@ -74,7 +74,8 @@ input {
 }
 
 input:focus {
-  outline: 1px solid var(--color-gray3);
+  outline: 1px solid var(--color-gray2);
+  border-radius: 5px;
 
 }
 
