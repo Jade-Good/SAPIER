@@ -2,7 +2,6 @@
 export default {
   data() {
     return {
-      requestTap: 'Params',
       selectMethod: 'GET',
       methodList: [
         'GET',
@@ -14,9 +13,38 @@ export default {
         'OPTIONS',
       ],
       isMethodList: false,
+
+      requestHigh: '600px',
+      requestTap: 'Params',
+      requestURL: 'http://',
+      isResizing: false, // 크기 조절 중 여부
+      startY: 0, // 크기 조절 시작 지점
+      startHeight: 0, // 크기 조절 시작 시 Request 엘리먼트의 높이
     }
   },
+  mounted() {
+    // 메서드 리스트 이벤트 등록
+    document.addEventListener('click', this.handleDocumentClick)
+
+    // Request 높이 초기화
+    const htmlElement = document.documentElement
+    const computedFontSize = window.getComputedStyle(htmlElement).getPropertyValue('font-size')
+    const currentRemValue = Number.parseFloat(computedFontSize) * 35
+
+    this.requestHigh = `${currentRemValue}px`
+
+    window.addEventListener('mousemove', this.handleResizing)
+    window.addEventListener('mouseup', this.stopResizing)
+  },
+
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleDocumentClick)
+    window.removeEventListener('mousemove', this.handleResizing)
+    window.removeEventListener('mouseup', this.stopResizing)
+  },
   methods: {
+
+    // ---------------- 메서드 리스트 토글기능 ----------------
     setMethodBtnStyle() {
       return {
         /* layout */
@@ -48,12 +76,12 @@ export default {
 
         color: `var(--color-${method})`,
         fontSize: 'var(--font-H2-size)',
-        backgroundColor: method === this.selectMethod ? 'var(--color-gray2)' : 'none',
+        backgroundColor: method === this.selectMethod ? 'var(--color-gray1-hover)' : 'none',
 
       }
     },
 
-    chagneMethod(method: string) {
+    changeMethod(method: string) {
       this.setMethodColor(method)
       this.selectMethod = method
       this.toggleMethodList()
@@ -62,13 +90,88 @@ export default {
     toggleMethodList() {
       this.isMethodList = !this.isMethodList
     },
+
+    closeMethodList() {
+      this.isMethodList = false
+    },
+    handleDocumentClick(event: Event) {
+      // 클릭 이벤트에서 메서드 목록을 열려 있을 때만 닫도록 처리
+      if (this.isMethodList && !this.$el.contains(event.target))
+        this.isMethodList = false
+    },
+
+    // -----------------Request 창 크기 조절--------------------
+    setRequestStyle() {
+      return {
+        /* layout */
+        display: 'flex',
+        flexDirection: 'column',
+
+        width: '100%',
+        height: this.requestHigh,
+        minHeight: '10.5rem',
+        maxHeight: '90%',
+
+        padding: '0.75rem',
+
+        overflow: 'auto',
+
+        /* Style */
+        border: '1px solid red',
+      }
+    },
+
+    startResizing(event: MouseEvent) {
+      this.isResizing = true
+      this.startY = event.clientY
+
+      const ss = this.requestHigh.match(/\d+/g)
+      if (ss)
+        this.startHeight = Number.parseInt(ss.toString())
+    },
+
+    handleResizing(event: MouseEvent) {
+      if (this.isResizing) {
+        const deltaY = event.clientY - this.startY
+        let newHeight = this.startHeight + deltaY
+
+        const htmlElement = document.documentElement
+        const computedFontSize = window.getComputedStyle(htmlElement).getPropertyValue('font-size')
+        const minHeight = Number.parseFloat(computedFontSize) * 10.5
+
+        const maxHeight = this.$el.clientHeight * 0.9
+
+        if (newHeight < minHeight)
+          newHeight = minHeight
+
+        if (newHeight > maxHeight)
+          newHeight = maxHeight
+
+        this.requestHigh = `${newHeight}px`
+
+        // Response 엘리먼트의 크기를 조절할 수도 있습니다.
+
+        event.preventDefault()
+      }
+    },
+
+    stopResizing() {
+      this.isResizing = false
+    },
+    // --------------------------------------------------------
+    setResponseStyle() {
+      return {
+        height: `calc(100% - ${this.requestHigh})`, // 나머지 여백을 설정
+        overflow: 'auto',
+      }
+    },
   },
 }
 </script>
 
 <template>
-  <div h-full flex flex-col border>
-    <div name="Request" class="rqeHigh" w-full flex flex-col border border-red p-3>
+  <div h-full flex flex-col border @click.capture="closeMethodList">
+    <div name="Request" :style="setRequestStyle()">
       <div flex flex-justify-between pb-3 pl-3>
         <div flex flex-gap-1 line-height-9>
           <p color-gray>
@@ -112,8 +215,8 @@ export default {
             </div>
           </div>
 
-          <div border-l pl-4 style="border-color: var(--color-gray4); font-size: var(--font-H5-size); line-height: 2.5rem;">
-            http://i9b108.p.ssafy.io/api/v1/bubble/bubblings
+          <div style="border-color: var(--color-gray4); font-size: var(--font-H5-size); line-height: 2.5rem;" w-full border-l pl-2>
+            <input v-model="requestURL" type="text" w-full pl-2>
           </div>
         </div>
 
@@ -145,19 +248,24 @@ export default {
       <Body v-if="requestTap === 'Body'" />
       <Settings v-if="requestTap === 'Settings'" />
     </div>
-    <div name="Response" w-full border border-blue class="resHigh">
+    <div
+      class="resize-line"
+      @mousedown="startResizing"
+      @mousemove="handleResizing"
+      @mouseup="stopResizing"
+    />
+    <div name="Response" w-full border border-blue :style="setResponseStyle()">
       Response
+      <Headers />
     </div>
   </div>
 </template>
 
 <style scoped>
-.rqeHigh {
-  height: 90%;
-}
-
-.resHigh {
-  height: 10%;
+input:focus {
+  outline: 1px solid var(--color-gray2);
+  background-color: white;
+  border-radius: 5px;
 }
 
 .highlight {
@@ -169,10 +277,11 @@ export default {
 
 .tap {
   color: var(--color-gray4);
+  cursor: pointer;
+}
 
-  &:hover{
-    color:#2E2E2E;
-  }
+.tap:hover {
+  color:#2E2E2E;
 }
 
 .methodList {
@@ -210,6 +319,12 @@ export default {
 
   color: white;
   background-color: var(--color-blue1);
+
+  cursor: pointer;
+}
+
+.sendBtn:hover {
+  background-color: var(--color-blue1-hover);
 }
 
 .grayBtn {
@@ -223,10 +338,23 @@ export default {
     /* Style */
     border-radius: 5px;
 
-    color: var(--color-gray3);
+    color: var(--color-gray4);
     background-color: var(--color-gray1);
 
     font-size: var(--font-H5-size);
     font-weight: var(--font-H5-weight);
+
+    cursor: pointer;
+}
+
+.grayBtn:hover {
+  background-color: var(--color-gray1-hover);
+}
+
+.resize-line {
+  cursor: ns-resize; /* 세로 크기 조절 커서 모양 */
+  height: 5px; /* 크기 조절 선의 높이 설정 */
+  width: 100%; /* 가로 너비를 100%로 설정하여 전체 너비에서 크기 조절 가능 */
+  background-color: var(--color-gray3); /* 크기 조절 선의 배경색 설정 */
 }
 </style>
