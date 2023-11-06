@@ -23,7 +23,7 @@ public class WorkSpaceService {
     private final WorkSpaceRepository workSpaceRepository;
     private final UserDataRepository userDataRepository;
 
-    private final String NO_WORKSPACE_EXCEPTION = "해당하는 워크스페이스가 존재하지 않습니다."
+    private final String NO_WORKSPACE_EXCEPTION = "해당하는 워크스페이스가 존재하지 않습니다.";
 
     public List<WorkSpace> WorkSpaceList(String uuid) {
         return workSpaceRepository.findWorkSpaceList(uuid);
