@@ -18,7 +18,7 @@ export default {
     <CollectionInfo w-60 />
     <RequestInfo w-full />
   </div>
-  <RouterView />
+  <!-- <RouterView /> -->
 
   <!-- <TheFooter />
     <div mx-auto mt-5 text-center text-sm opacity-50>
