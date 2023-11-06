@@ -37,6 +37,8 @@ FROM node:18-alpine
 WORKDIR /app
 COPY . .
 
+RUN npm install pm2 -g
+
 # RUN npm install --force
 
 EXPOSE 3333
