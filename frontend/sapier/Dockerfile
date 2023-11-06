@@ -43,6 +43,6 @@ RUN npm install pm2 -g
 
 EXPOSE 3333
 
-RUN pm2 start "pnpm dev" --name sapaier-fe
+RUN pm2 start "npm dev" --name sapaier-fe
 # RUN npm run dev
 # RUN pnpm run dev
