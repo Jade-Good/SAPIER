@@ -26,6 +26,13 @@ function workspaceInfo(workspaceName) {
   window.location.href = workspaceInfoUrl
 }
 
+function truncateText(text: string, maxLength: number) {
+  if (text.length > maxLength)
+    return `${text.slice(0, maxLength)}...`
+
+  else
+    return text
+}
 // const dataToSend = {
 //   param1: ,
 // };
@@ -37,7 +44,7 @@ function workspaceInfo(workspaceName) {
   <div w-18 border-r-2 class="list">
     <div v-for="workspace in WorkspaceListInfo.workSpaceInfo" :key="workspace.name" class="box">
       <div id="workSpaceListData" class="workspaceId" @click="workspaceInfo(workspace.name)">
-        {{ workspace.name }}
+        {{ truncateText(workspace.name, 4) }}
       </div>
     </div>
   </div>
@@ -60,8 +67,10 @@ function workspaceInfo(workspaceName) {
   background-color: yellow; /* 배경색 설정 */
 }
 .workspaceId{
+
   text-align: center; /* 텍스트 가운데 정렬 */
-    line-height: 50px; /* 텍스트를 수직 중앙으로 정렬 */
+  line-height: 50px; /* 텍스트를 수직 중앙으로 정렬 */
+
 }
 
 .workspaceId:hover {

@@ -61,8 +61,10 @@ public class WorkSpaceService {
 
         for (int i = 0; i < workSpace.getMemberList().size(); i++) {
             MemberList.add(userDataRepository.searchMember(workSpace.getMemberList().get(i).getUuId()));
-        }
+            System.out.println(workSpace.getMemberList().get(i).getUuId());
 
+        }
+        System.out.println(MemberList);
         return MemberList;
     }
 
