@@ -52,15 +52,15 @@ public class CollectionService {
 	}
 
 	@Transactional
-	public void modifyCollection(ModifyCollectionRequestDto modifyCollectionRequestDto) {
-		CollectionEntity collection = collectionRepository.findById(modifyCollectionRequestDto.getCollectionId())
+	public void modifyCollection(List<ModifyCollectionRequestDto> modifyCollectionRequestDto) {
+		CollectionEntity collection = collectionRepository.findById(modifyCollectionRequestDto.get(0).getCollectionId())
 			.orElseThrow(() -> new NoCollectionException(NO_COLLECTION_EXCEPTION));
 
-		collectionRepository.save(modifyCollectionRequestDto.modifyToEntity(
-			modifyCollectionRequestDto.getCollectionId(),
-			modifyCollectionRequestDto.getCollectionName(),
-			modifyCollectionRequestDto.getApiList(),
-			modifyCollectionRequestDto.getCollectionList()
+		collectionRepository.save(modifyCollectionRequestDto.get(0).modifyToEntity(
+			modifyCollectionRequestDto.get(0).getCollectionId(),
+			modifyCollectionRequestDto.get(0).getCollectionName(),
+			modifyCollectionRequestDto.get(0).getApiList(),
+			modifyCollectionRequestDto.get(0).getCollectionList()
 		));
 	}
 }
