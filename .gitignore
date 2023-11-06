@@ -112,7 +112,7 @@ dist/
 npm-debug.log
 yarn-error.log
 
-/frontend/sapier/.env.local
+/frontend/sapier/.env.development.local
 
 **/auto-imports.d.ts
 **/components.d.ts
