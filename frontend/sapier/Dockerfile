@@ -34,7 +34,8 @@ FROM node:18-alpine
 
 COPY . .
 
-RUN pnpm install
+RUN npm install -g pnpm
+RUN pnpm i 
 # RUN npm install --force
 
 EXPOSE 3333
