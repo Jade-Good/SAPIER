@@ -35,11 +35,11 @@ FROM gplane/pnpm:node18-alpine
 
 COPY . .
 
-# RUN pnpm install
-RUN npm install --force
+RUN pnpm install
+# RUN npm install --force
 
 EXPOSE 3333
 
-RUN npm run dev
-
+RUN pnpm dev
+# RUN npm run dev
 # RUN pnpm run dev
