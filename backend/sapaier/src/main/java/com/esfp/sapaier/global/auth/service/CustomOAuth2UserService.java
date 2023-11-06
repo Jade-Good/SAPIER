@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OAuth2UserServiceCustom extends DefaultOAuth2UserService {
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 	private final UserRepository userRepository;
 
@@ -29,6 +29,9 @@ public class OAuth2UserServiceCustom extends DefaultOAuth2UserService {
 		OAuth2User oAuth2user = super.loadUser(userRequest);
 
 		try {
+
+			log.info("[OAuth2UserServiceCustom] function : loadUser | message : Oauth2.0 로그인 시도");
+			
 			OAuth2Provider oAuth2Provider = OAuth2Provider
 				.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 
@@ -36,29 +39,42 @@ public class OAuth2UserServiceCustom extends DefaultOAuth2UserService {
 				.getOAuth2UserInfoResponse(oAuth2Provider, oAuth2user.getAttributes())
 				.orElseThrow(() -> new IllegalArgumentException(""));
 
-			UserDto userDto = userRepository.findUserBySocialId(oAuth2UserInfoResponse.getId())
-				.orElseGet(() -> registerUser(oAuth2Provider, oAuth2UserInfoResponse))
-				.convertToDto();
+			User user = userRepository.findUserBySocialId(oAuth2Provider, oAuth2UserInfoResponse.getId())
+				.orElseGet(() -> registerUser(oAuth2Provider, oAuth2UserInfoResponse));
 
-			return new UserPrincipal(userDto, oAuth2user.getAttributes());
+			log.info("[OAuth2UserServiceCustom] function : loadUser | message : Oauth2.0 로그인 완료");
+
+			return new UserPrincipal(user.getKey(), user.getRole().name(), oAuth2user.getAttributes());
 
 		} catch (Exception ex) {
-			log.error("CustomOAuth2UserService loadUser Error {} ", ex.getMessage());
+			log.info("[OAuth2UserServiceCustom] function : loadUser | error : {}",ex.getMessage());
 			throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
 		}
 	}
 
 	private User registerUser(OAuth2Provider oAuth2Provider, OAuth2UserInfoResponse oAuth2UserInfoResponse){
 
+		log.info("[OAuth2UserServiceCustom] function : registerUser | message : 회원 가입 시도");
+
+		String profileImageUrl = "";
+		if(oAuth2Provider.equals(OAuth2Provider.GITHUB))
+			profileImageUrl = oAuth2UserInfoResponse.getAttributes().get("avatar_url").toString();
+		if(oAuth2Provider.equals(OAuth2Provider.GOOGLE))
+			profileImageUrl = oAuth2UserInfoResponse.getAttributes().get("picture").toString();
+
+
 		User newUser =  User.builder()
 			.email(oAuth2UserInfoResponse.getEmail())
 			.nickname(oAuth2UserInfoResponse.getNickname())
 			.socialProvider(oAuth2Provider)
 			.socialId(oAuth2UserInfoResponse.getId())
+			.profileImageUrl(profileImageUrl)
 			.build();
 
 		userRepository.save(newUser);
 
+		log.info("[OAuth2UserServiceCustom] function : registerUser | message : 회원 가입 완료");
+		
 		return newUser;
 	}
 

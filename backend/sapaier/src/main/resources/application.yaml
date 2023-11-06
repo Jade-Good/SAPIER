@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: swagger,mongodb, oauth, security
+    include: swagger,mongodb,oauth,security,redis
   servlet:
     multipart:
       max-file-size: 50MB
@@ -8,3 +8,5 @@ spring:
 logging:
   level:
     org.springframework.security: debug
+
+app.running.mode: dev
