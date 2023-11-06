@@ -1,10 +1,8 @@
 <script setup lang="ts">
-const user = useUserStore()
-const name = ref(user.savedName)
+// const user = useUserStore()
+// const name = ref(user.savedName)
 function enter() {
 }
-
-const { t } = useI18n()
 </script>
 
 <template>
@@ -17,11 +15,10 @@ const { t } = useI18n()
     <div>
       <TheInput
         v-model="name"
-        :placeholder="t('main.search-now')"
         autocomplete="true"
         @keydown.enter="enter"
       />
-      <label class="hidden" for="input">{{ t('main.search-now') }}</label>
+      <label class="hidden" for="input">Search with SAPIER now!</label>
     </div>
     <div mt-3 text-lg>
       <button mx-2>
