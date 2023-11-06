@@ -8,3 +8,8 @@ node_modules
 .idea/
 *.log
 cypress/downloads
+.gitignore
+**/auto-imports.d.ts
+**/components.d.ts
+frontend/sapier/src/auto-imports.d.ts
+frontend/sapier/src/components.d.ts

@@ -118,3 +118,5 @@ fabric.properties
 
 **/auto-imports.d.ts
 **/components.d.ts
+frontend/sapier/src/auto-imports.d.ts
+frontend/sapier/src/components.d.ts
