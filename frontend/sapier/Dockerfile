@@ -36,14 +36,10 @@
 FROM node:18-slim
 WORKDIR /app
 
-# `package.json`과 `pnpm-lock.yaml` 파일을 작업 디렉토리로 복사
-COPY package.json pnpm-lock.yaml ./
+COPY . .
 
 # pnpm을 설치하고 의존성을 설치합니다.
 RUN npm install -g pnpm && pnpm install
-
-# 나머지 소스 코드를 복사
-COPY . .
 
 RUN pnpm build
 
