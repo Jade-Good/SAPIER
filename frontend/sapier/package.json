@@ -3,8 +3,8 @@
   "private": true,
   "packageManager": "pnpm@8.9.2",
   "scripts": {
-    "build": "vite-ssg build",
-    "dev": "vite --port 3333 --open",
+    "build": "vite build",
+    "dev": "vite --port 3333",
     "lint": "eslint .",
     "preview": "vite preview",
     "preview-https": "serve dist",
@@ -63,7 +63,6 @@
     "vite-bundle-visualizer": "^0.10.0",
     "vite-plugin-inspect": "^0.7.40",
     "vite-plugin-pages": "^0.31.0",
-    "vite-plugin-pwa": "^0.16.5",
     "vite-plugin-vue-devtools": "^1.0.0-rc.5",
     "vite-plugin-vue-layouts": "^0.8.0",
     "vite-plugin-webfont-dl": "^3.7.6",
