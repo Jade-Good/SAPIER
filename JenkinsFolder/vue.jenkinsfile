@@ -97,7 +97,7 @@ pipeline{
 
         stage('Deploy'){
             steps{
-                sh 'sudo docker cp ${CONTAINER_NAME}:/app/dist /usr/share/nginx/html' 
+                sh 'docker cp ${CONTAINER_NAME}:/app/dist /usr/share/nginx/html' 
                 // sh 'docker run -p 3333:3333 --name ${CONTAINER_NAME} -d ${IMAGE_NAME} sleep infinity'
             }
         }
