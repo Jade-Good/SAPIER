@@ -45,9 +45,11 @@ RUN npm install -g pnpm && pnpm install
 # 나머지 소스 코드를 복사
 COPY . .
 
-EXPOSE 3333
-
 RUN pnpm build
+
+COPY ./dist /usr/share/nginx/html
+
+EXPOSE 3333
 
 # RUN npm run dev
 # RUN pnpm run dev
