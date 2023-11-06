@@ -112,4 +112,5 @@ dist/
 npm-debug.log
 yarn-error.log
 
-# End of https://www.toptal.com/developers/gitignore/api/vuejs,vue,java,eclipse
+**/auto-imports.d.ts
+**/components.d.ts
