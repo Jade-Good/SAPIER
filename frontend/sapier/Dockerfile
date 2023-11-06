@@ -38,11 +38,12 @@ WORKDIR /app
 COPY . .
 
 RUN npm install pm2 -g
-
-# RUN npm install --force
+RUN npm install -g pnpm
+RUN pnpm i
+RUN pm2 start "pnpm dev" --name sapier-fe
 
 EXPOSE 3333
 
-RUN pm2 start "npm dev" --name sapaier-fe
+
 # RUN npm run dev
 # RUN pnpm run dev
