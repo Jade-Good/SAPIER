@@ -16,6 +16,13 @@ export default {
       isMethodList: false,
     }
   },
+  mounted() {
+    document.addEventListener('click', this.handleDocumentClick)
+  },
+
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleDocumentClick)
+  },
   methods: {
     setMethodBtnStyle() {
       return {
@@ -62,12 +69,21 @@ export default {
     toggleMethodList() {
       this.isMethodList = !this.isMethodList
     },
+
+    closeMethodList() {
+      this.isMethodList = false
+    },
+    handleDocumentClick(event: Event) {
+      // 클릭 이벤트에서 메서드 목록을 열려 있을 때만 닫도록 처리
+      if (this.isMethodList && !this.$el.contains(event.target))
+        this.isMethodList = false
+    },
   },
 }
 </script>
 
 <template>
-  <div h-full flex flex-col border>
+  <div h-full flex flex-col border @click.capture="closeMethodList">
     <div name="Request" class="rqeHigh" w-full flex flex-col border border-red p-3>
       <div flex flex-justify-between pb-3 pl-3>
         <div flex flex-gap-1 line-height-9>
