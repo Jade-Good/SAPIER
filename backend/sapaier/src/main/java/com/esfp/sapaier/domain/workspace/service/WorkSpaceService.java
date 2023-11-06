@@ -5,6 +5,7 @@ import com.esfp.sapaier.domain.workspace.document.WorkSpace;
 import com.esfp.sapaier.domain.workspace.dto.AddMemberDto;
 import com.esfp.sapaier.domain.workspace.dto.UserDataDto;
 import com.esfp.sapaier.domain.workspace.dto.UserPermissionDto;
+import com.esfp.sapaier.domain.workspace.exception.NoWorkspaceException;
 import com.esfp.sapaier.domain.workspace.repository.UserDataRepository;
 import com.esfp.sapaier.domain.workspace.repository.WorkSpaceRepository;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class WorkSpaceService {
     private final WorkSpaceRepository workSpaceRepository;
     private final UserDataRepository userDataRepository;
 
+    private final String NO_WORKSPACE_EXCEPTION = "해당하는 워크스페이스가 존재하지 않습니다."
 
     public List<WorkSpace> WorkSpaceList(String uuid) {
         return workSpaceRepository.findWorkSpaceList(uuid);
@@ -130,6 +132,12 @@ public class WorkSpaceService {
 //            return  workSpace;
 
         }
+    }
+
+    public String searchWorkspaceName(String workspaceIdx){
+        WorkSpace workSpace = workSpaceRepository.findById(workspaceIdx)
+                .orElseThrow(()-> new NoWorkspaceException(NO_WORKSPACE_EXCEPTION));
+        return workSpace.getName();
     }
 
 
