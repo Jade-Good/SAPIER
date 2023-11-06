@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserDataRepository extends MongoRepository<UserDataDto, String> {
-    @Query("{'uuId': ?0}")
+    @Query("{'uuid': ?0}")
     UserDataDto searchMember(String id);
 //    UserDataDto updateFieldName(String id, String newFieldNameValue);
 }
