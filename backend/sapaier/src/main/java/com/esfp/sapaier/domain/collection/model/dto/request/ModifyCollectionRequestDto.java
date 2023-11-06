@@ -15,6 +15,7 @@ public class ModifyCollectionRequestDto {
     private String collectionName;
     private List<RequestEntity> apiList;
     private List<CollectionEntity> collectionList;
+    private String modifiedTime;
 
     public CollectionEntity modifyToEntity(String collectionId, String collectionName, List<RequestEntity> apiList, List<CollectionEntity> collectionList) {
         return CollectionEntity.builder()

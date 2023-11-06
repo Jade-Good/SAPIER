@@ -30,15 +30,22 @@
 # CMD ["nginx", "-g", "daemon off;"]
 
 # ------------------------------
-FROM node:18-alpine
+
+
+
+FROM node:18-slim
+WORKDIR /app
 
 COPY . .
 
-RUN pnpm install
-# RUN npm install --force
+# pnpm을 설치하고 의존성을 설치합니다.
+RUN npm install -g pnpm && pnpm install
+
+RUN pnpm build
+
+# COPY dist /usr/share/nginx/html
 
 EXPOSE 3333
 
-RUN pnpm dev
 # RUN npm run dev
 # RUN pnpm run dev

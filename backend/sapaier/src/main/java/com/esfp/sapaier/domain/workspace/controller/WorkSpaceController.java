@@ -1,12 +1,15 @@
 package com.esfp.sapaier.domain.workspace.controller;
 
 
+import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequestDto;
 import com.esfp.sapaier.domain.workspace.document.WorkSpace;
 import com.esfp.sapaier.domain.workspace.dto.UserDataDto;
 import com.esfp.sapaier.domain.workspace.dto.AddMemberDto;
 import com.esfp.sapaier.domain.workspace.service.WorkSpaceService;
 import com.esfp.sapaier.global.auth.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +40,10 @@ public class WorkSpaceController {
     @GetMapping("api/v1/workspaces/{workspaceIdx}")
     public WorkSpace infoWorkSpace(@PathVariable String workspaceIdx){
         return workSpaceService.infoWorkSpace(workspaceIdx);
+    }
+    @GetMapping("/api/v1/workspaces/{workspaceIdx}/name")
+    public ResponseEntity<String> searchWorkspaceName(@PathVariable String workspaceIdx) {
+        return new ResponseEntity<>(workSpaceService.searchWorkspaceName(workspaceIdx),HttpStatus.OK);
     }
 
     //워크스페이스 수정
