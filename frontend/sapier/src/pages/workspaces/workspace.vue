@@ -4,7 +4,7 @@ export default {
     return {
       // page: 'Workspace',
       // page: 'Collection',
-      page: 'Request',
+      // page: 'Request',
     }
   },
 }
@@ -16,9 +16,9 @@ export default {
     <WorkspaceList />
     <!-- <WorkSpaceInfo w-full /> -->
     <CollectionInfo w-60 />
-    <RequestInfo w-full />
+    <RequestInfo h-full w-full />
   </div>
-  <RouterView />
+  <!-- <RouterView /> -->
 
   <!-- <TheFooter />
     <div mx-auto mt-5 text-center text-sm opacity-50>

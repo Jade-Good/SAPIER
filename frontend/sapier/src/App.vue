@@ -20,15 +20,6 @@ useHead({
   //   },
   // ],
 })
-
-const userStore = useUserStore()
-const storedUserInfo = localStorage.getItem('sapier-user')
-if (storedUserInfo) {
-  const userInfo = JSON.parse(storedUserInfo)
-  userStore.userInfo = userInfo // 로그인 상태 복원
-  console.log(`storedUserInfo: ${userInfo}`)
-  console.log(`userStore: ${userStore.userInfo}`)
-}
 </script>
 
 <template>
@@ -38,33 +29,44 @@ if (storedUserInfo) {
 <style>
 :root {
 
-  --font-H0: {"size": "96px", "weight": "800"};
-  --font-H1: {"size": "32px", "weight": "800"};
-  --font-H2: {"size": "24px", "weight": "700"};
-  --font-H3: {"size": "24px", "weight": "400"};
-  --font-H4: {"size": "20px", "weight": "400"};
-  --font-H5: {"size": "16px", "weight": "400"};
-  --font-H6: {"size": "16px", "weight": "700"};
+  --font-H0-size: 96px;
+  --font-H0-weight: 800;
+  --font-H1-size: 32px;
+  --font-H1-weight: 800;
+  --font-H2-size: 24px;
+  --font-H2-weight: 700;
+  --font-H3-size: 24px;
+  --font-H3-weight: 400;
+  --font-H4-size: 20px;
+  --font-H4-weight: 400;
+  --font-H5-size: 16px;
+  --font-H5-weight: 400;
+  --font-H6-size: 16px;
+  --font-H6-weight: 700;
 
   --color-blue1: #0F4C81; /* Classic Blue */
+  --color-blue1-hover: #0b3f6c; /* Classic Blue Hover*/
   --color-blue2: #658DC6; /* PrOvence */
   --color-blue3: #B5C7D3; /* Baby Blue */
 
   /* --color-white: White; White */
   --color-gray1: #F0F0F0; /* White Gray */
+  --color-gray1-hover: #dedede; /* White Gray */
   --color-gray2: #C9C9C9; /* Lite Gray */
   --color-gray3: #B6B6B6; /* Gray */
   --color-gray4: #838383; /* Dark Gray */
   --color-black: #2E2E2E; /* Black */
 
-  --color-del: #E64F47; /* DEL */
-  --color-patch: #EFA44A; /* PATCH */
-  --color-post: #6EC465; /* POST */
-  --color-get: #44A1F8; /* GET */
-  --color-put: #21DEB1; /* PUT */
-  --color-opt: #C98CFF; /* POT */
-  --color-head: #FFA6DE; /* HEAD */
+  --color-DELETE: #E64F47; /* DEL */
+  --color-PATCH: #EFA44A; /* PATCH */
+  --color-POST: #6EC465; /* POST */
+  --color-GET: #44A1F8; /* GET */
+  --color-PUT: #21DEB1; /* PUT */
+  --color-OPTIONS: #C98CFF; /* POT */
+  --color-HEAD: #FFA6DE; /* HEAD */
 
   color:var(--color-black);
+
+  user-select: none;
 }
 </style>

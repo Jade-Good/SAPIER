@@ -9,12 +9,11 @@ function start() {
   if (user.userInfo)
     router.push(`/main`)
   else
-    router.push(`/main`)
-    // router.push(`/login/oauth`)
-    // router.push(`/login`)
+    router.push(`/login/oauth`)
+    // router.push(`/main`)
 }
 
-const { t } = useI18n()
+// const { t } = useI18n()
 </script>
 
 <template>
@@ -32,7 +31,7 @@ const { t } = useI18n()
         </a>
       </p>
       <p>
-        <em text-sm opacity-75>{{ t('intro.desc') }}</em>
+        <em text-sm opacity-75>asd</em>
       </p>
 
       <div py-4 />
@@ -42,14 +41,15 @@ const { t } = useI18n()
           m-3 bg-bluegray-400 text-sm btn
           @click="start"
         >
-          {{ t('button.start') }}
+          asd
         </button>
       </div>
     </div>
   </div>
+  <!-- <RouterView /> -->
 </template>
 
 <route lang="yaml">
 meta:
-  layout: home
+  requiresAuth: false
 </route>

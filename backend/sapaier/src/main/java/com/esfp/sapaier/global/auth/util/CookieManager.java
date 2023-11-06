@@ -2,10 +2,12 @@ package com.esfp.sapaier.global.auth.util;
 
 import java.net.URL;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
@@ -19,8 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class CookieManager {
-
-	@Value("${app.running.mode}") String debug;
 
 	public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
 
@@ -44,8 +44,17 @@ public class CookieManager {
 		Cookie cookie = new Cookie(cookieDto.getName(), cookieDto.getValue());
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
+		if(cookie.getName().equals("accessToken") == true) {
+			cookie.setSecure(true);
+			cookie.setAttribute("SameSite", "None");
+		}
+		if(cookie.getName().equals("refreshToken") == true) {
+			cookie.setSecure(true);
+			cookie.setAttribute("SameSite", "Lax");
+		}
 		cookie.setMaxAge(cookieDto.getMaxAge());
 		response.addCookie(cookie);
+
 	}
 
 	public void deleteCookie(
@@ -62,6 +71,15 @@ public class CookieManager {
 			if (cookie.getName().equals(targetName)) {
 				cookie.setValue("");
 				cookie.setPath("/");
+				if(cookie.getName().equals("accessToken") == true) {
+					cookie.setSecure(true);
+					cookie.setAttribute("SameSite", "None");
+				}
+				if(cookie.getName().equals("refreshToken") == true) {
+					cookie.setSecure(true);
+					cookie.setAttribute("SameSite", "Lax");
+				}
+				cookie.setHttpOnly(true);
 				cookie.setMaxAge(0);
 				response.addCookie(cookie);
 			}
@@ -96,7 +114,19 @@ public class CookieManager {
 				cookie.setValue(newCookieDto.getValue());
 				cookie.setPath("/");
 				cookie.setMaxAge(newCookieDto.getMaxAge());
+
+				if(cookie.getName().equals("accessToken") == true) {
+					cookie.setSecure(true);
+					cookie.setAttribute("SameSite", "None");
+				}
+				if(cookie.getName().equals("refreshToken") == true) {
+					cookie.setSecure(true);
+					cookie.setAttribute("SameSite", "Lax");
+				}
+
+				cookie.setHttpOnly(true);
 				response.addCookie(cookie);
+
 			}
 		}
 

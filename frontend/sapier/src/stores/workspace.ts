@@ -1,17 +1,22 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-interface WorkSpaceInfo {
+import type { CollectionInfo } from './collection'
+import type { UserInfo } from './user'
+
+interface WorkspaceInfo {
   name: string
-  collectionList: string
-  memberList: string
+  collectionList: CollectionInfo[]
+  memberList: UserInfo[]
   modifiedTime: string
 }
 
+export type { WorkspaceInfo }
+
 export const useWorkspaceStore = defineStore('workspace', () => {
-  const workSpaceInfo = ref < WorkSpaceInfo | null > (null)
+  const workspaceInfo = ref < WorkspaceInfo | null > (null)
 
   return {
-    workSpaceInfo,
+    workspaceInfo,
   }
 })
 

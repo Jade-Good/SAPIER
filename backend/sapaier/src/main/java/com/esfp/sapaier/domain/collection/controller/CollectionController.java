@@ -1,30 +1,19 @@
 package com.esfp.sapaier.domain.collection.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
 import com.esfp.sapaier.domain.collection.model.dto.request.CollectionListRequestDto;
 import com.esfp.sapaier.domain.collection.model.dto.request.CreateCollectionRequestDto;
 import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequestDto;
 import com.esfp.sapaier.domain.collection.model.dto.request.RequestRequestDTO;
 import com.esfp.sapaier.domain.collection.model.dto.response.CollectionResponseDto;
 import com.esfp.sapaier.domain.collection.service.CollectionService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -41,14 +30,14 @@ public class CollectionController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@GetMapping
+	@PostMapping("/list")
 	public ResponseEntity<List<CollectionResponseDto>> collectionList(
 		@RequestBody CollectionListRequestDto collectionListRequestDto) {
 		return new ResponseEntity<>(collectionService.allCollectionList(collectionListRequestDto), HttpStatus.OK);
 	}
 
-	@PatchMapping
-	public ResponseEntity<Object> modifyCollection(@RequestBody ModifyCollectionRequestDto modifyCollectionRequestDto) {
+	@PatchMapping("/modify")
+	public ResponseEntity<Object> modifyCollection(@RequestBody List<ModifyCollectionRequestDto> modifyCollectionRequestDto) {
 		collectionService.modifyCollection(modifyCollectionRequestDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
