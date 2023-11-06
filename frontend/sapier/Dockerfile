@@ -30,7 +30,8 @@
 # CMD ["nginx", "-g", "daemon off;"]
 
 # ------------------------------
-FROM node:18-alpine
+FROM node:18-slim
+FROM gplane/pnpm:node18-alpine
 
 COPY . .
 
@@ -38,4 +39,4 @@ RUN pnpm install
 
 EXPOSE 3333
 
-RUN pnpm run dev
+RUN pnpm run serve
