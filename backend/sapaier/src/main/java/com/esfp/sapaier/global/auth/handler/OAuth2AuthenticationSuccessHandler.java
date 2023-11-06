@@ -105,18 +105,4 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		super.clearAuthenticationAttributes(request);
 		oAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
 	}
-
-
-	// private boolean hasAuthority(Collection<? extends GrantedAuthority> authorities, String authority) {
-	// 	if (authorities == null) {
-	// 		return false;
-	// 	}
-	//
-	// 	for (GrantedAuthority grantedAuthority : authorities) {
-	// 		if (authority.equals(grantedAuthority.getAuthority())) {
-	// 			return true;
-	// 		}
-	// 	}
-	// 	return false;
-	// }
 }

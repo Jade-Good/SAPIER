@@ -10,7 +10,7 @@ function start() {
     router.push(`/main`)
   else
     router.push(`/login/oauth`)
-    // router.push(`/login`)
+    // router.push(`/main`)
 }
 
 const { t } = useI18n()

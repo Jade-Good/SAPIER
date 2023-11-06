@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-import type { WorkSpaceInfo } from './workspace'
+import type { WorkspaceInfo } from './workspace'
 
 interface UserInfo {
   uuid: string
@@ -11,7 +11,7 @@ interface UserInfo {
   profileImageUrl: string
   countOfApiRequest: number
   role: string
-  workspaces: WorkSpaceInfo[]
+  workspaces: WorkspaceInfo[]
 }
 
 export type { UserInfo }
