@@ -1,15 +1,11 @@
 <script lang="ts">
 import axios from 'axios'
-import CollectionTree from '~/components/workspace/CollectionTree.vue'
 
 const collectionStore = useCollectionStore()
 
 axios.defaults.withCredentials = true
 
 export default {
-  components: {
-    CollectionTree,
-  },
   data() {
     return {
       collectionList: [],
