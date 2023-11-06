@@ -47,7 +47,7 @@ RUN npm install -g pnpm && pnpm install
 
 EXPOSE 3333
 
-CMD ["pnpm", "dev"]
+ENTRYPOINT ["pnpm", "dev"]
 
 # RUN npm run dev
 # RUN pnpm run dev
