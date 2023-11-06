@@ -38,8 +38,6 @@ COPY . .
 RUN pnpm install
 # RUN npm install --force
 
-EXPOSE 3333
-
 RUN pnpm dev
 # RUN npm run dev
 # RUN pnpm run dev
