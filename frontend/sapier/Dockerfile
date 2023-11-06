@@ -37,6 +37,6 @@ COPY . .
 
 RUN pnpm install
 
-# EXPOSE 3333
+EXPOSE 3333
 
 RUN pnpm run dev
