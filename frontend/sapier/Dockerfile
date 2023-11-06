@@ -39,4 +39,4 @@ RUN pnpm install
 
 # EXPOSE 3333
 
-RUN pnpm run dev
+RUN pnpm build
