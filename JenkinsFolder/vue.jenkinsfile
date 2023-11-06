@@ -94,7 +94,7 @@ pipeline{
         }
 
         stage('Deploy'){
-            docker run -p 3333:3333 --name ${CONTAINER_NAME} -d ${IMAGE_NAME}
+            sh 'docker run -p 3333:3333 --name ${CONTAINER_NAME} -d ${IMAGE_NAME}'
         }
     }
 }
