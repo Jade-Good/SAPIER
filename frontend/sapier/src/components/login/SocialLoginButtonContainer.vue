@@ -3,13 +3,13 @@
 
 function googleLogin(){
   console.log("구글로그인 시도");
-  const googleLoginUrl = `${import.meta.env.VITE_SERVER_URL}/api/oauth2/authorization/google?redirect_uri=${import.meta.env.VITE_FRONT_URL}/login/redirect`;
+  const googleLoginUrl = `${import.meta.env.VITE_SERVER_URL}:8080/api/oauth2/authorization/google?redirect_uri=${import.meta.env.VITE_FRONT_URL}/login/redirect`;
   window.location.href = googleLoginUrl;
   
 }
 
 function githubLogin(){
-  const githubLoginUrl = `${import.meta.env.VITE_SERVER_URL}/api/oauth2/authorization/github?redirect_uri=${import.meta.env.VITE_FRONT_URL}/login/redirect`;
+  const githubLoginUrl = `${import.meta.env.VITE_SERVER_URL}:8080/api/oauth2/authorization/github?redirect_uri=${import.meta.env.VITE_FRONT_URL}/login/redirect`;
   window.location.href = githubLoginUrl;
 }
       
