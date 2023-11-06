@@ -1,7 +1,6 @@
 <script lang="ts">
 import axios from 'axios'
 import CollectionTree from '~/components/workspace/CollectionTree.vue'
-import WorkspaceTitle from '~/components/workspace/WorkspaceTitle.vue'
 
 const collectionStore = useCollectionStore()
 
@@ -10,7 +9,6 @@ axios.defaults.withCredentials = true
 export default {
   components: {
     CollectionTree,
-    WorkspaceTitle,
   },
   data() {
     return {
@@ -27,20 +25,13 @@ export default {
         collectionId: idList,
       }
       try {
-        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/list`, collectionId, {
-          withCredentials: true,
+        const response = await axios.post (`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/list`, collectionId)
 
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            // 'Authorization': `Bearer sapiersapiersapiersapiersapiersapiersapiersapier`,
-          },
-
-        })
         this.collectionList = response.data[0].collectionList
         collectionStore.collection = response.data
-        console.log('collectionStore:', this.collectionList)
-        console.log('store 저장', collectionStore.collection[0].collectionList)
+        // console.log('collectionStore:', this.collectionList)
+        // console.log('store 저장', collectionStore.collection[0].collectionList)
+        // console.log('store apiList', collectionStore.collection[0].apiList)
       }
       catch (error) {
         console.error('리스트 가져오기 실패:', error)
@@ -64,19 +55,11 @@ export default {
 
       try {
         console.log('JSON: ', dataToSave)
-        const res = await axios.patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/modify`, modifyData, {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer sapiersapiersapiersapiersapiersapiersapiersapier`,
-            'Access-Control-Allow-Origin': '*',
-          },
-        })
-        console.log('데이터 저장 성공?', res)
-        console.log('저장될 데이터', modifyData)
+        const res = await axios.patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/modify`, modifyData)
+
+        console.log('데이터 저장 성공', res)
       }
       catch (error) {
-        console.log('저장 실패한 데이터', modifyData)
         console.error('데이터 저장 실패:', error)
       }
     },
@@ -86,7 +69,6 @@ export default {
     async saveCollectionName(collection) {
       collection.collectionName = collection.newName
       this.toggleEditing(collection)
-      console.log('저장되고있나?', collection.collectionName)
       await this.saveData()
     },
 
@@ -120,10 +102,10 @@ function createNewRootCollection() {
             >
             <button @click="toggleEditing(collection)">{{ collection.editing ? '완료' : '수정' }}</button>
           </span>
-          <button @click="addChildToCollection(collection, createNewRootCollection())">
-            자식 추가
+          <button @click="addChildCollection(collection)">
+            루트에서 자식 추가
           </button>
-          <CollectionTree :collection="collection" :level="1" @addChildCollection="addChildToCollection" @update-collection-name="updateCollectionName" />
+          <CollectionTree :collection="collection" :level="1" />
         </li>
       </ul>
       <button @click="addRootCollection">

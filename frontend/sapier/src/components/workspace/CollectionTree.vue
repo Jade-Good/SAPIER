@@ -17,13 +17,13 @@ export default {
     }
   },
   methods: {
-    addChildCollection(parentCollection) {
+    addChildCollection(collection) {
       const newCollection = createNewCollection()
 
-      if (!parentCollection.collectionList)
-        parentCollection.collectionList = []
+      if (!collection.collectionList)
+        collection.collectionList = []
 
-      parentCollection.collectionList.push(newCollection)
+      collection.collectionList.push(newCollection)
     },
 
     toggleEditing(collection) {
