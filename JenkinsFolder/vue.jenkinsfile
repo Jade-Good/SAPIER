@@ -66,20 +66,22 @@ pipeline{
         //     }
         // }
         stage('Docker Delete'){
-            script{
-                try{
-                    sh 'echo "Docker Delete Start"'
-                    sh 'docker ps'
-                    sh 'docker stop ${CONTAINER_NAME}'
-                    sh 'docker rm -f ${CONTAINER_NAME}'
-                } catch(Exception e){
-                    echo 'Docker container ${CONTAINER_NAME} does not exist. skip'
-                }
-                try{
-                    //이미지 존재 시 삭제
-                    sh 'docker image rm ${IMAGE_NAME}'
-                } catch(Exception e){
-                    echo 'Docker image ${IMAGE_NAME} does not exist. skip'
+            steps{
+                script{
+                    try{
+                        sh 'echo "Docker Delete Start"'
+                        sh 'docker ps'
+                        sh 'docker stop ${CONTAINER_NAME}'
+                        sh 'docker rm -f ${CONTAINER_NAME}'
+                    } catch(Exception e){
+                        echo 'Docker container ${CONTAINER_NAME} does not exist. skip'
+                    }
+                    try{
+                        //이미지 존재 시 삭제
+                        sh 'docker image rm ${IMAGE_NAME}'
+                    } catch(Exception e){
+                        echo 'Docker image ${IMAGE_NAME} does not exist. skip'
+                    }
                 }
             }
         }
@@ -94,7 +96,9 @@ pipeline{
         }
 
         stage('Deploy'){
-            sh 'docker run -p 3333:3333 --name ${CONTAINER_NAME} -d ${IMAGE_NAME}'
+            steps{
+                sh 'docker run -p 3333:3333 --name ${CONTAINER_NAME} -d ${IMAGE_NAME}'
+            }
         }
     }
 }
