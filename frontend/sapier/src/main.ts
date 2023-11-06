@@ -13,24 +13,6 @@ import 'uno.css'
 
 const routes = setupLayouts(generatedRoutes)
 
-const homeRoute = routes.find(route => route.path === '/')
-if (homeRoute) {
-  console.log('i found homeRoute')
-  homeRoute.meta = { requiresAuth: false }
-}
-
-const oauthRoute = routes.find(route => route.path === '/login/oauth')
-if (oauthRoute) {
-  console.log('i found oauthRoute')
-  oauthRoute.meta = { requiresAuth: false }
-}
-
-const redirectRoute = routes.find(route => route.path === '/login/redirect')
-if (redirectRoute) {
-  console.log('i found redirectRoute')
-  redirectRoute.meta = { requiresAuth: false }
-}
-
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
@@ -46,9 +28,18 @@ export const createApp = ViteSSG(
       .forEach(i => i.install?.(ctx))
     // ctx.app.use(Previewer)
 
+    // 로그인 상태 복원
+    const userStore = useUserStore()
+    const storedUserInfo = localStorage.getItem('sapier-user')
+    if (storedUserInfo) {
+      const userInfo = JSON.parse(storedUserInfo)
+      userStore.userInfo = userInfo
+      console.log(`userStore: ${userStore.userInfo}`)
+    }
+
     ctx.router.beforeEach((to) => {
       const userStore = useUserStore()
-      if (!(to.meta.requiresAuth === false) && !userStore.userInfo) {
+      if (to.meta.requiresAuth === true && !userStore.userInfo) {
         alert('로그인 해주세요.')
         return '/login/oauth'
       }
