@@ -38,7 +38,7 @@ if (isMounted) {
     .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`)
     .then((res) => {
       console.log(res)
-      WorkspaceListInfo.workSpaceInfo = res.data
+      WorkspaceListInfo.workspaceInfo = res.data
     })
     .catch((error) => {
       console.error(error)
@@ -58,7 +58,7 @@ function showInfoComponent(workspaceInfoOne: any) {
   <TheNav />
   <div flex class="mid">
     <div w-18 border-r-2 class="list">
-      <div v-for="workspace in WorkspaceListInfo.workSpaceInfo" :key="workspace.name" class="box">
+      <div v-for="workspace in WorkspaceListInfo.workspaceInfo" :key="workspace.name" class="box">
         <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace)">
           {{ workspace.name }}
         </div>

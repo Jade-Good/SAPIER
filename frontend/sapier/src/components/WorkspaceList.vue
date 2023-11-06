@@ -12,7 +12,7 @@ if (isMounted) {
     .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`)
     .then((res) => {
       console.log(res)
-      WorkspaceListInfo.workSpaceInfo = res.data
+      WorkspaceListInfo.workspaceInfo = res.data
       // dataElement.textContent = WorkspaceListInfo.workSpaceInfo.
     })
     .catch((error) => {
@@ -42,7 +42,7 @@ function truncateText(text: string, maxLength: number) {
 
 <template>
   <div w-18 border-r-2 class="list">
-    <div v-for="workspace in WorkspaceListInfo.workSpaceInfo" :key="workspace.name" class="box">
+    <div v-for="workspace in WorkspaceListInfo.workspaceInfo" :key="workspace.name" class="box">
       <div id="workSpaceListData" class="workspaceId" @click="workspaceInfo(workspace.name)">
         {{ truncateText(workspace.name, 4) }}
       </div>
