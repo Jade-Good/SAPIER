@@ -41,11 +41,13 @@ COPY . .
 # pnpm을 설치하고 의존성을 설치합니다.
 RUN npm install -g pnpm && pnpm install
 
-RUN pnpm build
+# RUN pnpm build
 
 # COPY dist /usr/share/nginx/html
 
 EXPOSE 3333
+
+CMD ["pnpm", "dev"]
 
 # RUN npm run dev
 # RUN pnpm run dev
