@@ -112,13 +112,7 @@ public class SecurityConfig {
 		corsConfiguration.addAllowedOriginPattern("http://192.168.31.175:3333");
 		corsConfiguration.addAllowedOriginPattern("http://localhost:3333");
 
-		corsConfiguration.addAllowedMethod("GET");
-		corsConfiguration.addAllowedMethod("DELETE");
-		corsConfiguration.addAllowedMethod("POST");
-		corsConfiguration.addAllowedMethod("PATCH");
-		corsConfiguration.addAllowedMethod("HEAD");
-		corsConfiguration.addAllowedMethod("OPTIONS");
-		corsConfiguration.addAllowedMethod("PUT");
+		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.setAllowCredentials(true);
 		source.registerCorsConfiguration("/**", corsConfiguration);
 
