@@ -1,15 +1,16 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-interface CollectionInfo {
+interface CollectionTree {
   collectionName: string
   apiList: string
+  collectionList: CollectionTree[]
   modifiedTime: string
 }
 
-export type { CollectionInfo }
+export type { CollectionTree }
 
 export const useCollectionStore = defineStore('collection', () => {
-  const collection = ref < CollectionInfo | null > (null)
+  const collection = ref < CollectionTree | null > (null)
 
   return {
     collection,
