@@ -15,7 +15,8 @@ export default {
   <div flex class="mid">
     <WorkspaceList />
     <!-- <WorkSpaceInfo w-full /> -->
-    <CollectionInfo w-60 />
+    <Category w-60 />
+    <!-- <CollectionInfo w-60 /> -->
     <RequestInfo h-full w-full />
   </div>
   <!-- <RouterView /> -->
