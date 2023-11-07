@@ -2,9 +2,20 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 
 interface CollectionTree {
   collectionName: string
-  apiList: string
+  apiList: ApitTree[]
   collectionList: CollectionTree[]
   modifiedTime: string
+}
+
+interface ApitTree {
+  apitName: string
+  url: string
+  method: string
+  headers: []
+  body: []
+  params: []
+  path: []
+  workspacesId: string
 }
 
 export type { CollectionTree }
