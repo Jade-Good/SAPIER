@@ -14,7 +14,7 @@ export default {
       ],
       isMethodList: false,
 
-      requestHigh: '600px',
+      requestHigh: '500',
       requestTap: 'Params',
       requestURL: 'http://',
       isResizing: false, // 크기 조절 중 여부
@@ -108,16 +108,18 @@ export default {
         flexDirection: 'column',
 
         width: '100%',
-        height: this.requestHigh,
+        height: `${this.requestHigh}px`,
         minHeight: '10.5rem',
         maxHeight: '90%',
 
         padding: '0.75rem',
+        paddingBottom: '3rem',
 
         overflow: 'auto',
 
         /* Style */
         border: '1px solid red',
+
       }
     },
 
@@ -147,7 +149,7 @@ export default {
         if (newHeight > maxHeight)
           newHeight = maxHeight
 
-        this.requestHigh = `${newHeight}px`
+        this.requestHigh = `${newHeight}`
 
         // Response 엘리먼트의 크기를 조절할 수도 있습니다.
 
@@ -161,8 +163,10 @@ export default {
     // --------------------------------------------------------
     setResponseStyle() {
       return {
-        height: `calc(100% - ${this.requestHigh})`, // 나머지 여백을 설정
+        height: `calc(100% - ${this.requestHigh}px)`, // 나머지 여백을 설정
         overflow: 'auto',
+        // paddingBottom: '3rem',
+
       }
     },
   },
@@ -254,10 +258,7 @@ export default {
       @mousemove="handleResizing"
       @mouseup="stopResizing"
     />
-    <div name="Response" w-full border border-blue :style="setResponseStyle()">
-      Response
-      <Headers />
-    </div>
+    <Response name="Response" w-full border border-blue :style="setResponseStyle()" />
   </div>
 </template>
 
