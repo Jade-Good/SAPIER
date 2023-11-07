@@ -210,7 +210,7 @@ export default {
           </div>
 
           <div v-if="isMethodList" class="methodList">
-            <div v-for="(method, idx) in methodList" :key="idx" :style="setMethodColor(method)" @click="chagneMethod(method)">
+            <div v-for="(method, idx) in methodList" :key="idx" :style="setMethodColor(method)" @click="changeMethod(method)">
               {{ method }}
             </div>
           </div>
