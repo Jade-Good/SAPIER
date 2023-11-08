@@ -116,3 +116,4 @@ yarn-error.log
 *.pem
 **/auto-imports.d.ts
 **/components.d.ts
+node_modules/
