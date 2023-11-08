@@ -21,9 +21,8 @@ if (isMounted) {
     )
 }
 
-function workspaceInfo(workspaceName) {
-  const workspaceInfoUrl = `${import.meta.env.VITE_FRONT_URL}/workspaces/workspace?name=${workspaceName}`
-  window.location.href = workspaceInfoUrl
+function handleWorkspaceClick(index) {
+  WorkspaceListInfo.selectedWorkspaceIndex = index
 }
 
 function truncateText(text: string, maxLength: number) {
@@ -33,6 +32,7 @@ function truncateText(text: string, maxLength: number) {
   else
     return text
 }
+
 // const dataToSend = {
 //   param1: ,
 // };
@@ -42,8 +42,8 @@ function truncateText(text: string, maxLength: number) {
 
 <template>
   <div w-18 border-r-2 class="list">
-    <div v-for="workspace in WorkspaceListInfo.workspaceInfo" :key="workspace.name" class="box">
-      <div id="workSpaceListData" class="workspaceId" @click="workspaceInfo(workspace.name)">
+    <div v-for="(workspace, index) in WorkspaceListInfo.workspaceInfo" :key="workspace.name" class="box">
+      <div id="workSpaceListData" class="workspaceId" @click="handleWorkspaceClick(index)">
         {{ truncateText(workspace.name, 4) }}
       </div>
     </div>
