@@ -29,16 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final String[] SWAGGER_URI_LIST = {
-		"/swagger-ui/**",
-		"/api-docs/**",
-	};
-
-	private final String[] LOGIN_URI_LIST = {
-		"/api/oauth2/authorization",
-		"/api/login/oauth2/code/**",
-	};
-
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
 	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
@@ -67,19 +57,11 @@ public class SecurityConfig {
 		httpSecurity
 			.authorizeHttpRequests(c -> {
 				c
-					.requestMatchers(HttpMethod.GET, LOGIN_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
-					.requestMatchers(HttpMethod.GET, SWAGGER_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
+					// .requestMatchers(HttpMethod.GET, LOGIN_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
+					// .requestMatchers(HttpMethod.GET, SWAGGER_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
 					.requestMatchers("/**").hasAnyRole("USER")//권한 별 접근 URL 설정
 					.anyRequest().authenticated();
 			});  //그 외에 대한 URL에 대해서는 Authentication이 필요함을 설정
-
-		//TEST
-		// httpSecurity
-		// 	.authorizeHttpRequests(c -> {c
-		// 				.requestMatchers(HttpMethod.GET, "/**").permitAll()
-		// 				.requestMatchers(HttpMethod.POST, "/**").permitAll()
-		// 				.requestMatchers(HttpMethod.PATCH, "/**").permitAll()
-		// 				.requestMatchers(HttpMethod.DELETE, "/**").permitAll();});
 
 		//인증 (Oauth2)
 		//Oauth2 인증방식을 사용한다.
@@ -110,9 +92,8 @@ public class SecurityConfig {
 
 		// 커스텀필터
 		httpSecurity
-			.addFilterBefore(customFilterFactory.createJwtAuthenticationFilter(),
+			.addFilterAfter(customFilterFactory.createJwtAuthenticationFilter(),
 				UsernamePasswordAuthenticationFilter.class);
-		// .securityMatcher("/api/v1/**");
 
 		return httpSecurity.build();
 	}
