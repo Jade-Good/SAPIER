@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface HistoryRepository extends MongoRepository<HistoryEntity, String> {
-    List<HistoryEntity> findAllByOrderByCreatedTimeDesc();
+    List<HistoryEntity> findAllByUuidOrderByCreatedTimeDesc(String Uuid);
 }
