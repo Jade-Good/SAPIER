@@ -9,24 +9,36 @@ export default defineComponent({
     const workspaceStore = useWorkspaceStore()
 
     watchEffect(() => {
+      // console.log('watchEffect 실행')
       const workspaceIdx = workspaceStore.selectedWorkspaceIndex
+      // console.log('workspaceIdx : ', workspaceIdx)
       const idList: string[] = []
-      if (idList !== null && workspaceStore.workspaceInfo && workspaceStore.workspaceInfo[workspaceIdx].collectionId) {
-        for (let i = 0; i < workspaceStore.workspaceInfo[workspaceIdx].collectionId.length; i++)
-          idList.push(workspaceStore.workspaceInfo[workspaceIdx].collectionId)
-      }
+      // console.log('workspaceInfo : ', workspaceStore.workspaceInfo)
+      // console.log('workspaceStore.workspaceInfo[workspaceIdx].collectionList : ', workspaceStore.workspaceInfo[workspaceIdx].collectionList)
 
+      if (idList !== null && workspaceStore.workspaceInfo && workspaceStore.workspaceInfo[workspaceIdx].collectionList) {
+        for (let i = 0; i < workspaceStore.workspaceInfo[workspaceIdx].collectionList.length; i++)
+          idList.push(workspaceStore.workspaceInfo[workspaceIdx].collectionList[i].collectionKey)
+      }
       else { idList.length = 0 }
 
-      const collectionIds = Array.from({ length: idList.length })
-      // const plainArray = idList.map(item => item[0])
-      const plainArray = idList[0]
+      // console.log('idList : ', idList)
 
-      for (let i = 0; i < collectionIds.length; i++)
-        collectionIds[i] = plainArray[i]
+      // const collectionIds = Array.from({ length: idList.length })
+      // // const plainArray = idList.map(item => item[0])
+      // const plainArray = idList[0]
+
+      // for (let i = 0; i < collectionIds.length; i++)
+      //   collectionIds[i] = plainArray[i]
+      // const collectionId = {
+      //   collectionId: collectionIds,
+      // }
+
       const collectionId = {
-        collectionId: collectionIds,
+        collectionId: idList,
       }
+
+      console.log('collectionId : ', collectionId)
 
       if (idList.length > 0) {
         axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/list`, collectionId)
@@ -106,6 +118,11 @@ export default defineComponent({
       }
     }
 
+    const selectAPI = (api) => {
+      console.log('api : ', api)
+      collectionStore.api = api
+    }
+
     return {
       collectionList,
       addRootCollection,
@@ -115,6 +132,7 @@ export default defineComponent({
       toggleEditing,
       saveCollectionName,
       deleteCollection,
+      selectAPI,
     }
   },
 })
@@ -129,6 +147,12 @@ export default defineComponent({
 
       <ul>
         <li v-for="collection in documentId" :key="collection.collectionName">
+          <ul>
+            <li v-for="api in collection.apiList" :key="api.requestName">
+              <a @click="selectAPI(api)">{{ api.requestName }}</a>
+            </li>
+          </ul>
+
           <span :style="{ marginLeft: '0px' }">
             <span v-if="!collection.editing">{{ collection.collectionName }}</span>
             <input
@@ -147,7 +171,8 @@ export default defineComponent({
           </button>
           <CollectionTree :collection="collection" :level="1" />
         </li>
-      </ul><button class="er" @click="addRootCollection">
+      </ul>
+      <button class="er" @click="addRootCollection">
         루트폴더 추가
       </button>
       <br>

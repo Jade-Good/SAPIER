@@ -11,7 +11,7 @@ if (isMounted) {
   axios
     .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`)
     .then((res) => {
-      console.log(res)
+      console.log('워크스페이스 리스트 : ', res)
       WorkspaceListInfo.workspaceInfo = res.data
       // dataElement.textContent = WorkspaceListInfo.workSpaceInfo.
     })

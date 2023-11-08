@@ -4,7 +4,7 @@ import type { CollectionTree } from './collection'
 import type { UserInfo } from './user'
 
 interface WorkspaceInfo {
-  id: string
+  key: string
   name: string
   collectionList: CollectionTree[]
   memberList: UserInfo[]
