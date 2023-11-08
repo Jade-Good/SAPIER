@@ -1,6 +1,5 @@
 package com.esfp.sapaier.domain.history.service;
 
-import com.esfp.sapaier.domain.collection.repository.entity.RequestEntity;
 import com.esfp.sapaier.domain.history.model.dto.DailyHistoryDto;
 import com.esfp.sapaier.domain.history.model.dto.WorkspaceHistoryDto;
 import com.esfp.sapaier.domain.history.repository.HistoryRepository;
@@ -20,7 +19,7 @@ public class HistoryService {
     private final HistoryRepository historyRepository;
 
     public List<DailyHistoryDto> getAllDailyHistoryList(String uuid){
-        List<HistoryEntity> historyList = historyRepository.findAllByOrderByCreatedTimeDesc();
+        List<HistoryEntity> historyList = historyRepository.findAllByUuidOrderByCreatedTimeDesc(uuid);
         List<List<HistoryEntity>> workspaceHistoryList = new LinkedList<>(); //같은 날짜의 history들 workspace별로 저장(날짜별로 계속 갱신)
         List<DailyHistoryDto> result = new LinkedList<>();
         LocalDate date = LocalDate.MIN;
