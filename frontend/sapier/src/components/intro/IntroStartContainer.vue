@@ -10,7 +10,7 @@
 .intro_start{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
 
     height: 60%;
 
