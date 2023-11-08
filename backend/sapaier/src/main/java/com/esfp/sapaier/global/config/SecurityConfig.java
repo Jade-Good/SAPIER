@@ -67,8 +67,8 @@ public class SecurityConfig {
 		httpSecurity
 			.authorizeHttpRequests(c -> {
 				c
+					.requestMatchers(HttpMethod.GET, LOGIN_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
 					.requestMatchers(HttpMethod.GET, SWAGGER_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
-					.requestMatchers(HttpMethod.GET, LOGIN_URI_LIST).permitAll() //권한 필요없는 POST 허용 리스트 설정
 					.requestMatchers("/**").hasAnyRole("USER")//권한 별 접근 URL 설정
 					.anyRequest().authenticated();
 			});  //그 외에 대한 URL에 대해서는 Authentication이 필요함을 설정
@@ -111,8 +111,8 @@ public class SecurityConfig {
 		// 커스텀필터
 		httpSecurity
 			.addFilterBefore(customFilterFactory.createJwtAuthenticationFilter(),
-				UsernamePasswordAuthenticationFilter.class)
-			.securityMatcher("/api/v1/**");
+				UsernamePasswordAuthenticationFilter.class);
+		// .securityMatcher("/api/v1/**");
 
 		return httpSecurity.build();
 	}
