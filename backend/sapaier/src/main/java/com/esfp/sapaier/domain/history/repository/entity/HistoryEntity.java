@@ -27,5 +27,6 @@ public class HistoryEntity {
 //    private LocalDateTime modifiedTime;
 
     private String workSpaceId; //해당 request가 어느 workspace에 속했는지
+    private String uuid;
 
 }
