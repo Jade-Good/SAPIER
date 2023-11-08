@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class DailyHistoryDto {
     private String uuid;
-    private List<WorkspaceHistoryDto> workspaceHistories;
     private LocalDate date;
+    private List<WorkspaceHistoryDto> workspaceHistories;
 
 }

@@ -41,7 +41,7 @@ public class HistoryService {
                         WorkspaceHistoryDto workspaceHistoryDto = new WorkspaceHistoryDto(uuid, workspaceId, date, workspace);
                         workspaceLists.add(workspaceHistoryDto);
                     }
-                    DailyHistoryDto dailyHistoryDto = new DailyHistoryDto(uuid, workspaceLists, date);
+                    DailyHistoryDto dailyHistoryDto = new DailyHistoryDto(uuid, date, workspaceLists);
                     result.add(dailyHistoryDto);
                     //이전 일자의 history 전부 저장했다면, workspaceHistoryList 초기화 후 새 history 저장 시작
                     workspaceHistoryList = new LinkedList<>();
@@ -76,7 +76,7 @@ public class HistoryService {
             WorkspaceHistoryDto workspaceHistoryDto = new WorkspaceHistoryDto(uuid, workspaceId, date, workspace);
             workspaceLists.add(workspaceHistoryDto);
         }
-        DailyHistoryDto dailyHistoryDto = new DailyHistoryDto(uuid, workspaceLists, date);
+        DailyHistoryDto dailyHistoryDto = new DailyHistoryDto(uuid, date, workspaceLists);
         result.add(dailyHistoryDto);
 
         return result;
