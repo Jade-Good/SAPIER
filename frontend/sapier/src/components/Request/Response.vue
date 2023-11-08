@@ -34,52 +34,97 @@ export default {
                   "model_version" : "v2.0.3.prod",
                   "seed" : "asdsdd3wer132qwer2",
               }
-          ]
+          ],
+          "id" : "d3wer132qwer2",
+          "model_version" : "v2.0.3.prod",
+          "imges" : [
+              {
+                  "id" : "d3wer132qwer2",
+                  "model_version" : "v2.0.3.prod",
+                  "id" : "d3wer132qwer2",
+                  "model_version" : "v2.0.3.prod",
+                  "seed" : "asdsdd3wer132qwer2",
+              }
+          ],
+          "id" : "d3wer132qwer2",
+          "model_version" : "v2.0.3.prod",
+          "imges" : [
+              {
+                  "id" : "d3wer132qwer2",
+                  "model_version" : "v2.0.3.prod",
+                  "id" : "d3wer132qwer2",
+                  "model_version" : "v2.0.3.prod",
+                  "seed" : "asdsdd3wer132qwer2",
+              }
+          ],
+          "id" : "d3wer132qwer2",
+          "model_version" : "v2.0.3.prod",
+          "imges" : [
+              {
+                  "id" : "d3wer132qwer2",
+                  "model_version" : "v2.0.3.prod",
+                  "id" : "d3wer132qwer2",
+                  "model_version" : "v2.0.3.prod",
+                  "seed" : "asdsdd3wer132qwer2",
+              }
+          ],
       }`,
     }
   },
   mounted() {
-
+    this.textFunction()
   },
   methods: {
+    textFunction() {
+      const temp = { a: 2, b: 4 }
+      console.log(temp)
 
-    startResizing(event: MouseEvent) {
-      this.isResizing = true
-      this.startY = event.clientY
+      this.a(temp)
 
-      const ss = this.requestHigh.match(/\d+/g)
-      if (ss)
-        this.startHeight = Number.parseInt(ss.toString())
+      console.log(temp)
     },
 
-    handleResizing(event: MouseEvent) {
-      if (this.isResizing) {
-        const deltaY = event.clientY - this.startY
-        let newHeight = this.startHeight + deltaY
-
-        const htmlElement = document.documentElement
-        const computedFontSize = window.getComputedStyle(htmlElement).getPropertyValue('font-size')
-        const minHeight = Number.parseFloat(computedFontSize) * 10.5
-
-        const maxHeight = this.$el.clientHeight * 0.9
-
-        if (newHeight < minHeight)
-          newHeight = minHeight
-
-        if (newHeight > maxHeight)
-          newHeight = maxHeight
-
-        this.requestHigh = `${newHeight}`
-
-        // Response 엘리먼트의 크기를 조절할 수도 있습니다.
-
-        event.preventDefault()
-      }
+    a(temp: Object) {
+      temp.a = 4
     },
 
-    stopResizing() {
-      this.isResizing = false
-    },
+    // startResizing(event: MouseEvent) {
+    //   this.isResizing = true
+    //   this.startY = event.clientY
+
+    //   const ss = this.requestHigh.match(/\d+/g)
+    //   if (ss)
+    //     this.startHeight = Number.parseInt(ss.toString())
+    // },
+
+    // handleResizing(event: MouseEvent) {
+    //   if (this.isResizing) {
+    //     const deltaY = event.clientY - this.startY
+    //     let newHeight = this.startHeight + deltaY
+
+    //     const htmlElement = document.documentElement
+    //     const computedFontSize = window.getComputedStyle(htmlElement).getPropertyValue('font-size')
+    //     const minHeight = Number.parseFloat(computedFontSize) * 10.5
+
+    //     const maxHeight = this.$el.clientHeight * 0.9
+
+    //     if (newHeight < minHeight)
+    //       newHeight = minHeight
+
+    //     if (newHeight > maxHeight)
+    //       newHeight = maxHeight
+
+    //     this.requestHigh = `${newHeight}`
+
+    //     // Response 엘리먼트의 크기를 조절할 수도 있습니다.
+
+    //     event.preventDefault()
+    //   }
+    // },
+
+    // stopResizing() {
+    //   this.isResizing = false
+    // },
   },
 }
 </script>
