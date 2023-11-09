@@ -36,9 +36,6 @@ if (isMounted) {
 
   window.addEventListener('mousemove', handleResizing)
   window.addEventListener('mouseup', stopResizing)
-
-  if (useCollection.request && useCollection.request.method)
-    selectMethod.value = useCollection.request.method
 };
 
 watch(() => useCollection.request, () => {
@@ -205,7 +202,6 @@ async function sendAPI() {
     console.log('API 전송 성공', res)
 
     useCollection.response = res
-    console.log('useCollection.response', useCollection.response)
   }
   catch (error) {
     console.error('API 전송 실패:', error)

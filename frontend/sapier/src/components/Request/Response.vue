@@ -1,130 +1,83 @@
-<script lang="ts">
-export default {
-  data() {
-    return {
-      headers: [
-        { key: 'server', value: 'NWS' },
-        { key: 'date', value: 'Wed, 25 Oct 2023 02:26:26 GMT +18' },
-        { key: 'content-type', value: 'text/html' },
-        { key: 'location', value: 'http://www.naver.com/' },
-        { key: 'vary', value: 'Accept-Encoding,User-Agent' },
-        { key: 'referrer-policy', value: 'unsafe-url' },
-        { key: 'server', value: 'NWS' },
-        { key: 'date', value: 'Wed, 25 Oct 2023 02:26:26 GMT +18' },
-        { key: 'content-type', value: 'text/html' },
-        { key: 'location', value: 'http://www.naver.com/' },
-        { key: 'vary', value: 'Accept-Encoding,User-Agent' },
-        { key: 'referrer-policy', value: 'unsafe-url' },
-        { key: 'server', value: 'NWS' },
-        { key: 'date', value: 'Wed, 25 Oct 2023 02:26:26 GMT +18' },
-        { key: 'content-type', value: 'text/html' },
-        { key: 'location', value: 'http://www.naver.com/' },
-        { key: 'vary', value: 'Accept-Encoding,User-Agent' },
-        { key: 'referrer-policy', value: 'unsafe-url' },
-      ],
-      body:
-      `{
-          "id" : "d3wer132qwer2",
-          "model_version" : "v2.0.3.prod",
-          "imges" : [
-              {
-                  "id" : "d3wer132qwer2",
-                  "model_version" : "v2.0.3.prod",
-                  "id" : "d3wer132qwer2",
-                  "model_version" : "v2.0.3.prod",
-                  "seed" : "asdsdd3wer132qwer2",
-              }
-          ],
-          "id" : "d3wer132qwer2",
-          "model_version" : "v2.0.3.prod",
-          "imges" : [
-              {
-                  "id" : "d3wer132qwer2",
-                  "model_version" : "v2.0.3.prod",
-                  "id" : "d3wer132qwer2",
-                  "model_version" : "v2.0.3.prod",
-                  "seed" : "asdsdd3wer132qwer2",
-              }
-          ],
-          "id" : "d3wer132qwer2",
-          "model_version" : "v2.0.3.prod",
-          "imges" : [
-              {
-                  "id" : "d3wer132qwer2",
-                  "model_version" : "v2.0.3.prod",
-                  "id" : "d3wer132qwer2",
-                  "model_version" : "v2.0.3.prod",
-                  "seed" : "asdsdd3wer132qwer2",
-              }
-          ],
-          "id" : "d3wer132qwer2",
-          "model_version" : "v2.0.3.prod",
-          "imges" : [
-              {
-                  "id" : "d3wer132qwer2",
-                  "model_version" : "v2.0.3.prod",
-                  "id" : "d3wer132qwer2",
-                  "model_version" : "v2.0.3.prod",
-                  "seed" : "asdsdd3wer132qwer2",
-              }
-          ],
-      }`,
-    }
-  },
-  mounted() {
-  },
-  methods: {
+<script setup lang="ts">
+import axios from 'axios'
 
-    // startResizing(event: MouseEvent) {
-    //   this.isResizing = true
-    //   this.startY = event.clientY
+const useCollection = useCollectionStore()
+const requestCode = ref(0)
+const requestHeaders = ref({ test1: '123', test2: 12321 })
+const requestBody = ref('testtest')
 
-    //   const ss = this.requestHigh.match(/\d+/g)
-    //   if (ss)
-    //     this.startHeight = Number.parseInt(ss.toString())
-    // },
+watch(() => useCollection.response, () => {
+  if (useCollection.response) {
+    console.log('response : ', useCollection.response)
 
-    // handleResizing(event: MouseEvent) {
-    //   if (this.isResizing) {
-    //     const deltaY = event.clientY - this.startY
-    //     let newHeight = this.startHeight + deltaY
+    requestCode.value = useCollection.response.status
+    requestHeaders.value = useCollection.response.headers
+    requestBody.value = useCollection.response.data
+  }
+})
 
-    //     const htmlElement = document.documentElement
-    //     const computedFontSize = window.getComputedStyle(htmlElement).getPropertyValue('font-size')
-    //     const minHeight = Number.parseFloat(computedFontSize) * 10.5
+function resultCodeStyle() {
+  let method = ''
 
-    //     const maxHeight = this.$el.clientHeight * 0.9
+  switch (Math.floor(requestCode.value / 100)) {
+    case 2:
+      method = 'POST'
+      break
+    case 4:
+      method = 'DELETE'
+      break
+    case 5:
+      method = 'PATCH'
+      break
+  }
 
-    //     if (newHeight < minHeight)
-    //       newHeight = minHeight
+  return {
+    padding: '0.5rem 1.5rem',
 
-    //     if (newHeight > maxHeight)
-    //       newHeight = maxHeight
-
-    //     this.requestHigh = `${newHeight}`
-
-    //     // Response 엘리먼트의 크기를 조절할 수도 있습니다.
-
-    //     event.preventDefault()
-    //   }
-    // },
-
-    // stopResizing() {
-    //   this.isResizing = false
-    // },
-  },
+    backgroundColor: `var(--color-${method})`,
+    color: 'white',
+    fontFamily: 'Atkinson Hyperlegible',
+    fontSize: '36px',
+    fontStyle: 'normal',
+    fontWeight: '700',
+    lineHeight: 'normal',
+  }
 }
+
+// ---------------- 메서드 리스트 토글기능 ----------------
+function setMethodBtnStyle() {
+  return {
+    /* layout */
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '0 0.5rem 0 0.8rem',
+    width: '10rem',
+    lineHeight: '2rem',
+
+    /* Style */
+    borderRadius: '5px',
+    outline: isMethodList.value ? '3px solid var(--color-blue2)' : 'none',
+
+    color: 'white',
+    backgroundColor: `var(--color-${selectMethod.value})`,
+
+    fontSize: 'var(--font-H2-size)',
+    fontWeight: 'var(--font-H2-weight)',
+
+    cursor: 'pointer',
+  }
+};
 </script>
 
 <template>
   <div h-full>
     <p style="font-size: var(--font-H3-size);" p-3>
-      Response
+      Response{{ }}
     </p>
-    <div class="resultCode">
-      202
+    <div v-if="requestCode > 0" :style="resultCodeStyle()">
+      {{ requestCode }}
     </div>
-    <div flex flex-gap-5 style="height: calc(100% - 2rem); padding: 1.25rem 1.25rem 0 1.25rem;">
+    <div v-if="requestCode > 0" flex flex-gap-5 style="height: calc(100% - 2rem); padding: 1.25rem 1.25rem 0 1.25rem;">
       <div style="width: 100%; min-width: 20rem; max-width: 100%;" pb-3>
         <p style="font-size: var(--font-H2-size); font-weight: var(--font-H2-weight); border-bottom: 1px solid var(--color-gray3);" mb-2 pb-2>
           HEADERS
@@ -135,11 +88,11 @@ export default {
             <col style="width: 70%;">
           </colgroup>
           <tbody>
-            <tr v-for="(head, index) in headers" :key="index">
+            <tr v-for="(value, key) in requestHeaders" :key="key">
               <td>
-                {{ head.key }}
+                {{ key }}
               </td>
-              <td>{{ head.value }}</td>
+              <td>{{ value }}</td>
             </tr>
           </tbody>
         </table>
@@ -156,7 +109,7 @@ export default {
         <p style="font-size: var(--font-H2-size); font-weight: var(--font-H2-weight); border-bottom: 1px solid var(--color-gray3);" pb-2>
           BODY
         </p>
-        <textarea class="bodyText" readonly>{{ body }}</textarea>
+        <textarea class="bodyText" readonly>{{ requestBody }}</textarea>
       </div>
     </div>
   </div>
@@ -183,18 +136,6 @@ textarea.bodyText {
   height: calc(100% - 3rem);
   width: 100%;
   resize: none;
-}
-.resultCode {
-
-  padding: 0.5rem 1.5rem;
-
-  background-color: var(--color-POST);
-  color: white;
-  font-family: Atkinson Hyperlegible;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
 }
 
 .resize-line {
