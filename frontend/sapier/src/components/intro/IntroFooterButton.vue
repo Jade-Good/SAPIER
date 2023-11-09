@@ -36,7 +36,7 @@ export default{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    font-size: 200%;
+    font-size: 2.5vw;
     font-weight: 500;
 }
 

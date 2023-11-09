@@ -19,7 +19,6 @@
     flex-direction: column;
     justify-content: center;
 
-    height: 15%;
     width: auto;
     background-color: #FFFFFF;
 }
