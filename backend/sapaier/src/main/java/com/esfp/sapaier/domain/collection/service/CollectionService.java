@@ -1,6 +1,7 @@
 package com.esfp.sapaier.domain.collection.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -62,5 +63,11 @@ public class CollectionService {
 			modifyCollectionRequestDto.get(0).getApiList(),
 			modifyCollectionRequestDto.get(0).getCollectionList()
 		));
+	}
+
+	public String rootCollectionName(String collectionId){
+		CollectionEntity collection = collectionRepository.findById(collectionId)
+				.orElseThrow(() -> new NoCollectionException(NO_COLLECTION_EXCEPTION));
+		return collection.getCollectionName();
 	}
 }
