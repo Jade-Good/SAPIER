@@ -3,6 +3,12 @@
 
 const userInfo = useUserStore();
 
+let socialProviderIcon = "";
+if(userInfo.userInfo.socialProvider === "GOOGLE")
+    socialProviderIcon = "/src/components/main/google.png";
+else if(userInfo.userInfo.socialProvider === "GITHUB")
+    socialProviderIcon = "/src/components/main/github.png";
+
 const mailLink = "mailto:" + `${userInfo.userInfo.email}`;
 </script>
 
@@ -10,7 +16,7 @@ const mailLink = "mailto:" + `${userInfo.userInfo.email}`;
 <template>
     <div class="user_info_detail_container">
         <UserInfoDetail 
-            src="/src/components/main/nickname_icon.png"
+            :src=socialProviderIcon
             :data=userInfo.userInfo.nickname />
         
         <UserInfoDetail 
