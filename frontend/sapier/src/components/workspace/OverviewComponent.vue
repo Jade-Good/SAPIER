@@ -156,7 +156,7 @@ function removeCollection(collectionId) {
       </div>
 
       <div class="maindiv">
-        <div v-if="memberInfo.member.length >= 2">
+        <div v-if="memberInfo.member && memberInfo.member.length >= 2">
           <h5 class="maindivHeader">
             Contributors
           </h5>

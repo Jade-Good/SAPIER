@@ -51,7 +51,6 @@ if (isMounted) {
 function showInfoComponent(workspaceInfoOne: any) {
   currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
   // workspaceinfo.value = workspaceInfoOne
-  WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
   console.log('----------main------------')
   console.log(workspaceinfo)
   WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
@@ -74,7 +73,7 @@ function truncateText(text: string, maxLength: number) {
   <TheNav />
   <div flex class="mid">
     <div w-18 border-r-2 class="list">
-      <div v-for="workspace in WorkspaceListInfo.WorkspaceList" :key="workspace.name" class="box">
+      <div v-for="workspace in WorkspaceListInfo.WorkspaceList" :key="workspace.name" class="box" :style="{ backgroundColor: workspace.color }">
         <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace)">
           {{ truncateText(workspace.name, 4) }}
         </div>
@@ -112,7 +111,8 @@ function truncateText(text: string, maxLength: number) {
   width: 50px;
   height: 50px;
   border: 2px solid #000; /* 테두리 스타일 및 색상 설정 */
-  background-color: yellow; /* 배경색 설정 */
+  background-color:#0F4C81; /* 배경색 설정 */
+  color:#F0F0F0
 }
 
 .workspaceId{

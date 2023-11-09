@@ -37,6 +37,12 @@ public class WorkSpaceService {
         workSpaceRepository.save(workSpace);
     }
 
+    public void deleteWorkSpace(String workSpaceIdx) {
+        workSpaceRepository.deleteById(workSpaceIdx);
+    }
+
+
+
     public WorkSpace infoWorkSpace(String workSpaceIdx) {
         Optional<WorkSpace> optionalWorkSpace = workSpaceRepository.findById(workSpaceIdx);
 
@@ -47,10 +53,7 @@ public class WorkSpaceService {
             return  null;
         }
     }
-//    public WorkSpace searchWorkSpace(String workspaceIdx) {
-//        WorkSpace workSpace = workSpaceRepository.findById(workspaceIdx).orElseThrow(() -> new NoSuchElementException("정보가 존재하지 않습니다"));
-//        return workSpace;
-//    }
+
 
 
 
@@ -95,21 +98,25 @@ public class WorkSpaceService {
     public void deleteMember(String workspaceidx, String memberuuId) {
 //        workSpaceRepository.deleteUserPermissionByWorkspaceIdxAndUuId(workspaceidx,memberuuId);
 //        workSpaceRepository.deleteByWorkspaceIdxAndUuId(workspaceidx, memberuuId);
-        Optional<WorkSpace> optionalWorkSpace = workSpaceRepository.findById(workspaceidx);
+        WorkSpace workSpace = workSpaceRepository.findById(workspaceidx).orElseThrow(() -> new NoSuchElementException("deleteMember에서 findById 존재하지 않습니다"));
 
-        if (optionalWorkSpace.isPresent()) {
-            WorkSpace workSpace = optionalWorkSpace.get();
-//            System.out.println(workSpace);
+
+        if (workSpace!=null) {
+            System.out.println(workSpace);
             List<UserPermissionDto> userList =workSpace.getMemberList();
             for (int i = 0; i < userList.size(); i++) {
                 if(userList.get(i).getUuId().equals(memberuuId)) {
                     userList.remove(i);
                 }
             }
+            System.out.println("ifans skdhadddddddd");
+
             workSpaceRepository.save(workSpace);
 //            return  workSpace;
 
         }
+        System.out.println("if out");
+
 //        else {
 //
 //            return  null;
