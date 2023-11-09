@@ -1,14 +1,22 @@
 <script setup>
+import { defineStore } from 'pinia'
 import axios from 'axios'
 
-const props = defineProps({
-  workspaceone: Object,
-})
+// const props = defineProps({
+//   workspaceone: Object,
+// })
+const WorkspaceOneInfo = useWorkspaceStore()
+
+// const { workspaceone } = defineProps(['workspaceone'])
 
 const memberInfo = useUserStore()
 const isMounted = useMounted()
 
+// const workspaceName = ref(workspaceone.name)
+const shouldRender = ref(true) // 초기값 설정
 const searchInput = ref('')
+const componentKey = ref(0)
+
 const boxColor = ref('yellow') // 초기 색상 설정
 const colors = ['red', 'blue', 'green', 'purple', 'orange'] // 사용할 색상 목록
 const alphabet = ['A', 'B', 'C', 'D', 'E'] // 사용할 색상 목록
@@ -20,7 +28,7 @@ axios.defaults.withCredentials = true
 
 if (isMounted) {
   axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${props.workspaceone.key}`)
+    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
     .then((res) => {
       console.log('memberList (setting component)가져오기')
       console.log(res)
@@ -31,10 +39,121 @@ if (isMounted) {
     },
     )
 }
+
+// workspaceone 변경 감시
+watch(() => WorkspaceOneInfo.workspaceInfo, async (newWorkspaceOne) => {
+  if (newWorkspaceOne) {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${newWorkspaceOne.key}`)
+      console.log('memberList 가져오기')
+      console.log(res)
+      memberInfo.member = res.data
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+})
+
+computed(() => {
+
+})
+
+const dropdownData = ref({
+  isOpen: false, // 드롭다운 메뉴 표시 여부
+  selectedPermission: null, // 선택한 권한
+})
+
+// 드롭다운을 토글하는 메서드
+function toggleDropdown() {
+  dropdownData.value.isOpen = !dropdownData.value.isOpen
+}
+
+// 권한 선택 메서드
+function selectPermission(user, userpermission) {
+  user.selectedPermission = userpermission
+  dropdownData.value.isOpen = false // 드롭다운 닫기
+  console.log(user)
+  console.log('sdfsdfsdfsdfsdf')
+
+  // for (let index = 0; index < props.workspaceone.memberList.length; index++) {
+  //   if (user.uuid === props.workspaceone.memberList.uuId[index])
+  //     workspaceone.memberList.userPermission[index] = permission
+  // }
+  for (let index = 0; index < WorkspaceOneInfo.workspaceInfo.memberList.length; index++) {
+    if (WorkspaceOneInfo.workspaceInfo.memberList[index].uuId === user.uuid)
+      WorkspaceOneInfo.workspaceInfo.memberList[index].userPermission = userpermission
+  }
+  const data = {
+    workspaceIdx: WorkspaceOneInfo.workspaceInfo.key,
+    memberUuid: user.uuid,
+    permission: userpermission,
+  }
+  axios
+    .patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${user.uuid}`, data)
+    .then((res) => {
+      console.log('memberList (setting component)patch')
+      console.log(res)
+      memberInfo.member = res.data
+
+      user.selectedPermission = userpermission
+    })
+    .catch((error) => {
+      console.log(error)
+    },
+    )
+}
+
+function updateWorkspaceName(event) {
+  // 사용자가 입력 필드의 내용을 수정할 때 호출됩니다.
+
+  const newName = event
+
+  WorkspaceOneInfo.updateWorkspaceName(newName)
+  // WorkspaceOneInfo.workspaceInfo.name = newName
+
+  // updateWorkspaceName 함수 내에서 shouldRender 값을 변경하여 재렌더링
+  // shouldRender.value = !shouldRender.value
+  // shouldRender.value = true
+  console.log('updateWorkspaceName')
+  console.log(WorkspaceOneInfo.workspaceInfo)
+  componentKey.value += 1
+}
+
+// Leave Workspace 버튼 클릭 시 실행될 메서드
+function leaveWorkspace() {
+  // Leave Workspace 로직 구현
+  console.log(WorkspaceOneInfo.workspaceInfo.key)
+
+  const data = {
+    workspaceIdx: WorkspaceOneInfo.workspaceInfo.key,
+  }
+  axios
+    .delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${memberInfo.userInfo.uuid}`, data)
+    .then((res) => {
+      console.log('leaveWorkspace (setting component)delete')
+      console.log(res)
+      memberInfo.member = res.data
+
+      user.selectedPermission = userpermission
+    })
+    .catch((error) => {
+      console.log(error)
+    },
+    )
+  console.log('leaveworkspaceddddddddddddddddddddddddddddd')
+
+  console.log(memberInfo.userInfo.uuid)
+}
+
+// Delete Workspace 버튼 클릭 시 실행될 메서드
+function deleteWorkspace() {
+  // Delete Workspace 로직 구현
+}
 </script>
 
 <template>
-  <div class="mainInfo">
+  <div :key="componentKey" class="mainInfo">
     <div class="overview">
       <div class="maindiv">
         <h5 class="maindivHeader">
@@ -42,14 +161,16 @@ if (isMounted) {
         </h5>
         <div>워크스페이스 이름과 팀코드, 썸네일 설정</div>
         <div class="workspacemaindiv">
-          <div class="box" :style="{ backgroundColor: boxColor }">
-            <div id="workSpaceListData" class="workspaceId">
-              {{ workspaceone.name }}
+          <div v-if="shouldRender">
+            <div class="box" :style="{ backgroundColor: boxColor }">
+              <div id="workSpaceListData" class="workspaceId">
+                {{ WorkspaceOneInfo.workspaceInfo.name }}
+              </div>
             </div>
           </div>
           <div ml-5 w-80>
             <div>워크스페이스 이름 </div>
-            <input v-model="workspaceone.name" type="text">
+            <input :value="WorkspaceOneInfo.workspaceInfo.name" type="text" @keyup.enter="updateWorkspaceName($event.target.value)"><!-- v-model="workspaceone.name" -->
 
             <div class="changeColor_div">
               <div v-for="(color, index) in colors" :key="alphabet[index]" class="changeColor" @click="changeBoxColor(color)">
@@ -78,30 +199,31 @@ if (isMounted) {
             </button>
           </div>
 
-          <div
-            v-for="m in memberInfo.member" :key="m.uuid"
-          >
+          <div v-for="m in memberInfo.member" :key="m.uuid">
             <div class="permission">
               <div class="boxs" style="background: #BDBDBD;">
                 <img :src="m.profileImageUrl" class="profile" alt="User Profile Image">
               </div>
-              <div class="name_email">
-                <div class="name">
-                  {{ m.nickname }}
-                </div>
-                <div class="email">
-                  {{ m.email }}
-                  <!-- {{ workspaceone.memberList.find(item => item.uuid === m.uuid) }} -->
-                  <!-- {{ workspaceone }} -->
-                  <!-- {{ workspaceone }}  그니까 여기서 if 문으로 uuid가 workspaceone memberList for문으로 돌면서 나온 uuid가 같으면 permission을 가져와서 출력 -->
-                </div>
+
+              <div>
+                {{ WorkspaceOneInfo.workspaceInfo.memberList.find(item => item.uuId === m.uuid)?.userPermission }}
+                <!-- {{ m.selectedPermission }} -->
               </div>
-              <div class="userPermission">
-                <div>
-                  {{ workspaceone.memberList.find(item => item.uuId === m.uuid)?.userPermission }}
-                </div>
+              <div class="userPermission" @click="toggleDropdown">
                 <img src="/dropdown toggle.png">
               </div>
+              <div v-if="dropdownData.isOpen" class="dropdown-menu">
+                <div @click="selectPermission(m, 'admin')">
+                  Admin
+                </div>
+                <div @click="selectPermission(m, 'member')">
+                  Member
+                </div>
+                <div @click="selectPermission(m, 'viewer')">
+                  Viewer
+                </div>
+              </div>
+              <!-- 드롭다운 메뉴 표시 여부에 따라 드롭다운 아이템 표시 -->
             </div>
           </div>
         </div>
@@ -111,6 +233,14 @@ if (isMounted) {
             Good Bye workspace
           </h5>
           <div>워크스페이스를 떠나거나 삭제합니다. 데이터에 접근할 수 없게 됩니다.</div>
+          <button @click="leaveWorkspace">
+            Leave Workspace
+          </button>
+
+          <!-- Delete Workspace 버튼 (permission이 'admin'일 때만 표시) -->
+          <button v-if="isAdmin" @click="deleteWorkspace">
+            Delete Workspace
+          </button>
         </div>
       </div>
     </div>
@@ -219,11 +349,46 @@ if (isMounted) {
   gap: 2%;
   margin-top: 2%;
 }
-.userPermission{
+/* .userPermission{
   display: flex;
   flex-direction: row;
   width: 20%;
+} */
+
+.userPermission {
+    display: flex;
+    flex-direction: row;
+    width: 20%;
+    cursor: pointer;
+    user-select: none; /* 드래그 또는 텍스트 선택 방지 */
+
+    /* // 드롭다운 아이콘 스타일링 */
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  /* // 드롭다운 메뉴 스타일링 */
+.dropdown-menu {
+  /* position: absolute; */
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 1;
 }
+
+  .dropdown-menu div {
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+
+  .dropdown-menu div:hover {
+    background-color: #f0f0f0;
+  }
+
 .boxs {
     width: 30px;
     height: 30px;

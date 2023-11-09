@@ -5,6 +5,7 @@ import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequ
 import com.esfp.sapaier.domain.workspace.document.WorkSpace;
 import com.esfp.sapaier.domain.workspace.dto.UserDataDto;
 import com.esfp.sapaier.domain.workspace.dto.AddMemberDto;
+import com.esfp.sapaier.domain.workspace.dto.UserPermissionDto;
 import com.esfp.sapaier.domain.workspace.service.WorkSpaceService;
 import com.esfp.sapaier.global.auth.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,7 +34,14 @@ public class WorkSpaceController {
 
     //워크스페이스 생성
     @PostMapping("api/v1/workspaces")
-    public void addWorkSpace(@RequestBody WorkSpace workSpace){
+    public void addWorkSpace(@RequestBody WorkSpace workSpace, @CookieValue String accessToken){
+        String userUuid = jwtTokenProvider.parseClaims(accessToken).getSubject();
+        List<UserPermissionDto> list = new ArrayList<>();
+        UserPermissionDto userPermissionDto = new UserPermissionDto();
+        userPermissionDto.setUserPermission("admin");
+        userPermissionDto.setUuId(userUuid);
+        list.add(userPermissionDto);
+        workSpace.setMemberList(list);
         workSpaceService.addWorkSpace(workSpace);
     }
 

@@ -26,7 +26,9 @@ import { ref } from 'vue'
 import MainInfo from '../components/main/MainInfo.vue'
 import WorkspaceInfo from '../components/workspace/WorkSpaceInfo.vue'
 
-const WorkspaceListInfo = useWorkspaceStore()
+const WorkspaceListInfo = useWorkspaceListStore()
+const WorkspaceOneInfo = useWorkspaceStore()
+
 const isMounted = useMounted()
 const currentComponent = ref<Component | null>(MainInfo)// 초기값은 MainInfo 컴포넌트로 설정
 const workspaceinfo = ref<any>(null) // workspaceInfoOne 데이터를 저장할 ref
@@ -38,7 +40,7 @@ if (isMounted) {
     .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`)
     .then((res) => {
       console.log(res)
-      WorkspaceListInfo.workspaceInfo = res.data
+      WorkspaceListInfo.WorkspaceList = res.data
     })
     .catch((error) => {
       console.error(error)
@@ -48,9 +50,23 @@ if (isMounted) {
 
 function showInfoComponent(workspaceInfoOne: any) {
   currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
-  workspaceinfo.value = workspaceInfoOne
+  // workspaceinfo.value = workspaceInfoOne
+  WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
   console.log('----------main------------')
   console.log(workspaceinfo)
+  WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
+  // WorkspaceOneInfo.$patch(workspaceInfoOne)
+
+  console.log(WorkspaceOneInfo)
+  console.log('asdfasfasdfadsfasdf')
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (text.length > maxLength)
+    return `${text.slice(0, maxLength)}`
+
+  else
+    return text
 }
 </script>
 
@@ -58,16 +74,17 @@ function showInfoComponent(workspaceInfoOne: any) {
   <TheNav />
   <div flex class="mid">
     <div w-18 border-r-2 class="list">
-      <div v-for="workspace in WorkspaceListInfo.workspaceInfo" :key="workspace.name" class="box">
+      <div v-for="workspace in WorkspaceListInfo.WorkspaceList" :key="workspace.name" class="box">
         <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace)">
-          {{ workspace.name }}
+          {{ truncateText(workspace.name, 4) }}
         </div>
       </div>
     </div>
 
     <UserInfo w-60 />
     <!-- <MainInfo w-full /> -->
-    <component :is="currentComponent" w-full :workspaceone="workspaceinfo" />
+    <component :is="currentComponent" w-full /><!--    <component :is="currentComponent" w-full :workspaceone="workspaceinfo" />
+-->
   </div>
   <RouterView />
 
