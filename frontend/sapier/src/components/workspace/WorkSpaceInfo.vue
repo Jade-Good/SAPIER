@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import OverviewComponent from './OverviewComponent.vue'
 import SettingComponent from './SettingComponent.vue'
 
@@ -32,6 +32,19 @@ export default {
   },
 
 }
+</script> -->
+<script setup>
+import { ref } from 'vue'
+import OverviewComponent from './OverviewComponent.vue'
+import SettingComponent from './SettingComponent.vue'
+
+// const { workspaceone } = defineProps(['workspaceone'])
+
+const currentComponent = ref(OverviewComponent)
+const WorkspaceOneInfo = useWorkspaceStore()
+
+// console.log(workspaceone)
+// console.log('workspaceinfovue data')
 </script>
 
 <template>
@@ -43,7 +56,30 @@ export default {
       <div class="image-container">
         <img src="/person.png">
       </div>
-      <div>{{ workspaceone.name }}</div>
+      <div>{{ WorkspaceOneInfo.workspaceInfo.name }}</div>
+    </div>
+    <div class="workspaceHead">
+      <div class="overviewText tap" @click="currentComponent = OverviewComponent">
+        overview
+      </div>
+      <div class="settingText tap" @click="currentComponent = SettingComponent">
+        setting
+      </div>
+    </div>
+    <component :is="currentComponent" /><!-- :workspaceone="workspaceone" -->
+  </div>
+</template>
+
+<!-- <template>
+  <div class="list">
+    <h1 class="overview">
+      overview
+    </h1>
+    <div class="workspaceHead">
+      <div class="image-container">
+        <img src="/person.png">
+      </div>
+      <div>{{ workspaceone.name }}&&{{ WorkspaceOneInfo.WorkspaceOneInfo }}</div>
     </div>
     <div class="workspaceHead">
       <div class="overviewText tap" @click="showOverviewComponent">
@@ -54,7 +90,7 @@ export default {
       </div>
     </div>
     <component :is="currentComponent" :workspaceone="workspaceone" />
-  </div>
+  </div> -->
 
   <!-- <div flex select-none flex-gap-5 p-3>
         <div :class="[requestTap !== 'Params' ? 'tap' : 'highlight']" @click="requestTap = 'Params'">
@@ -74,8 +110,8 @@ export default {
       <Params v-if="requestTap === 'Params'" />
       <Headers v-if="requestTap === 'Headers'" />
       <Body v-if="requestTap === 'Body'" />
-      <Settings v-if="requestTap === 'Settings'" /> -->
-</template>
+      <Settings v-if="requestTap === 'Settings'" />
+</template> -->
 
 <style scoped>
 /* 가로 스크롤 바 숨기기 */
