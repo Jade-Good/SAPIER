@@ -1,5 +1,6 @@
 package com.esfp.sapaier.domain.history.service;
 
+import com.esfp.sapaier.domain.collection.repository.entity.RequestEntity;
 import com.esfp.sapaier.domain.history.model.dto.DailyHistoryDto;
 import com.esfp.sapaier.domain.history.model.dto.WorkspaceHistoryDto;
 import com.esfp.sapaier.domain.history.repository.HistoryRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -81,4 +83,14 @@ public class HistoryService {
 
         return result;
     }
+    public void saveHistory(RequestEntity request, String workSpaceId, String uuid){
+        HistoryEntity history = HistoryEntity.builder()
+                .request(request)
+                .workSpaceId(workSpaceId)
+                .uuid(uuid)
+                .createdTime(LocalDateTime.now())
+                .build();
+        historyRepository.save(history);
+    }
+
 }
