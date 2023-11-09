@@ -1,16 +1,30 @@
 
 <script>
+
 export default{
     props :{
         src : String,
         data : String,
+        link : String,
+    },
+    methods :{
+        moveTo(link){
+            if(link !== undefined && link !== "")
+                window.location.href=link;
+        },
+        setMouseHoverEvent(link){
+            if(link !== undefined && link !== "")
+                return{
+                    cursor: "pointer"
+                }
+        }
     }
 }
 </script>
 
 <template>
   <div class="user_info_detail">
-        <div class="user_info_detail_icon"><img :src=src></div>
+        <div class="user_info_detail_icon"><img :src=src @click=moveTo(link) :style="setMouseHoverEvent(link)"></div>
         <div class="user_info_detail_data">
             <p class="user_info_detail_text">{{ data }}</p>
         </div>
@@ -19,7 +33,8 @@ export default{
 
 
 
-<style>
+<style scoped>
+
 .user_info_detail{
     display: flex;
     justify-content: left;
