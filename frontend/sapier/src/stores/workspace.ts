@@ -25,6 +25,7 @@ export const useWorkspaceStore = defineStore('workspace', () => {
       if (this.workspaceInfo)
         this.workspaceInfo.name = newName
     },
+    selectedWorkspaceIndex,
   }
 })
 

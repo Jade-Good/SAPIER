@@ -7,22 +7,26 @@ export default defineComponent({
     const collectionStore = useCollectionStore()
     const collectionList = ref([])
     const workspaceStore = useWorkspaceStore()
+    const workspaceListStore = useWorkspaceListStore()
 
     watchEffect(() => {
       // console.log('watchEffect 실행')
       const workspaceIdx = workspaceStore.selectedWorkspaceIndex
       // console.log('workspaceIdx : ', workspaceIdx)
       const idList: string[] = []
-      // console.log('workspaceInfo : ', workspaceStore.workspaceInfo)
-      // console.log('workspaceStore.workspaceInfo[workspaceIdx].collectionList : ', workspaceStore.workspaceInfo[workspaceIdx].collectionList)
+      // console.log('-------워치------------')
+      // console.log('인포정보 : ', workspaceListStore.WorkspaceList[workspaceIdx])
+      // // console.log('workspaceStore.workspaceInfo[workspaceIdx].collectionList : ', workspaceStore.workspaceInfo[workspaceIdx].collectionList)
 
-      if (idList !== null && workspaceStore.workspaceInfo && workspaceStore.workspaceInfo[workspaceIdx].collectionList) {
-        for (let i = 0; i < workspaceStore.workspaceInfo[workspaceIdx].collectionList.length; i++)
-          idList.push(workspaceStore.workspaceInfo[workspaceIdx].collectionList[i].collectionKey)
+      if (idList !== null && workspaceStore.workspaceInfo
+    && workspaceListStore.WorkspaceList[workspaceIdx].collectionList) {
+        // console.log('IF안에 들어오긴 하나? ', workspaceIdx)
+        for (let i = 0; i < workspaceListStore.WorkspaceList[workspaceIdx].collectionList.length; i++)
+          idList.push(workspaceListStore.WorkspaceList[workspaceIdx].collectionList[i].collectionKey)
       }
       else { idList.length = 0 }
 
-      // console.log('idList : ', idList)
+      console.log('idList : ', idList)
 
       // const collectionIds = Array.from({ length: idList.length })
       // // const plainArray = idList.map(item => item[0])
@@ -42,6 +46,10 @@ export default defineComponent({
 
       if (idList.length > 0) {
         axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/list`, collectionId)
+        // axios.post(`http://localhost:8080/api/v1/collection/list`, collectionId, {
+        // headers: { Authorization: 'Bearer sapiersapiersapiersapiersapiersapiersapiersapier' },
+        // })
+
           .then((response) => {
             collectionStore.collection = response.data
             collectionList.value.length = 0

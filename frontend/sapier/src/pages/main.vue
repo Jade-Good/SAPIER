@@ -48,7 +48,28 @@ if (isMounted) {
     )
 }
 
-function showInfoComponent(workspaceInfoOne: any) {
+// function showInfoComponent(workspaceInfoOne: any) {
+//   currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
+//   // workspaceinfo.value = workspaceInfoOne
+//   console.log('----------main------------')
+//   console.log(workspaceinfo)
+//   WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
+//   // WorkspaceOneInfo.$patch(workspaceInfoOne)
+
+//   console.log(WorkspaceOneInfo)
+//   console.log('asdfasfasdfadsfasdf')
+// }
+
+function handleClick(workspaceInfoOne: any, index) {
+  // 첫 번째 이벤트 동작
+  firstAction(workspaceInfoOne)
+
+  // 두 번째 이벤트 동작
+  secondAction(index)
+}
+
+function firstAction(workspaceInfoOne: any) {
+  // 첫 번째 이벤트에 대한 동작 수행
   currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
   // workspaceinfo.value = workspaceInfoOne
   console.log('----------main------------')
@@ -58,6 +79,12 @@ function showInfoComponent(workspaceInfoOne: any) {
 
   console.log(WorkspaceOneInfo)
   console.log('asdfasfasdfadsfasdf')
+}
+
+function secondAction(index) {
+  // 두 번째 이벤트에 대한 동작 수행
+  WorkspaceOneInfo.selectedWorkspaceIndex = index
+  console.log('index: ', index)
 }
 
 function truncateText(text: string, maxLength: number) {
@@ -73,14 +100,16 @@ function truncateText(text: string, maxLength: number) {
   <TheNav />
   <div flex class="mid">
     <div w-18 border-r-2 class="list">
-      <div v-for="workspace in WorkspaceListInfo.WorkspaceList" :key="workspace.name" class="box" :style="{ backgroundColor: workspace.color }">
-        <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace)">
+      <div v-for="(workspace, index) in WorkspaceListInfo.WorkspaceList" :key="workspace.name" class="box" :style="{ backgroundColor: workspace.color }">
+        <div id="workSpaceListData" class="workspaceId" @click="handleClick(workspace, index)">
+          <!-- </div>showInfoComponent(workspace)"> -->
           {{ truncateText(workspace.name, 4) }}
         </div>
       </div>
     </div>
 
     <UserInfo w-60 />
+    <Category w-60 />
     <!-- <MainInfo w-full /> -->
     <component :is="currentComponent" w-full /><!--    <component :is="currentComponent" w-full :workspaceone="workspaceinfo" />
 -->
