@@ -5,6 +5,9 @@ import { ref } from 'vue'
 import MainInfo from '../components/main/MainInfo.vue'
 import WorkspaceInfo from '../components/workspace/WorkSpaceInfo.vue'
 
+// import WorkspaceListInf from '../stores/workspace'
+
+// const WorkspacList :Array<WorkspaceListInf> = useWorkspaceStore()
 const WorkspaceListInfo = useWorkspaceStore()
 const isMounted = useMounted()
 const currentComponent = ref<Component | null>(MainInfo)// 초기값은 MainInfo 컴포넌트로 설정
@@ -17,6 +20,7 @@ if (isMounted) {
     .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`)
     .then((res) => {
       console.log(res)
+      // WorkspacList = res.data
       WorkspaceListInfo.workSpaceInfo = res.data
     })
     .catch((error) => {
@@ -28,6 +32,7 @@ if (isMounted) {
 function showInfoComponent(workspaceInfoOne: any) {
   currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
   workspaceinfo.value = workspaceInfoOne
+  WorkspaceListInfo = workspaceInfoOne
   console.log('----------main------------')
   console.log(workspaceinfo)
 }

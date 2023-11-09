@@ -17,6 +17,10 @@ export const useWorkspaceStore = defineStore('workspace', () => {
 
   return {
     workspaceInfo,
+    updateWorkspaceName(newName: string) {
+      if (this.workspaceInfo)
+        this.workspaceInfo.name = newName
+    },
   }
 })
 
