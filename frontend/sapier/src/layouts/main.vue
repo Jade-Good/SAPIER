@@ -49,7 +49,7 @@ function showInfoComponent(workspaceInfoOne: any) {
       </div>
     </div>
 
-    <UserInfo w-60 />
+    <UserInfo />
     <!-- <MainInfo w-full /> -->
     <component :is="currentComponent" w-full :workspaceone="workspaceinfo" />
   </div>
