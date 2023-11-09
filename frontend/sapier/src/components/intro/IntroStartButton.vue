@@ -26,16 +26,17 @@
 
 <style scoped>
 .get_start_button{
-  width: 20rem;
-  height : 6rem;
+  width: 20%; 
   border-radius: 30px;
   background: linear-gradient(90deg, #0F4C81 0%, #658DC6 100%);
   color : white;
-  font-size: 2.5rem;
+  font-size: 3vw;
   font-weight: 700;
 }
 
 .get_start_button_item{
+  width: 100%;
+  height: 20%;
   display: flex;
   flex-direction: row;
   justify-content: center;

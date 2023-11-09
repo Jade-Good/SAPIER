@@ -11,12 +11,7 @@
 <style scoped>
 
 .intro_logo_img_sapier_logo{
-    height: 100%;
-}
-
-
-.intro_logo_img{
-    height: 70%;
+    width: 20%;
 }
 
 </style>
