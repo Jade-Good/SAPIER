@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import axios from 'axios'
+
 const useCollection = useCollectionStore()
 const isMounted = useMounted()
 
@@ -16,6 +18,7 @@ const isMethodList = ref(false)
 const requestHigh = ref('500')
 const requestTap = ref('Params')
 const requestURL = ref('http://')
+const requestName = ref('New Request')
 const isResizing = ref(false) // 크기 조절 중 여부
 const startY = ref(0) // 크기 조절 시작 지점
 const startHeight = ref(0) // 크기 조절 시작 시 Request 엘리먼트의 높이
@@ -34,13 +37,18 @@ if (isMounted) {
   window.addEventListener('mousemove', handleResizing)
   window.addEventListener('mouseup', stopResizing)
 
-  if (useCollection.api && useCollection.api.method)
-    selectMethod.value = useCollection.api.method
+  if (useCollection.request && useCollection.request.method)
+    selectMethod.value = useCollection.request.method
 };
 
-watch(() => useCollection.api, () => {
-  if (useCollection.api)
-    selectMethod.value = useCollection.api.method
+watch(() => useCollection.request, () => {
+  if (useCollection.request) {
+    console.log('api : ', useCollection.request)
+
+    selectMethod.value = useCollection.request.method
+    requestURL.value = useCollection.request.requestURL
+    requestName.value = useCollection.request.requestName
+  }
 })
 
 onUnmounted(() => {
@@ -179,6 +187,27 @@ function setResponseStyle() {
 
   }
 };
+
+async function sendAPI() {
+  const sendData = {
+    requestURL:	requestURL.value,
+    method:	selectMethod.value,
+    headers: {},
+    queryParams: {},
+    body: {},
+    formData: {},
+  }
+
+  console.log('sendData : ', sendData)
+
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/request`, sendData)
+    console.log('API 전송 성공', res)
+  }
+  catch (error) {
+    console.error('API 전송 실패:', error)
+  }
+};
 </script>
 
 <template>
@@ -198,7 +227,7 @@ function setResponseStyle() {
           <p color-gray>
             /
           </p>
-          <p>버블 리스트 조회</p>
+          <p>{{ requestName }}</p>
         </div>
         <div flex flex-gap-3>
           <div class="grayBtn">
@@ -238,7 +267,7 @@ function setResponseStyle() {
           </div>
         </div>
 
-        <div class="sendBtn">
+        <div class="sendBtn" @click="sendAPI()">
           <div flex flex-gap-2 flex-justify-center>
             <div i-carbon-send-alt pt-8 />
             Send

@@ -118,9 +118,8 @@ export default defineComponent({
       }
     }
 
-    const selectAPI = (api) => {
-      console.log('api : ', api)
-      collectionStore.api = api
+    const selectAPI = (request) => {
+      collectionStore.request = request
     }
 
     return {
