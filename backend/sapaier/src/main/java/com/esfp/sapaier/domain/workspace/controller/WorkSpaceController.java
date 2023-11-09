@@ -61,6 +61,12 @@ public class WorkSpaceController {
         workSpaceService.updateWorkSpace(workSpace);
     }
 
+    //워크스페이스 삭제
+    @DeleteMapping("api/v1/workspaces/{workspaceIdx}")
+    public void deleteMember(@PathVariable String workspaceIdx){
+        workSpaceService.deleteWorkSpace(workspaceIdx);
+    }
+
     //워크스페이스 팀원 목록 조회
     @GetMapping("api/v1/workspaces/members/{workspaceIdx}")
     public List<UserDataDto> searchMember(@PathVariable String workspaceIdx){
@@ -80,8 +86,9 @@ public class WorkSpaceController {
 
 
     //워크스페이스 팀원 삭제
-    @DeleteMapping("api/v1/workspaces/members/{memberUUID}")
-    public void deleteMember(@RequestBody String workspaceIdx, @PathVariable String memberUUID){
+    @DeleteMapping("api/v1/workspaces/members/{workspaceIdx}")
+    public void deleteMember(@PathVariable String workspaceIdx,@CookieValue String accessToken){
+        String memberUUID = jwtTokenProvider.parseClaims(accessToken).getSubject();
         workSpaceService.deleteMember(workspaceIdx, memberUUID);
     }
 
