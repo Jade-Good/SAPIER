@@ -203,6 +203,9 @@ async function sendAPI() {
   try {
     const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/request`, sendData)
     console.log('API 전송 성공', res)
+
+    useCollection.response = res
+    console.log('useCollection.response', useCollection.response)
   }
   catch (error) {
     console.error('API 전송 실패:', error)
