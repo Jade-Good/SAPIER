@@ -9,8 +9,8 @@ interface CollectionTree {
 }
 
 interface Api {
-  apitName: string
-  url: string
+  requestName: string
+  requestURL: string
   method: string
   headers: []
   body: []
@@ -24,6 +24,8 @@ export type { CollectionTree }
 export const useCollectionStore = defineStore('collection', () => {
   const collection = ref<CollectionTree | null>(null)
   const api = ref<Api>()
+
+  
 
   return {
     collection,

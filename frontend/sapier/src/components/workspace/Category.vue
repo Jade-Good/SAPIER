@@ -1,93 +1,158 @@
 <script lang="ts">
 import axios from 'axios'
 
-const collectionStore = useCollectionStore()
-
 axios.defaults.withCredentials = true
+export default defineComponent({
+  setup() {
+    const collectionStore = useCollectionStore()
+    const collectionList = ref([])
+    const workspaceStore = useWorkspaceStore()
 
-export default {
-  data() {
-    return {
-      collectionList: [],
-    }
-  },
-  created() {
-    this.loadCollectionList()
-  },
-  methods: {
-    async loadCollectionList() {
-      const idList = ['6540e7115a40cf75f485d552']
+    watchEffect(() => {
+      // console.log('watchEffect 실행')
+      const workspaceIdx = workspaceStore.selectedWorkspaceIndex
+      // console.log('workspaceIdx : ', workspaceIdx)
+      const idList: string[] = []
+      // console.log('workspaceInfo : ', workspaceStore.workspaceInfo)
+      // console.log('workspaceStore.workspaceInfo[workspaceIdx].collectionList : ', workspaceStore.workspaceInfo[workspaceIdx].collectionList)
+
+      if (idList !== null && workspaceStore.workspaceInfo && workspaceStore.workspaceInfo[workspaceIdx].collectionList) {
+        for (let i = 0; i < workspaceStore.workspaceInfo[workspaceIdx].collectionList.length; i++)
+          idList.push(workspaceStore.workspaceInfo[workspaceIdx].collectionList[i].collectionKey)
+      }
+      else { idList.length = 0 }
+
+      // console.log('idList : ', idList)
+
+      // const collectionIds = Array.from({ length: idList.length })
+      // // const plainArray = idList.map(item => item[0])
+      // const plainArray = idList[0]
+
+      // for (let i = 0; i < collectionIds.length; i++)
+      //   collectionIds[i] = plainArray[i]
+      // const collectionId = {
+      //   collectionId: collectionIds,
+      // }
+
       const collectionId = {
         collectionId: idList,
       }
-      try {
-        const response = await axios.post (`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/list`, collectionId)
 
-        this.collectionList = response.data[0].collectionList
-        collectionStore.collection = response.data
-        // console.log('collectionStore:', this.collectionList)
-        // console.log('store 저장', collectionStore.collection[0].collectionList)
-        // console.log('store apiList', collectionStore.collection[0].apiList)
+      console.log('collectionId : ', collectionId)
+
+      if (idList.length > 0) {
+        axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/list`, collectionId)
+          .then((response) => {
+            collectionStore.collection = response.data
+            collectionList.value.length = 0
+            for (let i = 0; i < response.data.length; i++)
+              collectionList.value.push(response.data[i].collectionList)
+
+            console.log('성공', collectionList.value)
+          })
+          .catch((error) => {
+            console.error('Error:', error)
+          })
       }
-      catch (error) {
-        console.error('리스트 가져오기 실패:', error)
-      }
-    },
-    addRootCollection() {
+    })
+
+    const addRootCollection = () => {
       const newRootCollection = createNewRootCollection()
-      this.collectionList.push(newRootCollection)
-    },
-    addChildCollection(parentCollection) {
+      collectionList.value.push(newRootCollection)
+
+      saveData()
+    }
+
+    const addChildCollection = (parentCollection) => {
       const newChildCollection = createNewRootCollection()
       parentCollection.collectionList.push(newChildCollection)
-    },
-    addChildToCollection(parentCollection, newChildCollection) {
-      parentCollection.collectionList.push(newChildCollection)
-    },
+      saveData()
+    }
 
-    async saveData() {
+    const addChildToCollection = (parentCollection, newChildCollection) => {
+      parentCollection.collectionList.push(newChildCollection)
+    }
+
+    const saveData = async () => {
       const modifyData = collectionStore.collection
       const dataToSave = JSON.stringify(collectionStore.collection)
 
       try {
         console.log('JSON: ', dataToSave)
         const res = await axios.patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/modify`, modifyData)
-
         console.log('데이터 저장 성공', res)
       }
       catch (error) {
         console.error('데이터 저장 실패:', error)
       }
-    },
-    toggleEditing(collection) {
-      collection.editing = !collection.editing
-    },
-    async saveCollectionName(collection) {
-      collection.collectionName = collection.newName
-      this.toggleEditing(collection)
-      await this.saveData()
-    },
+    }
+    provide('saveData', saveData)
 
+    const toggleEditing = (collection) => {
+      collection.editing = !collection.editing
+    }
+
+    const saveCollectionName = async (collection) => {
+      collection.collectionName = collection.newName
+      toggleEditing(collection)
+      await saveData()
+    }
+
+    const deleteCollection = (collection) => {
+      if (collection.collectionList && collection.collectionList.length > 0) {
+        for (const childCollection of collection.collectionList)
+          deleteCollection(childCollection)
+      }
+      const collectionIndex = collectionList.value.indexOf(collection)
+      if (collectionIndex > -1) {
+        collectionList.value.splice(collectionIndex, 1)
+        saveData()
+      }
+    }
+
+    const createNewRootCollection = () => {
+      return {
+        collectionName: 'New Root Collection',
+        apiList: [],
+        collectionList: [],
+      }
+    }
+
+    const selectAPI = (api) => {
+      console.log('api : ', api)
+      collectionStore.api = api
+    }
+
+    return {
+      collectionList,
+      addRootCollection,
+      addChildCollection,
+      addChildToCollection,
+      saveData,
+      toggleEditing,
+      saveCollectionName,
+      deleteCollection,
+      selectAPI,
+    }
   },
-}
-function createNewRootCollection() {
-  return {
-    collectionName: 'New Root Collection',
-    apiList: [],
-    collectionList: [],
-  }
-}
+})
 </script>
 
 <template>
   <div class="category">
     <WorkspaceTitle />
 
-    <div class="collection-list">
+    <div v-for="documentId in collectionList" :key="documentId.collectionId" class="collection-list">
       <h1>Collection List</h1>
 
       <ul>
-        <li v-for="collection in collectionList" :key="collection.collectionName">
+        <li v-for="collection in documentId" :key="collection.collectionName">
+          <ul>
+            <li v-for="api in collection.apiList" :key="api.requestName">
+              <a @click="selectAPI(api)">{{ api.requestName }}</a>
+            </li>
+          </ul>
+
           <span :style="{ marginLeft: '0px' }">
             <span v-if="!collection.editing">{{ collection.collectionName }}</span>
             <input
@@ -96,19 +161,22 @@ function createNewRootCollection() {
               @blur="saveCollectionName(collection)"
               @keyup.enter="saveCollectionName(collection)"
             >
-            <button @click="toggleEditing(collection)">{{ collection.editing ? '완료' : '수정' }}</button>
+            <button class="btn" @click="toggleEditing(collection)">{{ collection.editing ? '완료' : '수정' }}</button>
           </span>
-          <button @click="addChildCollection(collection)">
+          <button class="er" @click="addChildCollection(collection)">
             루트에서 자식 추가
+          </button>
+          <button class="er" @click="deleteCollection(collection)">
+            루트 삭제
           </button>
           <CollectionTree :collection="collection" :level="1" />
         </li>
       </ul>
-      <button @click="addRootCollection">
+      <button class="er" @click="addRootCollection">
         루트폴더 추가
       </button>
       <br>
-      <button @click="saveData">
+      <button class="btn" @click="saveData">
         저장
       </button>
     </div>
@@ -122,8 +190,14 @@ function createNewRootCollection() {
   white-space: nowrap;
 
 }
-.collection-list {
- /* position: fixed;*/
-
+.btn{
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+}
+.er{
+  border: 1px solid black;
+  background-color: red;
+  color: white;
 }
   </style>

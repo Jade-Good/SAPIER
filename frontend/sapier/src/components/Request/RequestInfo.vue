@@ -1,176 +1,185 @@
-<script lang="ts">
-export default {
-  data() {
-    return {
-      selectMethod: 'GET',
-      methodList: [
-        'GET',
-        'POST',
-        'PUT',
-        'PATCH',
-        'DELETE',
-        'HEAD',
-        'OPTIONS',
-      ],
-      isMethodList: false,
+<script setup lang="ts">
+const useCollection = useCollectionStore()
+const isMounted = useMounted()
 
-      requestHigh: '500',
-      requestTap: 'Params',
-      requestURL: 'http://',
-      isResizing: false, // 크기 조절 중 여부
-      startY: 0, // 크기 조절 시작 지점
-      startHeight: 0, // 크기 조절 시작 시 Request 엘리먼트의 높이
-    }
-  },
-  mounted() {
-    // 메서드 리스트 이벤트 등록
-    document.addEventListener('click', this.handleDocumentClick)
+const selectMethod = ref('GET')
+const methodList = ref([
+  'GET',
+  'POST',
+  'PUT',
+  'PATCH',
+  'DELETE',
+  'HEAD',
+  'OPTIONS',
+])
+const isMethodList = ref(false)
+const requestHigh = ref('500')
+const requestTap = ref('Params')
+const requestURL = ref('http://')
+const isResizing = ref(false) // 크기 조절 중 여부
+const startY = ref(0) // 크기 조절 시작 지점
+const startHeight = ref(0) // 크기 조절 시작 시 Request 엘리먼트의 높이
 
-    // Request 높이 초기화
+if (isMounted) {
+  // 메서드 리스트 이벤트 등록
+  document.addEventListener('click', handleDocumentClick)
+
+  // Request 높이 초기화
+  const htmlElement = document.documentElement
+  const computedFontSize = window.getComputedStyle(htmlElement).getPropertyValue('font-size')
+  const currentRemValue = Number.parseFloat(computedFontSize) * 30
+
+  requestHigh.value = `${currentRemValue}`
+
+  window.addEventListener('mousemove', handleResizing)
+  window.addEventListener('mouseup', stopResizing)
+
+  if (useCollection.api && useCollection.api.method)
+    selectMethod.value = useCollection.api.method
+};
+
+watch(() => useCollection.api, () => {
+  if (useCollection.api)
+    selectMethod.value = useCollection.api.method
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleDocumentClick)
+  window.removeEventListener('mousemove', handleResizing)
+  window.removeEventListener('mouseup', stopResizing)
+})
+
+// ---------------- 메서드 리스트 토글기능 ----------------
+function setMethodBtnStyle() {
+  return {
+    /* layout */
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '0 0.5rem 0 0.8rem',
+    width: '10rem',
+    lineHeight: '2rem',
+
+    /* Style */
+    borderRadius: '5px',
+    outline: isMethodList.value ? '3px solid var(--color-blue2)' : 'none',
+
+    color: 'white',
+    backgroundColor: `var(--color-${selectMethod.value})`,
+
+    fontSize: 'var(--font-H2-size)',
+    fontWeight: 'var(--font-H2-weight)',
+
+    cursor: 'pointer',
+  }
+};
+
+function setMethodColor(method: string) {
+  return {
+    width: '14rem',
+    padding: '0.5rem',
+
+    borderRadius: '5px',
+
+    color: `var(--color-${method})`,
+    fontSize: 'var(--font-H2-size)',
+    backgroundColor: method === selectMethod.value ? 'var(--color-gray1-hover)' : 'none',
+
+  }
+};
+
+function changeMethod(method: string) {
+  setMethodColor(method)
+  selectMethod.value = method
+  toggleMethodList()
+};
+
+function toggleMethodList() {
+  isMethodList.value = !isMethodList.value
+};
+
+function closeMethodList() {
+  isMethodList.value = false
+};
+
+function handleDocumentClick() {
+  // 클릭 이벤트에서 메서드 목록을 열려 있을 때만 닫도록 처리
+  if (isMethodList.value)
+    isMethodList.value = false
+};
+
+// -----------------Request 창 크기 조절--------------------
+function setRequestStyle() {
+  return {
+    /* layout */
+    display: 'flex',
+    flexDirection: 'column',
+
+    width: '100%',
+    height: `${requestHigh.value}px`,
+    minHeight: '10.5rem',
+    maxHeight: '90%',
+
+    padding: '0.75rem',
+    paddingBottom: '3rem',
+
+    overflow: 'auto',
+
+    /* Style */
+    border: '1px solid red',
+
+  }
+};
+
+function startResizing(event: MouseEvent) {
+  isResizing.value = true
+  startY.value = event.clientY
+  console.log('startY.value : ', startY.value)
+
+  const ss = requestHigh.value.match(/\d+/g)
+  console.log('requestHigh.value : ', requestHigh.value)
+  if (ss)
+    startHeight.value = Number.parseInt(ss.toString())
+  console.log('startHeight.value : ', startHeight.value)
+};
+
+function handleResizing(event: MouseEvent) {
+  if (isResizing.value) {
+    const deltaY = event.clientY - startY.value
+
+    let newHeight = startHeight.value + deltaY
+
     const htmlElement = document.documentElement
     const computedFontSize = window.getComputedStyle(htmlElement).getPropertyValue('font-size')
-    const currentRemValue = Number.parseFloat(computedFontSize) * 35
+    const minHeight = Number.parseFloat(computedFontSize) * 10.5
 
-    this.requestHigh = `${currentRemValue}px`
+    const maxHeight = window.innerHeight * 0.8
 
-    window.addEventListener('mousemove', this.handleResizing)
-    window.addEventListener('mouseup', this.stopResizing)
-  },
+    if (newHeight < minHeight)
+      newHeight = minHeight
 
-  beforeUnmount() {
-    document.removeEventListener('click', this.handleDocumentClick)
-    window.removeEventListener('mousemove', this.handleResizing)
-    window.removeEventListener('mouseup', this.stopResizing)
-  },
-  methods: {
+    if (newHeight > maxHeight)
+      newHeight = maxHeight
 
-    // ---------------- 메서드 리스트 토글기능 ----------------
-    setMethodBtnStyle() {
-      return {
-        /* layout */
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '0 0.5rem 0 0.8rem',
-        width: '10rem',
-        lineHeight: '2rem',
+    requestHigh.value = `${newHeight}`
 
-        /* Style */
-        borderRadius: '5px',
-        outline: this.isMethodList ? '3px solid var(--color-blue2)' : 'none',
+    // Response 엘리먼트의 크기를 조절할 수도 있습니다.
 
-        color: 'white',
-        backgroundColor: `var(--color-${this.selectMethod})`,
+    event.preventDefault()
+  }
+};
 
-        fontSize: 'var(--font-H2-size)',
-        fontWeight: 'var(--font-H2-weight)',
+function stopResizing() {
+  isResizing.value = false
+};
+// --------------------------------------------------------
+function setResponseStyle() {
+  return {
+    height: `calc(100% - ${requestHigh.value}px)`, // 나머지 여백을 설정
+    overflow: 'auto',
+    // paddingBottom: '3rem',
 
-        cursor: 'pointer',
-      }
-    },
-    setMethodColor(method: string) {
-      return {
-        width: '14rem',
-        padding: '0.5rem',
-
-        borderRadius: '5px',
-
-        color: `var(--color-${method})`,
-        fontSize: 'var(--font-H2-size)',
-        backgroundColor: method === this.selectMethod ? 'var(--color-gray1-hover)' : 'none',
-
-      }
-    },
-
-    changeMethod(method: string) {
-      this.setMethodColor(method)
-      this.selectMethod = method
-      this.toggleMethodList()
-    },
-
-    toggleMethodList() {
-      this.isMethodList = !this.isMethodList
-    },
-
-    closeMethodList() {
-      this.isMethodList = false
-    },
-    handleDocumentClick(event: Event) {
-      // 클릭 이벤트에서 메서드 목록을 열려 있을 때만 닫도록 처리
-      if (this.isMethodList && !this.$el.contains(event.target))
-        this.isMethodList = false
-    },
-
-    // -----------------Request 창 크기 조절--------------------
-    setRequestStyle() {
-      return {
-        /* layout */
-        display: 'flex',
-        flexDirection: 'column',
-
-        width: '100%',
-        height: `${this.requestHigh}px`,
-        minHeight: '10.5rem',
-        maxHeight: '90%',
-
-        padding: '0.75rem',
-        paddingBottom: '3rem',
-
-        overflow: 'auto',
-
-        /* Style */
-        border: '1px solid red',
-
-      }
-    },
-
-    startResizing(event: MouseEvent) {
-      this.isResizing = true
-      this.startY = event.clientY
-
-      const ss = this.requestHigh.match(/\d+/g)
-      if (ss)
-        this.startHeight = Number.parseInt(ss.toString())
-    },
-
-    handleResizing(event: MouseEvent) {
-      if (this.isResizing) {
-        const deltaY = event.clientY - this.startY
-        let newHeight = this.startHeight + deltaY
-
-        const htmlElement = document.documentElement
-        const computedFontSize = window.getComputedStyle(htmlElement).getPropertyValue('font-size')
-        const minHeight = Number.parseFloat(computedFontSize) * 10.5
-
-        const maxHeight = this.$el.clientHeight * 0.9
-
-        if (newHeight < minHeight)
-          newHeight = minHeight
-
-        if (newHeight > maxHeight)
-          newHeight = maxHeight
-
-        this.requestHigh = `${newHeight}`
-
-        // Response 엘리먼트의 크기를 조절할 수도 있습니다.
-
-        event.preventDefault()
-      }
-    },
-
-    stopResizing() {
-      this.isResizing = false
-    },
-    // --------------------------------------------------------
-    setResponseStyle() {
-      return {
-        height: `calc(100% - ${this.requestHigh}px)`, // 나머지 여백을 설정
-        overflow: 'auto',
-        // paddingBottom: '3rem',
-
-      }
-    },
-  },
-}
+  }
+};
 </script>
 
 <template>
@@ -214,12 +223,18 @@ export default {
           </div>
 
           <div v-if="isMethodList" class="methodList">
-            <div v-for="(method, idx) in methodList" :key="idx" :style="setMethodColor(method)" @click="changeMethod(method)">
+            <div
+              v-for="(method, idx) in methodList" :key="idx" :style="setMethodColor(method)"
+              @click="changeMethod(method)"
+            >
               {{ method }}
             </div>
           </div>
 
-          <div style="border-color: var(--color-gray4); font-size: var(--font-H5-size); line-height: 2.5rem;" w-full border-l pl-2>
+          <div
+            style="border-color: var(--color-gray4); font-size: var(--font-H5-size); line-height: 2.5rem;" w-full
+            border-l pl-2
+          >
             <input v-model="requestURL" type="text" w-full pl-2>
           </div>
         </div>
@@ -249,15 +264,11 @@ export default {
 
       <Params v-if="requestTap === 'Params'" />
       <Headers v-if="requestTap === 'Headers'" />
+
       <Body v-if="requestTap === 'Body'" />
       <Settings v-if="requestTap === 'Settings'" />
     </div>
-    <div
-      class="resize-line"
-      @mousedown="startResizing"
-      @mousemove="handleResizing"
-      @mouseup="stopResizing"
-    />
+    <div class="resize-line" @mousedown="startResizing" @mousemove="handleResizing" @mouseup="stopResizing" />
     <Response name="Response" w-full border border-blue :style="setResponseStyle()" />
   </div>
 </template>
@@ -282,7 +293,7 @@ input:focus {
 }
 
 .tap:hover {
-  color:#2E2E2E;
+  color: #2E2E2E;
 }
 
 .methodList {
@@ -329,23 +340,23 @@ input:focus {
 }
 
 .grayBtn {
-    /* layout */
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1rem;
-    line-height: 1.2rem;
+  /* layout */
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  line-height: 1.2rem;
 
-    /* Style */
-    border-radius: 5px;
+  /* Style */
+  border-radius: 5px;
 
-    color: var(--color-gray4);
-    background-color: var(--color-gray1);
+  color: var(--color-gray4);
+  background-color: var(--color-gray1);
 
-    font-size: var(--font-H5-size);
-    font-weight: var(--font-H5-weight);
+  font-size: var(--font-H5-size);
+  font-weight: var(--font-H5-weight);
 
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .grayBtn:hover {
@@ -353,9 +364,13 @@ input:focus {
 }
 
 .resize-line {
-  cursor: ns-resize; /* 세로 크기 조절 커서 모양 */
-  height: 5px; /* 크기 조절 선의 높이 설정 */
-  width: 100%; /* 가로 너비를 100%로 설정하여 전체 너비에서 크기 조절 가능 */
-  background-color: var(--color-gray3); /* 크기 조절 선의 배경색 설정 */
+  cursor: ns-resize;
+  /* 세로 크기 조절 커서 모양 */
+  height: 5px;
+  /* 크기 조절 선의 높이 설정 */
+  width: 100%;
+  /* 가로 너비를 100%로 설정하여 전체 너비에서 크기 조절 가능 */
+  background-color: var(--color-gray3);
+  /* 크기 조절 선의 배경색 설정 */
 }
 </style>
