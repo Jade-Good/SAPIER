@@ -8,41 +8,26 @@ export default defineComponent({
     const collectionList = ref([])
     const workspaceStore = useWorkspaceStore()
     const workspaceListStore = useWorkspaceListStore()
+    const idList: string[] = []
 
     watchEffect(() => {
-      // console.log('watchEffect 실행')
+      idList.length = 0
       const workspaceIdx = workspaceStore.selectedWorkspaceIndex
-      // console.log('workspaceIdx : ', workspaceIdx)
-      const idList: string[] = []
-      // console.log('-------워치------------')
-      // console.log('인포정보 : ', workspaceListStore.WorkspaceList[workspaceIdx])
-      // // console.log('workspaceStore.workspaceInfo[workspaceIdx].collectionList : ', workspaceStore.workspaceInfo[workspaceIdx].collectionList)
 
       if (idList !== null && workspaceStore.workspaceInfo
     && workspaceListStore.WorkspaceList[workspaceIdx].collectionList) {
-        // console.log('IF안에 들어오긴 하나? ', workspaceIdx)
         for (let i = 0; i < workspaceListStore.WorkspaceList[workspaceIdx].collectionList.length; i++)
           idList.push(workspaceListStore.WorkspaceList[workspaceIdx].collectionList[i].collectionKey)
       }
       else { idList.length = 0 }
 
-      console.log('idList : ', idList)
-
-      // const collectionIds = Array.from({ length: idList.length })
-      // // const plainArray = idList.map(item => item[0])
-      // const plainArray = idList[0]
-
-      // for (let i = 0; i < collectionIds.length; i++)
-      //   collectionIds[i] = plainArray[i]
-      // const collectionId = {
-      //   collectionId: collectionIds,
-      // }
+      // console.log('idList : ', idList)
 
       const collectionId = {
         collectionId: idList,
       }
 
-      console.log('collectionId : ', collectionId)
+      console.log('collectionId : ', JSON.stringify(collectionId))
 
       if (idList.length > 0) {
         axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/list`, collectionId)
@@ -64,9 +49,9 @@ export default defineComponent({
       }
     })
 
-    const addRootCollection = () => {
+    const addRootCollection = (documentIdx) => {
       const newRootCollection = createNewRootCollection()
-      collectionList.value.push(newRootCollection)
+      collectionList.value[documentIdx].push(newRootCollection)
 
       saveData()
     }
@@ -106,16 +91,35 @@ export default defineComponent({
       await saveData()
     }
 
-    const deleteCollection = (collection) => {
-      if (collection.collectionList && collection.collectionList.length > 0) {
-        for (const childCollection of collection.collectionList)
-          deleteCollection(childCollection)
+    const deleteCollection = (parentCollection, deleteToCollection) => {
+      const deleteRecursive = (list) => {
+        for (let i = 0; i < list.length; i++) {
+          const currentCollection = list[i]
+
+          if (currentCollection === deleteToCollection) {
+            // 해당 컬렉션을 찾으면 삭제하고 종료
+            list.splice(i, 1)
+            return true // 삭제 완료
+          }
+
+          if (currentCollection.collectionList && currentCollection.collectionList.length > 0) {
+            // 재귀적으로 하위 컬렉션에서 찾기
+            const deleted = deleteRecursive(currentCollection.collectionList)
+
+            if (deleted && currentCollection.collectionList.length === 0) {
+              // 하위 컬렉션이 비어 있으면 현재 컬렉션도 삭제
+              list.splice(i, 1)
+              return true // 삭제 완료
+            }
+          }
+        }
+
+        return false // 삭제되지 않음
       }
-      const collectionIndex = collectionList.value.indexOf(collection)
-      if (collectionIndex > -1) {
-        collectionList.value.splice(collectionIndex, 1)
-        saveData()
-      }
+
+      // deleteRecursive 함수를 호출하여 삭제 수행
+      deleteRecursive(parentCollection)
+      saveData()
     }
 
     const createNewRootCollection = () => {
@@ -123,11 +127,27 @@ export default defineComponent({
         collectionName: 'New Root Collection',
         apiList: [],
         collectionList: [],
+        modifiedTime: new Date().toISOString(),
       }
     }
 
     const selectAPI = (api) => {
       collectionStore.request = api
+    }
+
+    const documentName = ref('-')
+    function getDocumentName(index: number) {
+      try {
+        const collectionId = idList[index]
+        const response = axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/${collectionId}`)
+        documentName.value = response
+        console.log('axios.get 성공, 이름:', response)
+      }
+      catch (error) {
+        console.error('axios.get 실패', error)
+      }
+
+      return documentName.value
     }
 
     return {
@@ -140,6 +160,8 @@ export default defineComponent({
       saveCollectionName,
       deleteCollection,
       selectAPI,
+      getDocumentName,
+      documentName,
     }
   },
 })
@@ -149,7 +171,7 @@ export default defineComponent({
   <div class="category">
     <WorkspaceTitle />
 
-    <div v-for="documentId in collectionList" :key="documentId.collectionId" class="collection-list">
+    <div v-for="(documentId, index) in collectionList" :key="documentId.collectionId" class="collection-list">
       <h1>Collection List</h1>
 
       <ul>
@@ -160,7 +182,7 @@ export default defineComponent({
             </li>
           </ul>
 
-          <span :style="{ marginLeft: '0px' }">
+          <span :style="{ marginLeft: '15px' }">
             <span v-if="!collection.editing">{{ collection.collectionName }}</span>
             <input
               v-else
@@ -170,23 +192,25 @@ export default defineComponent({
             >
             <button class="btn" @click="toggleEditing(collection)">{{ collection.editing ? '완료' : '수정' }}</button>
           </span>
-          <button class="er" @click="addChildCollection(collection)">
+          <button class="btn" @click="addChildCollection(collection)">
             루트에서 자식 추가
           </button>
-          <button class="er" @click="deleteCollection(collection)">
+          <button class="btn" @click="deleteCollection(documentId, collection)">
             루트 삭제
           </button>
-          <CollectionTree :collection="collection" :level="1" />
+          <CollectionTree :collection="collection" :level="2" />
         </li>
       </ul>
-      <button class="er" @click="addRootCollection">
+      <button class="btn" @click="addRootCollection(index)">
         루트폴더 추가
       </button>
       <br>
       <button class="btn" @click="saveData">
         저장
       </button>
-    </div>
+    </div><button class="er">
+      document 추가
+    </button>
   </div>
 </template>
 
