@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import axios from 'axios'
+
 const useCollection = useCollectionStore()
 const isMounted = useMounted()
 
@@ -16,6 +18,7 @@ const isMethodList = ref(false)
 const requestHigh = ref('500')
 const requestTap = ref('Params')
 const requestURL = ref('http://')
+const requestName = ref('New Request')
 const isResizing = ref(false) // 크기 조절 중 여부
 const startY = ref(0) // 크기 조절 시작 지점
 const startHeight = ref(0) // 크기 조절 시작 시 Request 엘리먼트의 높이
@@ -34,13 +37,18 @@ if (isMounted) {
   window.addEventListener('mousemove', handleResizing)
   window.addEventListener('mouseup', stopResizing)
 
-  if (useCollection.api && useCollection.api.method)
-    selectMethod.value = useCollection.api.method
+  if (useCollection.request && useCollection.request.method)
+    selectMethod.value = useCollection.request.method
 };
 
-watch(() => useCollection.api, () => {
-  if (useCollection.api)
-    selectMethod.value = useCollection.api.method
+watch(() => useCollection.request, () => {
+  if (useCollection.request) {
+    console.log('api : ', useCollection.request)
+
+    selectMethod.value = useCollection.request.method
+    requestURL.value = useCollection.request.requestURL
+    requestName.value = useCollection.request.requestName
+  }
 })
 
 onUnmounted(() => {
@@ -97,13 +105,12 @@ function toggleMethodList() {
   isMethodList.value = !isMethodList.value
 };
 
-function closeMethodList() {
-  isMethodList.value = false
-};
-
-function handleDocumentClick() {
+function handleDocumentClick(event: MouseEvent) {
   // 클릭 이벤트에서 메서드 목록을 열려 있을 때만 닫도록 처리
-  if (isMethodList.value)
+
+  const methodBtn = document.querySelector('.methodBtn')
+
+  if (isMethodList.value && !methodBtn?.contains(event.target as Element))
     isMethodList.value = false
 };
 
@@ -180,10 +187,31 @@ function setResponseStyle() {
 
   }
 };
+
+async function sendAPI() {
+  const sendData = {
+    requestURL:	requestURL.value,
+    method:	selectMethod.value,
+    headers: {},
+    queryParams: {},
+    body: {},
+    formData: {},
+  }
+
+  console.log('sendData : ', sendData)
+
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/request`, sendData)
+    console.log('API 전송 성공', res)
+  }
+  catch (error) {
+    console.error('API 전송 실패:', error)
+  }
+};
 </script>
 
 <template>
-  <div h-full flex flex-col border @click.capture="closeMethodList">
+  <div h-full flex flex-col border>
     <div name="Request" :style="setRequestStyle()">
       <div flex flex-justify-between pb-3 pl-3>
         <div flex flex-gap-1 line-height-9>
@@ -199,7 +227,7 @@ function setResponseStyle() {
           <p color-gray>
             /
           </p>
-          <p>버블 리스트 조회</p>
+          <p>{{ requestName }}</p>
         </div>
         <div flex flex-gap-3>
           <div class="grayBtn">
@@ -215,7 +243,7 @@ function setResponseStyle() {
 
       <div flex-justify-betwee h-14 flex>
         <div w-full flex flex-gap-4 border border-rounded p-2 style="border-color: var(--color-gray4);">
-          <div :style="setMethodBtnStyle()" @click="toggleMethodList()">
+          <div class="methodBtn" :style="setMethodBtnStyle()" @click="toggleMethodList()">
             <div m-1>
               {{ selectMethod }}
             </div>
@@ -239,7 +267,7 @@ function setResponseStyle() {
           </div>
         </div>
 
-        <div class="sendBtn">
+        <div class="sendBtn" @click="sendAPI()">
           <div flex flex-gap-2 flex-justify-center>
             <div i-carbon-send-alt pt-8 />
             Send

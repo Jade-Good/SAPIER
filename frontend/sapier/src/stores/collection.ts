@@ -8,28 +8,35 @@ interface CollectionTree {
   modifiedTime: string
 }
 
-interface Api {
+interface Request {
   requestName: string
   requestURL: string
   method: string
-  headers: []
-  body: []
+  requestHeaders: []
+  requestBody: []
   params: []
   path: []
   workspacesId: string
+}
+
+interface Response extends Request {
+  responseCode: number
+  responseHeaders: []
+  responseBody: []
+  time: number
 }
 
 export type { CollectionTree }
 
 export const useCollectionStore = defineStore('collection', () => {
   const collection = ref<CollectionTree | null>(null)
-  const api = ref<Api>()
-
-  
+  const request = ref<Request>()
+  const response = ref<Response>()
 
   return {
     collection,
-    api,
+    request,
+    response
   }
 })
 
