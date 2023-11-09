@@ -22,7 +22,7 @@ interface Request {
 interface Response {
   status: number
   headers: any
-  data: any
+  data: []
 }
 
 export type { CollectionTree }
