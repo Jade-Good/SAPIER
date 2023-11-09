@@ -97,13 +97,12 @@ function toggleMethodList() {
   isMethodList.value = !isMethodList.value
 };
 
-function closeMethodList() {
-  isMethodList.value = false
-};
-
-function handleDocumentClick() {
+function handleDocumentClick(event: MouseEvent) {
   // 클릭 이벤트에서 메서드 목록을 열려 있을 때만 닫도록 처리
-  if (isMethodList.value)
+
+  const methodBtn = document.querySelector('.methodBtn')
+
+  if (isMethodList.value && !methodBtn?.contains(event.target as Element))
     isMethodList.value = false
 };
 
@@ -183,7 +182,7 @@ function setResponseStyle() {
 </script>
 
 <template>
-  <div h-full flex flex-col border @click.capture="closeMethodList">
+  <div h-full flex flex-col border>
     <div name="Request" :style="setRequestStyle()">
       <div flex flex-justify-between pb-3 pl-3>
         <div flex flex-gap-1 line-height-9>
@@ -215,7 +214,7 @@ function setResponseStyle() {
 
       <div flex-justify-betwee h-14 flex>
         <div w-full flex flex-gap-4 border border-rounded p-2 style="border-color: var(--color-gray4);">
-          <div :style="setMethodBtnStyle()" @click="toggleMethodList()">
+          <div class="methodBtn" :style="setMethodBtnStyle()" @click="toggleMethodList()">
             <div m-1>
               {{ selectMethod }}
             </div>
