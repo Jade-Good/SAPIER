@@ -10,6 +10,7 @@ interface WorkspaceInfo {
   memberList: UserInfo[]
   modifiedTime: string
   collectionId: string[]
+  color: string
 }
 
 export type { WorkspaceInfo }
