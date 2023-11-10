@@ -203,6 +203,11 @@ export default defineComponent({
           <button class="btn" @click="deleteCollection(documentId, collection)">
             루트 삭제
           </button>
+          <ul :style="{ marginLeft: '15px' }">
+            <li v-for="api in collection.apiList" :key="api.requestName">
+              <a @click="selectAPI(api)">{{ api.requestName }}</a>
+            </li>
+          </ul>
           <CollectionTree :collection="collection" :level="2" />
         </li>
       </ul>
