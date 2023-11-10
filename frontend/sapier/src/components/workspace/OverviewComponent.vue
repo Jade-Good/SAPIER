@@ -162,16 +162,16 @@ function removeCollection(collectionId) {
           </h5>
           <div class="maindivText">
             <div w-18 border-r-2 class="list">
-              <div v-for="m in memberInfo.member" :key="m.uuid" class="box">
+              <div v-for="m in memberInfo.member" :key="m?.uuid" class="box">
                 <div id="workSpaceListData" class="workspaceId">
                   <div class="boxs" style="background: #BDBDBD;">
-                    <img :src="m.profileImageUrl" class="profile" alt="User Profile Image">s
+                    <img :src="m?.profileImageUrl" class="profile" alt="User Profile Image">s
                   </div>
                   <div class="name" @click="showUserInfo(m)">
-                    {{ m.nickname }}
+                    {{ m?.nickname }}
                   </div>
                   <div>
-                    {{ m.email }}
+                    {{ m?.email }}
                   </div>
                 </div>
               </div>
@@ -202,14 +202,14 @@ function removeCollection(collectionId) {
   display: flex;
   margin-bottom: 2em; /*그룹 간의 간격 조절*/
   width: max-content;
-  gap: 10em;
+  gap: 2em;
   margin-top:2em;
   margin-left: 13em;
 }
 
 .document-group {
   display: flex;
-  gap: 10em;
+  gap: 2em;
   margin-left: 13em;
 
 }
@@ -260,7 +260,7 @@ function removeCollection(collectionId) {
 
 .maindivHeader {
   display: inline-block;
-  font-size: 1.5em;
+  font-size: var(--font-H2-size);
   font-weight: 700;
 }
 
@@ -274,9 +274,8 @@ function removeCollection(collectionId) {
 
 }
 .maindivText {
-  font-size: 1em;
-  font-weight: 400;
-  margin-left: 0.5em;
+  margin-left: 1em;
+  font-size: var(--font-H6-size);
 }
 .name{
   text-align: center; /* 가로 중앙 정렬 */

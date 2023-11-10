@@ -42,6 +42,7 @@ import SettingComponent from './SettingComponent.vue'
 
 const currentComponent = ref(OverviewComponent)
 const WorkspaceOneInfo = useWorkspaceStore()
+const workspaceTap = ref('overview')
 
 // console.log(workspaceone)
 // console.log('workspaceinfovue data')
@@ -49,20 +50,22 @@ const WorkspaceOneInfo = useWorkspaceStore()
 
 <template>
   <div class="list">
-    <h1 class="overview">
+    <!-- <div class="overview">
       overview
-    </h1>
+    </div> -->
     <div class="workspaceHead">
       <div class="image-container">
         <img src="/person.png">
       </div>
-      <div>{{ WorkspaceOneInfo.workspaceInfo.name }}</div>
+      <div class="workspace-name">
+        {{ WorkspaceOneInfo.workspaceInfo.name }}
+      </div>
     </div>
-    <div class="workspaceHead">
-      <div class="overviewText tap" @click="currentComponent = OverviewComponent">
+    <div class="overviewSettingHead">
+      <div class="overviewText" :class="[workspaceTap !== 'overview' ? 'tap' : 'highlight']" @click="currentComponent = OverviewComponent, workspaceTap = 'overview'">
         overview
       </div>
-      <div class="settingText tap" @click="currentComponent = SettingComponent">
+      <div class="settingText" :class="[workspaceTap !== 'setting' ? 'tap' : 'highlight']" @click="currentComponent = SettingComponent, workspaceTap = 'setting'">
         setting
       </div>
     </div>
@@ -125,28 +128,51 @@ const WorkspaceOneInfo = useWorkspaceStore()
 }
 .list{
   overflow-x: hidden;
-
   border: 1px solid #000;
   display: flex; /* 부모 요소를 플렉스 컨테이너로 설정 */
   flex-direction: column; /* 아이템을 수직으로 정렬하기 위해 컬럼 방향 설정 */
 }
-
+.highlight {
+  border-bottom: 3px;
+  border-bottom-style: solid;
+  border-block-color: var(--color-blue1);
+  /* border: solid 1px blue; */
+}
 .overview{
   border-bottom: 1px solid #000; /* 밑줄 추가 */
-  height: fit-content
-
+  /* height: fit-content; */
+}
+.workspace-name{
+  font-size: var(--font-H1-size);
+  font-weight: var(--font-H1-weight);
 }
 .workspaceHead {
+  border-bottom: 1px solid #000; /* 밑줄 추가 */
   padding-bottom: 10px;
   display: flex; /* .workspaceHead를 플렉스 컨테이너로 설정 */
   align-items: center; /* 수평 가운데 정렬 */
-  border-bottom: 1px solid #000; /* 밑줄 추가 */
+  font-size: var(--font-H6-size);
+  width: 100%;
+  /* font-weight: var(--font-H1-weight); */
+}
+
+.overviewSettingHead {
+
+  padding-bottom: 10px;
+  display: flex; /* .workspaceHead를 플렉스 컨테이너로 설정 */
+  align-items: center; /* 수평 가운데 정렬 */
+  font-size: var(--font-H6-size);
+  width: 100%;
+  margin-left: 30px;
+  /* font-weight: var(--font-H1-weight); */
 }
 .workspaceHead:hover {
   cursor: pointer; /* 호버 시 커서를 손가락 아이콘으로 변경 */
 }
 .image-container {
-  margin-right: 10px; /* 이미지와 텍스트 사이의 간격을 조절 */
+  margin-right: 25px; /* 이미지와 텍스트 사이의 간격을 조절 */
+  margin-left: 25px; /* 이미지와 텍스트 사이의 간격을 조절 */
+
 }
 .overviewText{
   margin-left: 10px; /* 이미지와 텍스트 사이의 간격을 조절 */
