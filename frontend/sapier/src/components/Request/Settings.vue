@@ -3,12 +3,22 @@ export default {
   data() {
     return {
       params: [
-        { active: true, key: 'exp_cnt', value: 'Y', description: '경험치 포함 조회 여부' },
-        { active: false, key: 'max_cnt', value: 10, description: '조회 리스트 개수 최대값' },
+        {
+          active: true,
+          key: "exp_cnt",
+          value: "Y",
+          description: "경험치 포함 조회 여부",
+        },
+        {
+          active: false,
+          key: "max_cnt",
+          value: 10,
+          description: "조회 리스트 개수 최대값",
+        },
       ],
-    }
+    };
   },
-}
+};
 </script>
 
 <template>
@@ -18,12 +28,15 @@ export default {
 </template>
 
 <style scoped>
-table, th, td {
+table,
+th,
+td {
   border: 1px solid var(--color-black);
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 10px 20px;
   text-align: center;
 }
