@@ -16,7 +16,7 @@ if (isMounted) {
       // dataElement.textContent = WorkspaceListInfo.workSpaceInfo.
     })
     .catch((error) => {
-      console.log(error)
+      console.error('워크스페이스 리스트 조회 실패 : ', error)
     },
     )
 }

@@ -7,7 +7,7 @@ const props = defineProps({
 const memberInfo = useMemberStore()
 const isMounted = useMounted()
 
-axios.defaults.withCredentials = true
+// console.log(workspaceone.name)
 
 if (isMounted) {
   axios
@@ -18,7 +18,7 @@ if (isMounted) {
       memberInfo.member = res.data
     })
     .catch((error) => {
-      console.log(error)
+      console.error('memberList 가져오기 : ', error)
     },
     )
 }
@@ -27,16 +27,50 @@ if (isMounted) {
 watch(() => props.workspaceone, async (newWorkspaceOne) => {
   if (newWorkspaceOne) {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${newWorkspaceOne.key}`)
-      console.log('memberList 가져오기')
-      console.log(res)
+      const res = await axios.get(`/api/v1/workspaces/members/${newWorkspaceOne.key}`)
+      // console.log('memberList 가져오기ww')
+      // console.log(res)
       memberInfo.member = res.data
     }
     catch (error) {
-      console.log(error)
+      console.error('memberList 가져오기ww : ', error)
     }
   }
 })
+
+function showUserInfo(user) {
+  // console.log(user)
+  localStorage.setItem('MemberData', JSON.stringify(user))
+}
+
+const collections = ref(WorkspaceOneInfo.workspaceInfo.collectionList) // Wrap collectionList in a ref
+const showDropdown = ref(false)
+const selectedDataArray = ref([])
+function showCollectionsDropdown() {
+  showDropdown.value = !showDropdown.value
+}
+
+function addCollectionToPinned(collection) {
+  const selectedCollection = collections.value.find(c => c.id === collection.id)
+  if (selectedCollection && !selectedCollection.disabled) {
+    selectedDataArray.value.push({ id: collection.id, name: collection.collectionName })
+    selectedCollection.disabled = true
+    // console.log(`Adding "${collection.collectionName}" to pinned collections`)
+  }
+}
+
+function dropdownClick(event) {
+  // 드롭다운 메뉴를 클릭해도 이벤트 버블링을 중지시키지 않음
+  event.stopPropagation()
+}
+
+function removeCollection(collectionId) {
+  // 선택한 컬렉션을 삭제
+  selectedDataArray.value = selectedDataArray.value.filter(data => data.id !== collectionId)
+  const selectedCollection = collections.value.find(c => c.id === collectionId)
+  if (selectedCollection)
+    selectedCollection.disabled = false
+}
 </script>
 
 <template>

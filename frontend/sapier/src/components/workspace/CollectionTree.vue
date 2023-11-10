@@ -39,6 +39,25 @@ export default {
       this.$emit('update-collection-name', collection)
     },
 
+    saveCollectionName(collection) {
+      collection.collectionName = collection.newName
+      this.toggleEditing(collection)
+      this.saveChanges()
+    },
+    deleteCollection(collection) {
+      if (collection.collectionList && collection.collectionList.length > 0) {
+        for (const childCollection of collection.collectionList)
+          this.deleteCollection(childCollection) // 재귀적으로 하위 컬렉션 삭제
+      }
+      const collectionIndex = this.collection.collectionList.indexOf(collection)
+      if (collectionIndex > -1)
+        this.collection.collectionList.splice(collectionIndex, 1) // 현재 컬렉션 삭제
+      this.saveChanges()
+    },
+    selectAPI(api) {
+      collectionStore.request = api
+      // console.log('자식 api 호출: ', api)
+    },
   },
 }
 function createNewCollection() {

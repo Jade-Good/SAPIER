@@ -1,9 +1,11 @@
-<script setup>
-import axios from 'axios'
+<script setup lang="ts">
+import { defineStore } from 'pinia'
 
 const props = defineProps({
   workspaceone: Object,
 })
+
+const axios = inject('$axios')
 
 const memberInfo = useUserStore()
 const isMounted = useMounted()
@@ -16,7 +18,6 @@ const alphabet = ['A', 'B', 'C', 'D', 'E'] // 사용할 색상 목록
 function changeBoxColor(color) {
   boxColor.value = color
 }
-axios.defaults.withCredentials = true
 
 if (isMounted) {
   axios
@@ -27,7 +28,131 @@ if (isMounted) {
       memberInfo.member = res.data
     })
     .catch((error) => {
-      console.log(error)
+      console.error('memberList (setting component)가져오기 실패 : ', error)
+    },
+    )
+}
+
+// workspaceone 변경 감시
+watch(() => WorkspaceOneInfo.workspaceInfo, async (newWorkspaceOne) => {
+  if (newWorkspaceOne) {
+    try {
+      const res = await axios.get(`/api/v1/workspaces/members/${newWorkspaceOne.key}`)
+      // console.log(res)
+      memberInfo.member = res.data
+    }
+    catch (error) {
+      console.error('memberList 가져오기 실패 : ', error)
+    }
+  }
+})
+
+computed(() => {
+
+})
+
+const dropdownData = ref({
+  isOpen: false, // 드롭다운 메뉴 표시 여부
+  selectedPermission: null, // 선택한 권한
+})
+
+// 드롭다운을 토글하는 메서드
+function toggleDropdown() {
+  dropdownData.value.isOpen = !dropdownData.value.isOpen
+}
+
+// 권한 선택 메서드
+function selectPermission(user, userpermission) {
+  user.selectedPermission = userpermission
+  dropdownData.value.isOpen = false // 드롭다운 닫기
+  // console.log(user)
+
+  // for (let index = 0; index < props.workspaceone.memberList.length; index++) {
+  //   if (user.uuid === props.workspaceone.memberList.uuId[index])
+  //     workspaceone.memberList.userPermission[index] = permission
+  // }
+  for (let index = 0; index < WorkspaceOneInfo.workspaceInfo.memberList.length; index++) {
+    if (WorkspaceOneInfo.workspaceInfo.memberList[index].uuId === user.uuid)
+      WorkspaceOneInfo.workspaceInfo.memberList[index].userPermission = userpermission
+  }
+  const data = {
+    workspaceIdx: WorkspaceOneInfo.workspaceInfo.key,
+    memberUuid: user.uuid,
+    permission: userpermission,
+  }
+  axios
+    .patch(`/api/v1/workspaces/members/${user.uuid}`, data)
+    .then((res) => {
+      // console.log('memberList (setting component)patch')
+      // console.log(res)
+      memberInfo.member = res.data
+
+      user.selectedPermission = userpermission
+    })
+    .catch((error) => {
+      console.error('memberList (setting component)patch 실패 : ', error)
+    },
+    )
+}
+
+function updateWorkspaceName(event) {
+  // 사용자가 입력 필드의 내용을 수정할 때 호출됩니다.
+
+  const newName = event
+
+  WorkspaceOneInfo.updateWorkspaceName(newName)
+  axios
+    .patch(`/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`, WorkspaceOneInfo.workspaceInfo)
+    .then((res) => {
+      // console.log('updateWorkspaceName (setting component)patch-----------------------')
+      // console.log(res)
+    })
+    .catch((error) => {
+      console.error('updateWorkspaceName (setting component)patch----------------------- 실패 : ', error)
+    },
+    )
+
+  // console.log('updateWorkspaceName')
+  // console.log(WorkspaceOneInfo.workspaceInfo)
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (text.length > maxLength)
+    return `${text.slice(0, maxLength)}`
+
+  else
+    return text
+}
+// Leave Workspace 버튼 클릭 시 실행될 메서드
+function leaveWorkspace() {
+  // Leave Workspace 로직 구현
+
+  axios
+    .delete(`/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
+    .then((res) => {
+      // console.log('leaveWorkspace (setting component)delete')
+      // console.log(res)
+      window.location.reload()
+    })
+    .catch((error) => {
+      console.error('leaveWorkspace (setting component)delete 실패 : ', error)
+    },
+    )
+}
+
+// Delete Workspace 버튼 클릭 시 실행될 메서드
+function deleteWorkspace() {
+  // Delete Workspace 로직 구현
+
+  axios
+    .delete(`/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`)
+    .then((res) => {
+      // console.log('deleteWorkspace (setting component)delete')
+      // console.log(res)
+      window.location.reload()
+    })
+    .catch((error) => {
+      console.error('deleteWorkspace (setting component)delete : ', error)
     },
     )
 }
