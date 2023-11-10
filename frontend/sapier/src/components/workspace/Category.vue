@@ -16,6 +16,8 @@ export default defineComponent({
 
       if (idList !== null && workspaceStore.workspaceInfo
     && workspaceListStore.WorkspaceList[workspaceIdx].collectionList) {
+        // console.log('workspaceIdx:', workspaceIdx.length)
+        // console.log('WorkspaceList:', workspaceListStore.WorkspaceList.length)
         for (let i = 0; i < workspaceListStore.WorkspaceList[workspaceIdx].collectionList.length; i++)
           idList.push(workspaceListStore.WorkspaceList[workspaceIdx].collectionList[i].collectionKey)
       }
@@ -27,7 +29,7 @@ export default defineComponent({
         collectionId: idList,
       }
 
-      console.log('collectionId : ', JSON.stringify(collectionId))
+      // console.log('collectionId : ', JSON.stringify(collectionId))
 
       if (idList.length > 0) {
         axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/list`, collectionId)
@@ -47,6 +49,9 @@ export default defineComponent({
             console.error('Error:', error)
           })
       }
+
+      // documentName.value = response
+      // console.log('axios.get 성공, 이름:', response)
     })
 
     const addRootCollection = (documentIdx) => {
