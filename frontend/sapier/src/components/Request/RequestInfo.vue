@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import axios from 'axios'
-
+const axios = inject('$axios')
 const useCollection = useCollectionStore()
 const isMounted = useMounted()
 
@@ -198,8 +197,8 @@ async function sendAPI() {
   console.log('sendData : ', sendData)
 
   try {
-    const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/request`, sendData)
-    console.log('API 전송 성공', res)
+    const res = await axios.post(`/api/v1/collection/request`, sendData)
+    // console.log('API 전송 성공', res)
 
     useCollection.response = res
   }

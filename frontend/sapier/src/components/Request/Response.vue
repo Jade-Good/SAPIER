@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios'
-
 const useCollection = useCollectionStore()
 const requestCode = ref(0)
 const requestHeaders = ref({ test1: '123', test2: 12321 })
