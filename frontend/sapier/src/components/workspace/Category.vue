@@ -41,7 +41,7 @@ export default defineComponent({
       console.log('collectionId : ', collectionId)
 
       if (idList.length > 0) {
-        axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/list`, collectionId)
+        axios.post(`/api/v1/collection/list`, collectionId)
           .then((response) => {
             collectionStore.collection = response.data
             collectionList.value.length = 0
@@ -79,7 +79,7 @@ export default defineComponent({
 
       try {
         console.log('JSON: ', dataToSave)
-        const res = await axios.patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/modify`, modifyData)
+        const res = await axios.patch(`/api/v1/collection/modify`, modifyData)
         console.log('데이터 저장 성공', res)
       }
       catch (error) {
