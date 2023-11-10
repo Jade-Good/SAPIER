@@ -1,7 +1,6 @@
 <script lang="ts">
-import axios from 'axios'
+const axios = inject('$axios')
 
-axios.defaults.withCredentials = true
 export default defineComponent({
   setup() {
     const collectionStore = useCollectionStore()
@@ -32,18 +31,14 @@ export default defineComponent({
       // console.log('collectionId : ', JSON.stringify(collectionId))
 
       if (idList.length > 0) {
-        axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/list`, collectionId)
-        // axios.post(`http://localhost:8080/api/v1/collection/list`, collectionId, {
-        // headers: { Authorization: 'Bearer sapiersapiersapiersapiersapiersapiersapiersapier' },
-        // })
-
+        axios.post(`/api/v1/collection/list`, collectionId)
           .then((response) => {
             collectionStore.collection = response.data
             collectionList.value.length = 0
             for (let i = 0; i < response.data.length; i++)
               collectionList.value.push(response.data[i].collectionList)
 
-            console.log('성공', collectionList.value)
+            // console.log('성공', collectionList.value)
           })
           .catch((error) => {
             console.error('Error:', error)
@@ -77,8 +72,8 @@ export default defineComponent({
 
       try {
         console.log('JSON: ', dataToSave)
-        const res = await axios.patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/modify`, modifyData)
-        console.log('데이터 저장 성공', res)
+        const res = await axios.patch(`/api/v1/collection/modify`, modifyData)
+        // console.log('데이터 저장 성공', res)
       }
       catch (error) {
         console.error('데이터 저장 실패:', error)
@@ -144,9 +139,9 @@ export default defineComponent({
     function getDocumentName(index: number) {
       try {
         const collectionId = idList[index]
-        const response = axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/${collectionId}`)
+        const response = axios.get(`/api/v1/collection/${collectionId}`)
         documentName.value = response
-        console.log('axios.get 성공, 이름:', response)
+        // console.log('axios.get 성공, 이름:', response)
       }
       catch (error) {
         console.error('axios.get 실패', error)

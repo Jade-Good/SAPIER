@@ -20,11 +20,12 @@
 </route> -->
 
 <script setup lang="ts">
-import axios from 'axios'
 import { ref } from 'vue'
 
 import MainInfo from '../components/main/MainInfo.vue'
 import WorkspaceInfo from '../components/workspace/WorkSpaceInfo.vue'
+
+const axios = inject('$axios')
 
 const WorkspaceListInfo = useWorkspaceListStore()
 const WorkspaceOneInfo = useWorkspaceStore()
@@ -33,13 +34,11 @@ const isMounted = useMounted()
 const currentComponent = ref<Component | null>(MainInfo)// 초기값은 MainInfo 컴포넌트로 설정
 const workspaceinfo = ref<any>(null) // workspaceInfoOne 데이터를 저장할 ref
 
-axios.defaults.withCredentials = true
-
 if (isMounted) {
   axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`)
+    .get(`/api/v1/workspaces`)
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       WorkspaceListInfo.WorkspaceList = res.data
     })
     .catch((error) => {

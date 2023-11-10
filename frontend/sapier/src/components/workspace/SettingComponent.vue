@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineStore } from 'pinia'
-import axios from 'axios'
+const axios = inject('$axios')
 
 // const props = defineProps({
 //   workspaceone: Object,
@@ -22,19 +22,17 @@ const alphabet = ['A', 'B', 'C', 'D', 'E'] // 사용할 색상 목록
 
 function changeBoxColor(color) {
   boxColor.value = color
-}
-axios.defaults.withCredentials = true
 
 if (isMounted) {
   axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
+    .get(`/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
     .then((res) => {
-      console.log('memberList (setting component)가져오기')
-      console.log(res)
+      // console.log('memberList (setting component)가져오기')
+      // console.log(res)
       memberInfo.member = res.data
     })
     .catch((error) => {
-      console.log(error)
+      console.log('memberList (setting component)가져오기 실패 : ' ,error)
     },
     )
 }
@@ -43,13 +41,12 @@ if (isMounted) {
 watch(() => WorkspaceOneInfo.workspaceInfo, async (newWorkspaceOne) => {
   if (newWorkspaceOne) {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${newWorkspaceOne.key}`)
-      console.log('memberList 가져오기')
-      console.log(res)
+      const res = await axios.get(`/api/v1/workspaces/members/${newWorkspaceOne.key}`)
+      // console.log(res)
       memberInfo.member = res.data
     }
     catch (error) {
-      console.log(error)
+      console.log('memberList 가져오기 실패 : ', error)
     }
   }
 })
@@ -89,16 +86,16 @@ function selectPermission(user, userpermission) {
     permission: userpermission,
   }
   axios
-    .patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${user.uuid}`, data)
+    .patch(`/api/v1/workspaces/members/${user.uuid}`, data)
     .then((res) => {
-      console.log('memberList (setting component)patch')
-      console.log(res)
+      // console.log('memberList (setting component)patch')
+      // console.log(res)
       memberInfo.member = res.data
 
       user.selectedPermission = userpermission
     })
     .catch((error) => {
-      console.log(error)
+      console.log('memberList (setting component)patch 실패 : ',error)
     },
     )
 }
@@ -110,13 +107,13 @@ function updateWorkspaceName(event) {
 
   WorkspaceOneInfo.updateWorkspaceName(newName)
   axios
-    .patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`, WorkspaceOneInfo.workspaceInfo)
+    .patch(`/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`, WorkspaceOneInfo.workspaceInfo)
     .then((res) => {
-      console.log('updateWorkspaceName (setting component)patch-----------------------')
-      console.log(res)
+      // console.log('updateWorkspaceName (setting component)patch-----------------------')
+      // console.log(res)
     })
     .catch((error) => {
-      console.log(error)
+      console.log('updateWorkspaceName (setting component)patch----------------------- 실패 : ', error)
     },
     )
 
@@ -136,14 +133,14 @@ function leaveWorkspace() {
   // Leave Workspace 로직 구현
 
   axios
-    .delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
+    .delete(`/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
     .then((res) => {
-      console.log('leaveWorkspace (setting component)delete')
-      console.log(res)
+      // console.log('leaveWorkspace (setting component)delete')
+      // console.log(res)
       window.location.reload()
     })
     .catch((error) => {
-      console.error(error)
+      console.error('leaveWorkspace (setting component)delete 실패 : ', error)
     },
     )
 }
@@ -153,14 +150,14 @@ function deleteWorkspace() {
   // Delete Workspace 로직 구현
 
   axios
-    .delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`)
+    .delete(`/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`)
     .then((res) => {
-      console.log('deleteWorkspace (setting component)delete')
-      console.log(res)
+      // console.log('deleteWorkspace (setting component)delete')
+      // console.log(res)
       window.location.reload()
     })
     .catch((error) => {
-      console.error(error)
+      console.error('deleteWorkspace (setting component)delete : ', error)
     },
     )
 }

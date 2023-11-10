@@ -17,6 +17,21 @@ import Shiki from 'markdown-it-shikiji'
 import WebfontDownload from 'vite-plugin-webfont-dl'
 
 export default defineConfig({
+
+  server: {
+    proxy: {
+      '/api': {
+        target: `https://sapier.co.kr/2222222222222222222222222222`, // '/api'를 추가하여 요청 전달
+        changeOrigin: true, // origin을 변경
+        // rewrite: path => path.replace(/^\/api/, ''), // '/api' 경로를 제거하여 전달
+        // SSL 인증서 검증 무시
+        secure: false,
+        // WebSocket 프로토콜 사용
+        ws: true,
+      },
+    },
+  },
+
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
@@ -24,6 +39,7 @@ export default defineConfig({
   },
 
   plugins: [
+
     VueMacros({
       plugins: {
         vue: Vue({
