@@ -10,6 +10,7 @@ interface WorkspaceInfo {
   memberList: UserInfo[]
   modifiedTime: string
   collectionId: string[]
+  color: string
 }
 
 export type { WorkspaceInfo }
@@ -24,6 +25,7 @@ export const useWorkspaceStore = defineStore('workspace', () => {
       if (this.workspaceInfo)
         this.workspaceInfo.name = newName
     },
+    selectedWorkspaceIndex,
   }
 })
 

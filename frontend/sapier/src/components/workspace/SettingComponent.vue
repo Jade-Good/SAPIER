@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
@@ -15,7 +15,6 @@ const isMounted = useMounted()
 // const workspaceName = ref(workspaceone.name)
 const shouldRender = ref(true) // 초기값 설정
 const searchInput = ref('')
-const componentKey = ref(0)
 
 const boxColor = ref('yellow') // 초기 색상 설정
 const colors = ['red', 'blue', 'green', 'purple', 'orange'] // 사용할 색상 목록
@@ -110,50 +109,65 @@ function updateWorkspaceName(event) {
   const newName = event
 
   WorkspaceOneInfo.updateWorkspaceName(newName)
-  // WorkspaceOneInfo.workspaceInfo.name = newName
-
-  // updateWorkspaceName 함수 내에서 shouldRender 값을 변경하여 재렌더링
-  // shouldRender.value = !shouldRender.value
-  // shouldRender.value = true
-  console.log('updateWorkspaceName')
-  console.log(WorkspaceOneInfo.workspaceInfo)
-  componentKey.value += 1
-}
-
-// Leave Workspace 버튼 클릭 시 실행될 메서드
-function leaveWorkspace() {
-  // Leave Workspace 로직 구현
-  console.log(WorkspaceOneInfo.workspaceInfo.key)
-
-  const data = {
-    workspaceIdx: WorkspaceOneInfo.workspaceInfo.key,
-  }
   axios
-    .delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${memberInfo.userInfo.uuid}`, data)
+    .patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`, WorkspaceOneInfo.workspaceInfo)
     .then((res) => {
-      console.log('leaveWorkspace (setting component)delete')
+      console.log('updateWorkspaceName (setting component)patch-----------------------')
       console.log(res)
-      memberInfo.member = res.data
-
-      user.selectedPermission = userpermission
     })
     .catch((error) => {
       console.log(error)
     },
     )
-  console.log('leaveworkspaceddddddddddddddddddddddddddddd')
 
-  console.log(memberInfo.userInfo.uuid)
+  console.log('updateWorkspaceName')
+  console.log(WorkspaceOneInfo.workspaceInfo)
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (text.length > maxLength)
+    return `${text.slice(0, maxLength)}`
+
+  else
+    return text
+}
+// Leave Workspace 버튼 클릭 시 실행될 메서드
+function leaveWorkspace() {
+  // Leave Workspace 로직 구현
+
+  axios
+    .delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
+    .then((res) => {
+      console.log('leaveWorkspace (setting component)delete')
+      console.log(res)
+      window.location.reload()
+    })
+    .catch((error) => {
+      console.error(error)
+    },
+    )
 }
 
 // Delete Workspace 버튼 클릭 시 실행될 메서드
 function deleteWorkspace() {
   // Delete Workspace 로직 구현
+
+  axios
+    .delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`)
+    .then((res) => {
+      console.log('deleteWorkspace (setting component)delete')
+      console.log(res)
+      window.location.reload()
+    })
+    .catch((error) => {
+      console.error(error)
+    },
+    )
 }
 </script>
 
 <template>
-  <div :key="componentKey" class="mainInfo">
+  <div class="mainInfo">
     <div class="overview">
       <div class="maindiv">
         <h5 class="maindivHeader">
@@ -164,7 +178,7 @@ function deleteWorkspace() {
           <div v-if="shouldRender">
             <div class="box" :style="{ backgroundColor: boxColor }">
               <div id="workSpaceListData" class="workspaceId">
-                {{ WorkspaceOneInfo.workspaceInfo.name }}
+                {{ truncateText(WorkspaceOneInfo.workspaceInfo.name, 4) }}
               </div>
             </div>
           </div>
@@ -314,7 +328,7 @@ function deleteWorkspace() {
   align-items: center; /* 세로 중앙 정렬 */
 }
 .changeColor{
-    width: 2%;
+    width: 30px;
     /* height: 20%; */
     border-radius: 70%;
     overflow: hidden;

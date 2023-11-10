@@ -3,6 +3,7 @@ import axios from 'axios'
 
 axios.defaults.withCredentials = true
 
+const collectionStore = useCollectionStore()
 export default {
 
   props: {
@@ -61,6 +62,10 @@ export default {
         this.collection.collectionList.splice(collectionIndex, 1) // 현재 컬렉션 삭제
       this.saveChanges()
     },
+    selectAPI(api) {
+      collectionStore.request = api
+      console.log('자식 api 호출: ', api)
+    },
   },
 }
 function createNewCollection() {
@@ -95,6 +100,11 @@ function createNewCollection() {
       <button class="btn" @click="addChildCollection(childCollection)">
         자식 추가
       </button>
+      <ul v-if="childCollection.apiList && childCollection.apiList.length > 0" :style="{ marginLeft: `${level * 15}px` }">
+        <li v-for="api in childCollection.apiList" :key="api.requestName">
+          <a @click="selectAPI(api)">{{ api.requestName }}</a>
+        </li>
+      </ul>
       <CollectionTree :collection="childCollection" :level="level + 1" />
     </li>
   </ul>
