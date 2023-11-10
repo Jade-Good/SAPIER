@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios'
-
 const useCollection = useCollectionStore()
 const requestCode = ref(0)
 const requestHeaders = ref({ test1: '123', test2: 12321 })
@@ -8,7 +6,7 @@ const requestBody = ref('testtest')
 
 watch(() => useCollection.response, () => {
   if (useCollection.response) {
-    console.log('response : ', useCollection.response)
+    // console.log('response : ', useCollection.response)
 
     requestCode.value = useCollection.response.status
     requestHeaders.value = useCollection.response.headers

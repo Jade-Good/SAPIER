@@ -1,6 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { defineStore } from 'pinia'
-import axios from 'axios'
+
+const axios = inject('$axios')
 
 // const props = defineProps({
 //   workspaceone: Object,
@@ -15,7 +16,6 @@ const isMounted = useMounted()
 // const workspaceName = ref(workspaceone.name)
 const shouldRender = ref(true) // 초기값 설정
 const searchInput = ref('')
-const componentKey = ref(0)
 
 const boxColor = ref('yellow') // 초기 색상 설정
 const colors = ['red', 'blue', 'green', 'purple', 'orange'] // 사용할 색상 목록
@@ -24,18 +24,17 @@ const alphabet = ['A', 'B', 'C', 'D', 'E'] // 사용할 색상 목록
 function changeBoxColor(color) {
   boxColor.value = color
 }
-axios.defaults.withCredentials = true
 
 if (isMounted) {
   axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
+    .get(`/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
     .then((res) => {
-      console.log('memberList (setting component)가져오기')
-      console.log(res)
+      // console.log('memberList (setting component)가져오기')
+      // console.log(res)
       memberInfo.member = res.data
     })
     .catch((error) => {
-      console.log(error)
+      console.error('memberList (setting component)가져오기 실패 : ', error)
     },
     )
 }
@@ -44,13 +43,12 @@ if (isMounted) {
 watch(() => WorkspaceOneInfo.workspaceInfo, async (newWorkspaceOne) => {
   if (newWorkspaceOne) {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${newWorkspaceOne.key}`)
-      console.log('memberList 가져오기')
-      console.log(res)
+      const res = await axios.get(`/api/v1/workspaces/members/${newWorkspaceOne.key}`)
+      // console.log(res)
       memberInfo.member = res.data
     }
     catch (error) {
-      console.log(error)
+      console.error('memberList 가져오기 실패 : ', error)
     }
   }
 })
@@ -73,8 +71,7 @@ function toggleDropdown() {
 function selectPermission(user, userpermission) {
   user.selectedPermission = userpermission
   dropdownData.value.isOpen = false // 드롭다운 닫기
-  console.log(user)
-  console.log('sdfsdfsdfsdfsdf')
+  // console.log(user)
 
   // for (let index = 0; index < props.workspaceone.memberList.length; index++) {
   //   if (user.uuid === props.workspaceone.memberList.uuId[index])
@@ -90,16 +87,16 @@ function selectPermission(user, userpermission) {
     permission: userpermission,
   }
   axios
-    .patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${user.uuid}`, data)
+    .patch(`/api/v1/workspaces/members/${user.uuid}`, data)
     .then((res) => {
-      console.log('memberList (setting component)patch')
-      console.log(res)
+      // console.log('memberList (setting component)patch')
+      // console.log(res)
       memberInfo.member = res.data
 
       user.selectedPermission = userpermission
     })
     .catch((error) => {
-      console.log(error)
+      console.error('memberList (setting component)patch 실패 : ', error)
     },
     )
 }
@@ -110,50 +107,65 @@ function updateWorkspaceName(event) {
   const newName = event
 
   WorkspaceOneInfo.updateWorkspaceName(newName)
-  // WorkspaceOneInfo.workspaceInfo.name = newName
+  axios
+    .patch(`/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`, WorkspaceOneInfo.workspaceInfo)
+    .then((res) => {
+      // console.log('updateWorkspaceName (setting component)patch-----------------------')
+      // console.log(res)
+    })
+    .catch((error) => {
+      console.error('updateWorkspaceName (setting component)patch----------------------- 실패 : ', error)
+    },
+    )
 
-  // updateWorkspaceName 함수 내에서 shouldRender 값을 변경하여 재렌더링
-  // shouldRender.value = !shouldRender.value
-  // shouldRender.value = true
-  console.log('updateWorkspaceName')
-  console.log(WorkspaceOneInfo.workspaceInfo)
-  componentKey.value += 1
+  // console.log('updateWorkspaceName')
+  // console.log(WorkspaceOneInfo.workspaceInfo)
 }
 
+function truncateText(text: string, maxLength: number) {
+  if (text.length > maxLength)
+    return `${text.slice(0, maxLength)}`
+
+  else
+    return text
+}
 // Leave Workspace 버튼 클릭 시 실행될 메서드
 function leaveWorkspace() {
   // Leave Workspace 로직 구현
-  console.log(WorkspaceOneInfo.workspaceInfo.key)
 
-  const data = {
-    workspaceIdx: WorkspaceOneInfo.workspaceInfo.key,
-  }
   axios
-    .delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${memberInfo.userInfo.uuid}`, data)
+    .delete(`/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
     .then((res) => {
-      console.log('leaveWorkspace (setting component)delete')
-      console.log(res)
-      memberInfo.member = res.data
-
-      user.selectedPermission = userpermission
+      // console.log('leaveWorkspace (setting component)delete')
+      // console.log(res)
+      window.location.reload()
     })
     .catch((error) => {
-      console.log(error)
+      console.error('leaveWorkspace (setting component)delete 실패 : ', error)
     },
     )
-  console.log('leaveworkspaceddddddddddddddddddddddddddddd')
-
-  console.log(memberInfo.userInfo.uuid)
 }
 
 // Delete Workspace 버튼 클릭 시 실행될 메서드
 function deleteWorkspace() {
   // Delete Workspace 로직 구현
+
+  axios
+    .delete(`/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`)
+    .then((res) => {
+      // console.log('deleteWorkspace (setting component)delete')
+      // console.log(res)
+      window.location.reload()
+    })
+    .catch((error) => {
+      console.error('deleteWorkspace (setting component)delete : ', error)
+    },
+    )
 }
 </script>
 
 <template>
-  <div :key="componentKey" class="mainInfo">
+  <div class="mainInfo">
     <div class="overview">
       <div class="maindiv">
         <h5 class="maindivHeader">
@@ -164,7 +176,7 @@ function deleteWorkspace() {
           <div v-if="shouldRender">
             <div class="box" :style="{ backgroundColor: boxColor }">
               <div id="workSpaceListData" class="workspaceId">
-                {{ WorkspaceOneInfo.workspaceInfo.name }}
+                {{ truncateText(WorkspaceOneInfo.workspaceInfo.name, 4) }}
               </div>
             </div>
           </div>
@@ -314,7 +326,7 @@ function deleteWorkspace() {
   align-items: center; /* 세로 중앙 정렬 */
 }
 .changeColor{
-    width: 2%;
+    width: 30px;
     /* height: 20%; */
     border-radius: 70%;
     overflow: hidden;

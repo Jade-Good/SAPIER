@@ -1,21 +1,19 @@
-<template>
-    
-    <button class="social_login_button">
-        <span class="social_login_button_img">
-            <img :src=img @click="$emit('onclick')" />
-        </span>
-    </button>
-    
-</template>
-
 <script>
 export default {
-    props : {
-        img : String,
-        onclick : Function
-    }
+  props: {
+    img: String,
+    onclick: Function,
+  },
 }
 </script>
+
+<template>
+  <button class="social_login_button">
+    <span class="social_login_button_img">
+      <img :src="img" @click="$emit('onclick')">
+    </span>
+  </button>
+</template>
 
 <style>
 .social_login_button{
@@ -28,5 +26,4 @@ export default {
   margin-top: 3%;
 
 }
-
 </style>

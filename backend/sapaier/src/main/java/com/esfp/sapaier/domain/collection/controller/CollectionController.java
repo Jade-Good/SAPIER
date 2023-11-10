@@ -36,6 +36,11 @@ public class CollectionController {
 		return new ResponseEntity<>(collectionService.allCollectionList(collectionListRequestDto), HttpStatus.OK);
 	}
 
+	@GetMapping("/{collectionId}")
+	public ResponseEntity<String> rootCollectionName(@PathVariable String collectionId){
+		return new ResponseEntity<>(collectionService.rootCollectionName(collectionId),HttpStatus.OK);
+	}
+
 	@PatchMapping("/modify")
 	public ResponseEntity<Object> modifyCollection(@RequestBody List<ModifyCollectionRequestDto> modifyCollectionRequestDto) {
 		collectionService.modifyCollection(modifyCollectionRequestDto);

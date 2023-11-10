@@ -1,6 +1,7 @@
 <script setup>
-import axios from 'axios'
 import { ref } from 'vue'
+
+const axios = inject('$axios')
 
 // const props = defineProps({
 //   workspaceone: Object,
@@ -12,20 +13,18 @@ const WorkspaceOneInfo = useWorkspaceStore()
 const memberInfo = useMemberStore()
 const isMounted = useMounted()
 
-axios.defaults.withCredentials = true
 // console.log(workspaceone.name)
-console.log('sdfsdfsdfsdfjawrhboiaernbineqriobnoierbnoqwirn')
 
 if (isMounted) {
   axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
+    .get(`/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
     .then((res) => {
-      console.log('memberList 가져오기')
-      console.log(res)
+      // console.log('memberList 가져오기')
+      // console.log(res)
       memberInfo.member = res.data
     })
     .catch((error) => {
-      console.log(error)
+      console.error('memberList 가져오기 : ', error)
     },
     )
 }
@@ -34,22 +33,19 @@ if (isMounted) {
 watch(() => WorkspaceOneInfo.workspaceInfo, async (newWorkspaceOne) => {
   if (newWorkspaceOne) {
     try {
-      console.log('newWorkspaceOne')
-      console.log(newWorkspaceOne)
-
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${newWorkspaceOne.key}`)
-      console.log('memberList 가져오기ww')
-      console.log(res)
+      const res = await axios.get(`/api/v1/workspaces/members/${newWorkspaceOne.key}`)
+      // console.log('memberList 가져오기ww')
+      // console.log(res)
       memberInfo.member = res.data
     }
     catch (error) {
-      console.log(error)
+      console.error('memberList 가져오기ww : ', error)
     }
   }
 })
 
 function showUserInfo(user) {
-  console.log(user)
+  // console.log(user)
   localStorage.setItem('MemberData', JSON.stringify(user))
 }
 
@@ -65,7 +61,7 @@ function addCollectionToPinned(collection) {
   if (selectedCollection && !selectedCollection.disabled) {
     selectedDataArray.value.push({ id: collection.id, name: collection.collectionName })
     selectedCollection.disabled = true
-    console.log(`Adding "${collection.collectionName}" to pinned collections`)
+    // console.log(`Adding "${collection.collectionName}" to pinned collections`)
   }
 }
 
@@ -156,7 +152,7 @@ function removeCollection(collectionId) {
       </div>
 
       <div class="maindiv">
-        <div v-if="memberInfo.member.length >= 2">
+        <div v-if="memberInfo.member && memberInfo.member.length >= 2">
           <h5 class="maindivHeader">
             Contributors
           </h5>

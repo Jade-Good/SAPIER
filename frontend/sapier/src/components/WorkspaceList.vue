@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import axios from 'axios'
+const axios = inject('$axios')
 
 const WorkspaceListInfo = useWorkspaceStore()
 const isMounted = useMounted()
 
-axios.defaults.withCredentials = true
 // const dataElement = document.getElementById('workSpaceListData')
 
 if (isMounted) {
   axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`)
+    .get(`/api/v1/workspaces`)
     .then((res) => {
-      console.log('워크스페이스 리스트 : ', res)
+      // console.log('워크스페이스 리스트 : ', res)
       WorkspaceListInfo.workspaceInfo = res.data
       // dataElement.textContent = WorkspaceListInfo.workSpaceInfo.
     })
     .catch((error) => {
-      console.log(error)
+      console.error('워크스페이스 리스트 조회 실패 : ', error)
     },
     )
 }

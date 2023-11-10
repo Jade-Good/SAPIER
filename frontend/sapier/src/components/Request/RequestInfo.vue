@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import axios from 'axios'
-
+const axios = inject('$axios')
 const useCollection = useCollectionStore()
 const isMounted = useMounted()
 
@@ -40,7 +39,7 @@ if (isMounted) {
 
 watch(() => useCollection.request, () => {
   if (useCollection.request) {
-    console.log('api : ', useCollection.request)
+    // console.log('api : ', useCollection.request)
 
     selectMethod.value = useCollection.request.method
     requestURL.value = useCollection.request.requestURL
@@ -137,13 +136,13 @@ function setRequestStyle() {
 function startResizing(event: MouseEvent) {
   isResizing.value = true
   startY.value = event.clientY
-  console.log('startY.value : ', startY.value)
+  // console.log('startY.value : ', startY.value)
 
   const ss = requestHigh.value.match(/\d+/g)
-  console.log('requestHigh.value : ', requestHigh.value)
+  // console.log('requestHigh.value : ', requestHigh.value)
   if (ss)
     startHeight.value = Number.parseInt(ss.toString())
-  console.log('startHeight.value : ', startHeight.value)
+  // console.log('startHeight.value : ', startHeight.value)
 };
 
 function handleResizing(event: MouseEvent) {
@@ -195,11 +194,11 @@ async function sendAPI() {
     formData: {},
   }
 
-  console.log('sendData : ', sendData)
+  // console.log('sendData : ', sendData)
 
   try {
-    const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/collection/request`, sendData)
-    console.log('API 전송 성공', res)
+    const res = await axios.post(`/api/v1/collection/request`, sendData)
+    // console.log('API 전송 성공', res)
 
     useCollection.response = res
   }

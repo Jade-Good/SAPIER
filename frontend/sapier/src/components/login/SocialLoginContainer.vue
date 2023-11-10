@@ -1,13 +1,11 @@
 <template>
-  
-    <div class="social_login_container">
-        <div class="blank_space"></div>
-        <SocialLoginLogoContainer/>
-        <div class="blank_space"></div>
-        <SocialLoginButtonContainer/>
-    </div>
-  
-  </template>
+  <div class="social_login_container">
+    <div class="blank_space" />
+    <SocialLoginLogoContainer />
+    <div class="blank_space" />
+    <SocialLoginButtonContainer />
+  </div>
+</template>
 
 <style scoped>
 .social_login_container{
@@ -24,5 +22,4 @@
 .blank_space{
     margin-bottom: 25%;
 }
-
 </style>
