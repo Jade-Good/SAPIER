@@ -117,3 +117,4 @@ yarn-error.log
 **/auto-imports.d.ts
 **/components.d.ts
 node_modules/
+frontend/sapier/.env.local
