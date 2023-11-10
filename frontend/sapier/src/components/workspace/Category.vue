@@ -1,8 +1,7 @@
 <script lang="ts">
-const axios = inject('$axios')
-
 export default defineComponent({
   setup() {
+    const axios = inject('$axios')
     const collectionStore = useCollectionStore()
     const collectionList = ref([])
     const workspaceStore = useWorkspaceStore()
