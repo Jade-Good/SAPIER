@@ -198,7 +198,7 @@ async function sendAPI() {
 
   try {
     const res = await axios.post(`/api/v1/collection/request`, sendData)
-    console.log('API 전송 성공', res)
+    // console.log('API 전송 성공', res)
 
     useCollection.response = res
   }

@@ -1,8 +1,4 @@
 <script lang="ts">
-import axios from 'axios'
-
-axios.defaults.withCredentials = true
-
 const collectionStore = useCollectionStore()
 export default {
 
