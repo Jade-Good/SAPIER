@@ -69,4 +69,7 @@ useHead({
 
   user-select: none;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 </style>

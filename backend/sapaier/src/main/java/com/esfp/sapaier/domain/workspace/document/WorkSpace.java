@@ -30,6 +30,7 @@ public class WorkSpace {
     private List<CollectionListDto> collectionList;
     @NotNull
     private List<UserPermissionDto> memberList;
+    private List<String> collectionId;
     @NotNull
     @CreatedDate
     private LocalDateTime createTime;

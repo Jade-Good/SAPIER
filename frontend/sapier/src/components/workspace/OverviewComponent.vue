@@ -1,9 +1,15 @@
 <script setup>
-import axios from 'axios'
+import { ref } from 'vue'
 
-const props = defineProps({
-  workspaceone: Object,
-})
+const axios = inject('$axios')
+
+// const props = defineProps({
+//   workspaceone: Object,
+// })
+// const { workspaceone } = defineProps(['workspaceone'])
+
+const WorkspaceOneInfo = useWorkspaceStore()
+
 const memberInfo = useMemberStore()
 const isMounted = useMounted()
 
@@ -11,10 +17,10 @@ const isMounted = useMounted()
 
 if (isMounted) {
   axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${props.workspaceone.key}`)
+    .get(`/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
     .then((res) => {
-      console.log('memberList 가져오기')
-      console.log(res)
+      // console.log('memberList 가져오기')
+      // console.log(res)
       memberInfo.member = res.data
     })
     .catch((error) => {
@@ -24,7 +30,7 @@ if (isMounted) {
 }
 
 // workspaceone 변경 감시
-watch(() => props.workspaceone, async (newWorkspaceOne) => {
+watch(() => WorkspaceOneInfo.workspaceInfo, async (newWorkspaceOne) => {
   if (newWorkspaceOne) {
     try {
       const res = await axios.get(`/api/v1/workspaces/members/${newWorkspaceOne.key}`)
@@ -101,10 +107,26 @@ function removeCollection(collectionId) {
           <h5 class="maindivHeader">
             Pinned Collections
           </h5>
-          <img src="/add.png" class="pin_add_image">
+          <div class="collection-container">
+            <!-- <img src="/add.png" class="pin_add_image"> -->
+            <img src="/add.png" alt="Add Collection" @click="showCollectionsDropdown">
+            <div class="pin_add_image">
+              <div v-if="showDropdown" class="dropdown">
+                <div v-for="collection in WorkspaceOneInfo.workspaceInfo.collectionList" :key="collection.id">
+                  <div :class="{ disabled: collection.disabled }" @click="addCollectionToPinned(collection)">
+                    {{ collection.collectionName }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="maindivText">
-          sdf
+          <!-- {{ workspaceone }} -->
+          <div v-for="data in selectedDataArray" :key="data.id" class="collection-border">
+            {{ data.name }}
+            <span class="remove-button" @click="removeCollection(data.id)">X</span>
+          </div>
         </div>
       </div>
     </div>
@@ -130,23 +152,23 @@ function removeCollection(collectionId) {
       </div>
 
       <div class="maindiv">
-        <div v-if="memberInfo.member.length >= 2">
+        <div v-if="memberInfo.member && memberInfo.member.length >= 2">
           <h5 class="maindivHeader">
             Contributors
           </h5>
           <div class="maindivText">
             <div w-18 border-r-2 class="list">
               <div v-for="m in memberInfo.member" :key="m.uuid" class="box">
-                <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace)">
+                <div id="workSpaceListData" class="workspaceId">
                   <div class="boxs" style="background: #BDBDBD;">
                     <img :src="m.profileImageUrl" class="profile" alt="User Profile Image">s
                   </div>
-                  <div class="name">
+                  <div class="name" @click="showUserInfo(m)">
                     {{ m.nickname }}
                   </div>
-                <!-- <div>
-                  {{ m.email }}
-                </div> -->
+                  <div>
+                    {{ m.email }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -166,7 +188,12 @@ function removeCollection(collectionId) {
   font-size: 16px;
   /* width: 1220px; */
 }
-
+.dropdown {
+  position: absolute;
+  bottom: 80%; /* 드롭다운 메뉴가 화면 상단에 붙도록 설정 */
+  z-index: 1000; /* 드롭다운 메뉴의 z-인덱스를 설정 */
+  /* 나머지 스타일 속성들 */
+}
 .overview-group {
   display: flex;
   margin-bottom: 2em; /*그룹 간의 간격 조절*/
@@ -199,9 +226,32 @@ function removeCollection(collectionId) {
   display: flex;
   gap:1em;
 }
+.collection-container{
+  position: relative; /* 부모 요소에 상대 위치 설정 */
+  text-align: center; /* 가로 중앙 정렬 */
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 세로 중앙 정렬 (다른 요소와 함께 사용할 때 유용) */
+}
+
 .pin_add_image{
   width: auto; /* 이미지의 원본 크기를 유지 */
   max-height: 1.2em; /* 이미지의 최대 높이 설정 */
+}
+.collection-border{
+  display: inline-block;
+  width: 300px;
+  border: 2px solid #2c3e50; /* 테두리 설정 */
+  border-radius: 10px; /* 주위 라운드 설정 */
+}
+.remove-button {
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.disabled {
+  color: gray; /* 회색 텍스트 색상 */
+  pointer-events: none; /* 클릭 이벤트 비활성화 */
 }
 
 .maindivHeader {

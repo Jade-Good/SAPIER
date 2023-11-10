@@ -7,9 +7,7 @@
 
 <template>
   
-  <div class="social_login_logo_container_blacnk_space">
-
-    <div class="social_login_button_container_blacnk_space"></div>
+  <div class="social_login_logo_container">
 
     <div class="social_login_logo_container_item">
         <span class="social_login_logo_image">
@@ -41,21 +39,16 @@
 .social_login_logo_container_item{
     display: flex;
     justify-content: center;
-}
+}   
 .social_login_logo_image{
     width: 60%;
 }
 
 .social_login_logo_text{
     color: #0F4C81;
-    font-size: 1.5rem;
+    font-size: 2vw;
     font-weight: 700;
 }
-
-.social_login_logo_container_blacnk_space{
-  margin-top: 40%;
-}
-
 
 </style>
 

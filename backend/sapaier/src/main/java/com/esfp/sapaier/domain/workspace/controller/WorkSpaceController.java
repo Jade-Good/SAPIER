@@ -5,6 +5,7 @@ import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequ
 import com.esfp.sapaier.domain.workspace.document.WorkSpace;
 import com.esfp.sapaier.domain.workspace.dto.UserDataDto;
 import com.esfp.sapaier.domain.workspace.dto.AddMemberDto;
+import com.esfp.sapaier.domain.workspace.dto.UserPermissionDto;
 import com.esfp.sapaier.domain.workspace.service.WorkSpaceService;
 import com.esfp.sapaier.global.auth.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,7 +34,14 @@ public class WorkSpaceController {
 
     //워크스페이스 생성
     @PostMapping("api/v1/workspaces")
-    public void addWorkSpace(@RequestBody WorkSpace workSpace){
+    public void addWorkSpace(@RequestBody WorkSpace workSpace, @CookieValue String accessToken){
+        String userUuid = jwtTokenProvider.parseClaims(accessToken).getSubject();
+        List<UserPermissionDto> list = new ArrayList<>();
+        UserPermissionDto userPermissionDto = new UserPermissionDto();
+        userPermissionDto.setUserPermission("admin");
+        userPermissionDto.setUuId(userUuid);
+        list.add(userPermissionDto);
+        workSpace.setMemberList(list);
         workSpaceService.addWorkSpace(workSpace);
     }
 
@@ -50,6 +59,12 @@ public class WorkSpaceController {
     @PatchMapping("api/v1/workspaces/{workspaceIdx}")
     public void updateWorkSpace(@RequestBody WorkSpace workSpace, @PathVariable String workspaceIdx){
         workSpaceService.updateWorkSpace(workSpace);
+    }
+
+    //워크스페이스 삭제
+    @DeleteMapping("api/v1/workspaces/{workspaceIdx}")
+    public void deleteMember(@PathVariable String workspaceIdx){
+        workSpaceService.deleteWorkSpace(workspaceIdx);
     }
 
     //워크스페이스 팀원 목록 조회
@@ -71,8 +86,9 @@ public class WorkSpaceController {
 
 
     //워크스페이스 팀원 삭제
-    @DeleteMapping("api/v1/workspaces/members/{memberUUID}")
-    public void deleteMember(@RequestBody String workspaceIdx, @PathVariable String memberUUID){
+    @DeleteMapping("api/v1/workspaces/members/{workspaceIdx}")
+    public void deleteMember(@PathVariable String workspaceIdx,@CookieValue String accessToken){
+        String memberUUID = jwtTokenProvider.parseClaims(accessToken).getSubject();
         workSpaceService.deleteMember(workspaceIdx, memberUUID);
     }
 

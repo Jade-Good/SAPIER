@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.esfp.sapaier.global.auth.model.dto.CookieDto;
 import com.esfp.sapaier.global.auth.model.dto.UserAuthDto;
 import com.esfp.sapaier.global.auth.model.vo.JwtToken;
 import com.esfp.sapaier.global.auth.repository.OAuth2AuthorizationRequestRepository;
@@ -19,7 +18,6 @@ import com.esfp.sapaier.global.auth.util.JwtTokenProvider;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +47,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				.orElseThrow(() -> new NoSuchElementException("Access Token이 존재하지 않습니다"))
 				.getValue();
 
-
 			Authentication authentication = jwtTokenProvider.getAuthentication(jwtToken);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -67,25 +64,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			log.info("[JwtAuthenticationFilter] function : doFilterInternal | message : 토큰 인증 완료");
 
 		} catch (MalformedJwtException e) {
-			log.info("[JwtAuthenticationFilter] function : doFilterInternal | error : {}",e.getMessage());
+			log.info("[JwtAuthenticationFilter] function : doFilterInternal | error : {}", e.getMessage());
 			response.sendError(401, e.getMessage());
 		} catch (NoSuchElementException e) {
-			log.info("[JwtAuthenticationFilter] function : doFilterInternal | error : {}",e.getMessage());
+			log.info("[JwtAuthenticationFilter] function : doFilterInternal | error : {}", e.getMessage());
 			response.sendError(401, e.getMessage());
 		} catch (Exception e) {
-			log.info("[JwtAuthenticationFilter] function : doFilterInternal | error : {}",e.getMessage());
+			log.info("[JwtAuthenticationFilter] function : doFilterInternal | error : {}", e.getMessage());
 			response.sendError(500, e.getMessage());
 		} finally {
 			chain.doFilter(request, response);
 		}
 	}
 
-
-
 	private JwtToken refreshToken(HttpServletRequest request, HttpServletResponse response) {
 
 		log.info("[JwtAuthenticationFilter] function : refreshToken | message : 재발급 시도");
-
 
 		String refreshTokenInCookie = getRefreshTokenFromCookie(request);
 
@@ -97,7 +91,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		log.info("[JwtAuthenticationFilter] function : refreshToken | meesage : 재발급 전 로그인 정보 {}", loginInfo.toString());
 
-		if(Objects.equals(refreshTokenInCookie,refreshTokenInRedis) != true){
+		if (Objects.equals(refreshTokenInCookie, refreshTokenInRedis) != true) {
 			log.info("[JwtAuthenticationFilter] function : refreshToken | error : Refresh Token 불일치");
 
 			throw new MalformedJwtException("Refresh Token이 유효하지 않습니다");
@@ -105,7 +99,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		JwtToken newToken = jwtTokenProvider.refreshToken(refreshTokenInCookie);
 
-		oAuth2AuthorizationRequestRepository.updateTokenInCookie(request,response,newToken);
+		oAuth2AuthorizationRequestRepository.updateTokenInCookie(request, response, newToken);
 
 		updateLoginInfo(loginInfo, newToken);
 
@@ -114,9 +108,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		return newToken;
 	}
 
-	private String getRefreshTokenFromCookie(HttpServletRequest request){
+	private String getRefreshTokenFromCookie(HttpServletRequest request) {
 
-		String refreshToken =  cookieManager
+		String refreshToken = cookieManager
 			.getCookie(request, OAuth2AuthorizationRequestRepository.REFRESH_TOKEN)
 			.orElseThrow(() -> new NoSuchElementException("쿠키에 REFRESH 토큰이 존재하지 않습니다"))
 			.getValue();
@@ -133,7 +127,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		return uuid;
 	}
 
-	private void updateLoginInfo(UserAuthDto userAuth, JwtToken newToken){
+	private void updateLoginInfo(UserAuthDto userAuth, JwtToken newToken) {
 
 		log.info("[JwtAuthenticationFilter] : 기존 로그인 정보 업데이트");
 

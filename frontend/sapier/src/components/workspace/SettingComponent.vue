@@ -1,30 +1,34 @@
 <script setup lang="ts">
 import { defineStore } from 'pinia'
-
-const props = defineProps({
-  workspaceone: Object,
-})
-
 const axios = inject('$axios')
+
+// const props = defineProps({
+//   workspaceone: Object,
+// })
+const WorkspaceOneInfo = useWorkspaceStore()
+
+// const { workspaceone } = defineProps(['workspaceone'])
 
 const memberInfo = useUserStore()
 const isMounted = useMounted()
 
+// const workspaceName = ref(workspaceone.name)
+const shouldRender = ref(true) // 초기값 설정
 const searchInput = ref('')
+
 const boxColor = ref('yellow') // 초기 색상 설정
 const colors = ['red', 'blue', 'green', 'purple', 'orange'] // 사용할 색상 목록
 const alphabet = ['A', 'B', 'C', 'D', 'E'] // 사용할 색상 목록
 
 function changeBoxColor(color) {
   boxColor.value = color
-}
 
 if (isMounted) {
   axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/members/${props.workspaceone.key}`)
+    .get(`/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
     .then((res) => {
-      console.log('memberList (setting component)가져오기')
-      console.log(res)
+      // console.log('memberList (setting component)가져오기')
+      // console.log(res)
       memberInfo.member = res.data
     })
     .catch((error) => {
@@ -167,14 +171,16 @@ function deleteWorkspace() {
         </h5>
         <div>워크스페이스 이름과 팀코드, 썸네일 설정</div>
         <div class="workspacemaindiv">
-          <div class="box" :style="{ backgroundColor: boxColor }">
-            <div id="workSpaceListData" class="workspaceId">
-              {{ workspaceone.name }}
+          <div v-if="shouldRender">
+            <div class="box" :style="{ backgroundColor: boxColor }">
+              <div id="workSpaceListData" class="workspaceId">
+                {{ truncateText(WorkspaceOneInfo.workspaceInfo.name, 4) }}
+              </div>
             </div>
           </div>
           <div ml-5 w-80>
             <div>워크스페이스 이름 </div>
-            <input v-model="workspaceone.name" type="text">
+            <input :value="WorkspaceOneInfo.workspaceInfo.name" type="text" @keyup.enter="updateWorkspaceName($event.target.value)"><!-- v-model="workspaceone.name" -->
 
             <div class="changeColor_div">
               <div v-for="(color, index) in colors" :key="alphabet[index]" class="changeColor" @click="changeBoxColor(color)">
@@ -203,30 +209,31 @@ function deleteWorkspace() {
             </button>
           </div>
 
-          <div
-            v-for="m in memberInfo.member" :key="m.uuid"
-          >
+          <div v-for="m in memberInfo.member" :key="m.uuid">
             <div class="permission">
               <div class="boxs" style="background: #BDBDBD;">
                 <img :src="m.profileImageUrl" class="profile" alt="User Profile Image">
               </div>
-              <div class="name_email">
-                <div class="name">
-                  {{ m.nickname }}
-                </div>
-                <div class="email">
-                  {{ m.email }}
-                  <!-- {{ workspaceone.memberList.find(item => item.uuid === m.uuid) }} -->
-                  <!-- {{ workspaceone }} -->
-                  <!-- {{ workspaceone }}  그니까 여기서 if 문으로 uuid가 workspaceone memberList for문으로 돌면서 나온 uuid가 같으면 permission을 가져와서 출력 -->
-                </div>
+
+              <div>
+                {{ WorkspaceOneInfo.workspaceInfo.memberList.find(item => item.uuId === m.uuid)?.userPermission }}
+                <!-- {{ m.selectedPermission }} -->
               </div>
-              <div class="userPermission">
-                <div>
-                  {{ workspaceone.memberList.find(item => item.uuId === m.uuid)?.userPermission }}
-                </div>
+              <div class="userPermission" @click="toggleDropdown">
                 <img src="/dropdown toggle.png">
               </div>
+              <div v-if="dropdownData.isOpen" class="dropdown-menu">
+                <div @click="selectPermission(m, 'admin')">
+                  Admin
+                </div>
+                <div @click="selectPermission(m, 'member')">
+                  Member
+                </div>
+                <div @click="selectPermission(m, 'viewer')">
+                  Viewer
+                </div>
+              </div>
+              <!-- 드롭다운 메뉴 표시 여부에 따라 드롭다운 아이템 표시 -->
             </div>
           </div>
         </div>
@@ -236,6 +243,14 @@ function deleteWorkspace() {
             Good Bye workspace
           </h5>
           <div>워크스페이스를 떠나거나 삭제합니다. 데이터에 접근할 수 없게 됩니다.</div>
+          <button @click="leaveWorkspace">
+            Leave Workspace
+          </button>
+
+          <!-- Delete Workspace 버튼 (permission이 'admin'일 때만 표시) -->
+          <button v-if="isAdmin" @click="deleteWorkspace">
+            Delete Workspace
+          </button>
         </div>
       </div>
     </div>
@@ -309,7 +324,7 @@ function deleteWorkspace() {
   align-items: center; /* 세로 중앙 정렬 */
 }
 .changeColor{
-    width: 2%;
+    width: 30px;
     /* height: 20%; */
     border-radius: 70%;
     overflow: hidden;
@@ -344,11 +359,46 @@ function deleteWorkspace() {
   gap: 2%;
   margin-top: 2%;
 }
-.userPermission{
+/* .userPermission{
   display: flex;
   flex-direction: row;
   width: 20%;
+} */
+
+.userPermission {
+    display: flex;
+    flex-direction: row;
+    width: 20%;
+    cursor: pointer;
+    user-select: none; /* 드래그 또는 텍스트 선택 방지 */
+
+    /* // 드롭다운 아이콘 스타일링 */
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  /* // 드롭다운 메뉴 스타일링 */
+.dropdown-menu {
+  /* position: absolute; */
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 1;
 }
+
+  .dropdown-menu div {
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+
+  .dropdown-menu div:hover {
+    background-color: #f0f0f0;
+  }
+
 .boxs {
     width: 30px;
     height: 30px;
