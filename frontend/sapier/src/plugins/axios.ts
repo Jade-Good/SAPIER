@@ -23,10 +23,10 @@ instance.interceptors.response.use(
     return res
   },
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // 오류 응답이 401일 경우 로그인 페이지로 리다이렉트
-      window.location.href = '/login/oauth'
-    }
+    // if (error.response && error.response.status === 401) {
+    //   // 오류 응답이 401일 경우 로그인 페이지로 리다이렉트
+    //   window.location.href = '/login/oauth'
+    // }
 
     return Promise.reject(error)
   },
