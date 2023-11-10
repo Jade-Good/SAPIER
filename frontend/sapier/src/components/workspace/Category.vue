@@ -178,23 +178,26 @@ export default defineComponent({
 
     <div v-for="(documentId, index) in collectionList" :key="documentId.collectionId" class="collection-list">
       <h1>Collection List</h1>
-
+      <p>도큐먼트 : {{ documentName[index] }}</p>
       <ul>
         <li v-for="collection in documentId" :key="collection.collectionName">
-          <ul>
+          <!-- <ul>
             <li v-for="api in collection.apiList" :key="api.requestName">
               <a @click="selectAPI(api)">{{ api.requestName }}</a>
             </li>
-          </ul>
+          </ul> -->
 
           <span :style="{ marginLeft: '15px' }">
+
             <span v-if="!collection.editing">{{ collection.collectionName }}</span>
+
             <input
               v-else
               v-model="collection.newName"
               @blur="saveCollectionName(collection)"
               @keyup.enter="saveCollectionName(collection)"
             >
+
             <button class="btn" @click="toggleEditing(collection)">{{ collection.editing ? '완료' : '수정' }}</button>
           </span>
           <button class="btn" @click="addChildCollection(collection)">
