@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineStore } from 'pinia'
+
 const axios = inject('$axios')
 
 // const props = defineProps({
@@ -22,6 +23,7 @@ const alphabet = ['A', 'B', 'C', 'D', 'E'] // 사용할 색상 목록
 
 function changeBoxColor(color) {
   boxColor.value = color
+}
 
 if (isMounted) {
   axios
