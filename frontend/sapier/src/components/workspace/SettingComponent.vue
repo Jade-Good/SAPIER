@@ -11,6 +11,8 @@ const WorkspaceOneInfo = useWorkspaceStore()
 // const { workspaceone } = defineProps(['workspaceone'])
 
 const memberInfo = useUserStore()
+const userInfo = useUserStore()
+
 const isMounted = useMounted()
 
 // const workspaceName = ref(workspaceone.name)
@@ -21,8 +23,25 @@ const boxColor = ref('yellow') // 초기 색상 설정
 const colors = ['red', 'blue', 'green', 'purple', 'orange'] // 사용할 색상 목록
 const alphabet = ['A', 'B', 'C', 'D', 'E'] // 사용할 색상 목록
 
+function firstChangeBoxColor(color) {
+  boxColor.value = color
+  WorkspaceOneInfo.workspaceInfo.color = color
+}
+
 function changeBoxColor(color) {
   boxColor.value = color
+  WorkspaceOneInfo.workspaceInfo.color = color
+
+  axios
+    .patch(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces/${WorkspaceOneInfo.workspaceInfo.key}`, WorkspaceOneInfo.workspaceInfo)
+    .then((res) => {
+      console.log('changeBoxColor (setting component)patch-----------------------')
+      console.log(res)
+    })
+    .catch((error) => {
+      console.log(error)
+    },
+    )
 }
 
 if (isMounted) {
@@ -37,6 +56,7 @@ if (isMounted) {
       console.error('memberList (setting component)가져오기 실패 : ', error)
     },
     )
+  firstChangeBoxColor(WorkspaceOneInfo.workspaceInfo?.color)
 }
 
 // workspaceone 변경 감시
@@ -51,6 +71,10 @@ watch(() => WorkspaceOneInfo.workspaceInfo, async (newWorkspaceOne) => {
       console.error('memberList 가져오기 실패 : ', error)
     }
   }
+  console.log('iwejfopjwefopjweopopwnerw[voerokopr]')
+
+  console.log(WorkspaceOneInfo.workspaceInfo)
+  changeBoxColor(WorkspaceOneInfo.workspaceInfo?.color)
 })
 
 computed(() => {
@@ -69,7 +93,7 @@ function toggleDropdown() {
 
 // 권한 선택 메서드
 function selectPermission(user, userpermission) {
-  user.selectedPermission = userpermission
+  user.userPermission = userpermission
   dropdownData.value.isOpen = false // 드롭다운 닫기
   // console.log(user)
 
@@ -93,7 +117,7 @@ function selectPermission(user, userpermission) {
       // console.log(res)
       memberInfo.member = res.data
 
-      user.selectedPermission = userpermission
+      // user.selectedPermission = userpermission
     })
     .catch((error) => {
       console.error('memberList (setting component)patch 실패 : ', error)
@@ -162,6 +186,11 @@ function deleteWorkspace() {
     },
     )
 }
+
+const isAdmin = computed(() => {
+  // Replace the condition with your actual logic
+  return WorkspaceOneInfo.workspaceInfo.memberList.some(mber => mber.uuId === userInfo.userInfo.uuid && mber.userPermission == 'admin')
+})
 </script>
 
 <template>
@@ -211,14 +240,14 @@ function deleteWorkspace() {
             </button>
           </div>
 
-          <div v-for="m in memberInfo.member" :key="m.uuid">
+          <div v-for="m in memberInfo.member" :key="m?.uuid">
             <div class="permission">
               <div class="boxs" style="background: #BDBDBD;">
-                <img :src="m.profileImageUrl" class="profile" alt="User Profile Image">
+                <img :src="m?.profileImageUrl" class="profile" alt="User Profile Image">
               </div>
 
               <div>
-                {{ WorkspaceOneInfo.workspaceInfo.memberList.find(item => item.uuId === m.uuid)?.userPermission }}
+                {{ WorkspaceOneInfo.workspaceInfo.memberList.find(item => item.uuId === m?.uuid)?.userPermission }}
                 <!-- {{ m.selectedPermission }} -->
               </div>
               <div class="userPermission" @click="toggleDropdown">
@@ -287,6 +316,9 @@ function deleteWorkspace() {
   display: block;
   width: 100%;
   padding-top: 3em;
+
+  font-size: var(--font-H5-size);
+  font-weight: var(--font-H5-weight);
 }
 .box{
   margin-top: 5px ;
@@ -294,7 +326,9 @@ function deleteWorkspace() {
   width: 100px;
   height: 100px;
   border: 2px solid #000; /* 테두리 스타일 및 색상 설정 */
-  background-color: yellow; /* 배경색 설정 */
+  background-color: #0F4C81; /* 배경색 설정 */
+  color:#F0F0F0
+
 }
 .color_type{
   text-align: center; /* 가로 중앙 정렬 */
