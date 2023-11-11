@@ -13,11 +13,11 @@ export default {
 <template>
   <TheNav />
   <div flex class="mid">
-    <WorkspaceList />
-    <!-- <WorkSpaceInfo w-full /> -->
+    <WorkspaceList w-20 />
     <Category w-60 />
     <!-- <CollectionInfo w-60 /> -->
-    <RequestInfo h-full w-full />
+    <WorkSpaceInfo h-full w-full />
+    <!-- <RequestInfo h-full w-full /> -->
   </div>
   <!-- <RouterView /> -->
 
