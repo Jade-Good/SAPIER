@@ -55,7 +55,7 @@ watch(() => WorkspaceOneInfo.workspaceInfo, () => {
   <TheNav />
   <div flex class="mid">
     <WorkspaceList w-20 />
-    <Category w-60 />
+    <UserInfo w-60 />
     <MainInfo w-full />
   </div>
   <RouterView />
