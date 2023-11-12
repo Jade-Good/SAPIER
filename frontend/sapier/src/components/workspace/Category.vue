@@ -9,7 +9,6 @@ export default defineComponent({
     const collectionList = ref([])
     const workspaceStore = useWorkspaceStore()
     const workspaceListStore = useWorkspaceListStore()
-    const requestStore = useRequestStore()
     const idList: string[] = []
 
     watchEffect(() => {
