@@ -12,9 +12,9 @@ interface Request {
   requestName: string
   requestURL: string
   method: string
-  requestHeaders: any
+  requestHeaders: Table[]
   requestBody: any
-  params: any
+  params: Table[]
   path: any
   workspacesId: string
 }
@@ -22,7 +22,14 @@ interface Request {
 interface Response {
   status: number
   headers: any
-  data: []
+  data: any
+}
+
+interface Table {
+  active: boolean
+  key: string
+  value: string
+  description: string
 }
 
 export type { CollectionTree }

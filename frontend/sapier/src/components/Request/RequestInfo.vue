@@ -4,6 +4,16 @@ const useCollection = useCollectionStore()
 const isMounted = useMounted()
 
 const selectMethod = ref('GET')
+const requestURL = ref('http://')
+const requestName = ref('New Request')
+const requestHeaders = ref([{ active: null, key: '', value: '', description: '' }])
+const requestBody = ref({})
+const params = ref([{ active: null, key: '', value: '', description: '' }])
+
+provide('params', params)
+provide('requestHeaders', requestHeaders)
+provide('requestBody', requestBody)
+
 const methodList = ref([
   'GET',
   'POST',
@@ -16,8 +26,7 @@ const methodList = ref([
 const isMethodList = ref(false)
 const requestHigh = ref('500')
 const requestTap = ref('Params')
-const requestURL = ref('http://')
-const requestName = ref('New Request')
+
 const isResizing = ref(false) // 크기 조절 중 여부
 const startY = ref(0) // 크기 조절 시작 지점
 const startHeight = ref(0) // 크기 조절 시작 시 Request 엘리먼트의 높이
@@ -44,6 +53,9 @@ watch(() => useCollection.request, () => {
     selectMethod.value = useCollection.request.method
     requestURL.value = useCollection.request.requestURL
     requestName.value = useCollection.request.requestName
+    requestHeaders.value = useCollection.request.requestHeaders
+    requestBody.value = useCollection.request.requestBody
+    params.value = useCollection.request.params
   }
 })
 
@@ -198,7 +210,7 @@ async function sendAPI() {
 
   try {
     const res = await axios.post(`/api/v1/collection/request`, sendData)
-    // console.log('API 전송 성공', res)
+    console.log('API 전송 성공', res)
 
     useCollection.response = res
   }

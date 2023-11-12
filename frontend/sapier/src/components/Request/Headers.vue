@@ -1,28 +1,21 @@
-<script lang="ts">
-export default {
-  data() {
-    return {
-      headers: [
-        { active: true, key: 'exp_cnt', value: 'Y', description: '경험치 포함 조회 여부' },
-        { active: false, key: 'max_cnt', value: 10, description: '조회 리스트 개수 최대값' },
-        {},
-      ],
-      isHighLight: [] as boolean[],
-    }
-  },
-  mounted() {
-    this.headers.forEach(() => {
-      this.isHighLight.push(false)
+<script setup lang="ts">
+const useCollection = useCollectionStore()
+const requestHeaders = inject('requestHeaders')
+const isHighLight = ref([] as boolean[])
+
+watch(() => useCollection.request, () => {
+  if (requestHeaders) {
+    requestHeaders.value.forEach(() => {
+      isHighLight.value.push(false)
     })
-  },
-  methods: {
-    rowHighLight(row: number) {
-      this.isHighLight[row] = true
-    },
-    clearHighLight(row: number) {
-      this.isHighLight[row] = false
-    },
-  },
+  }
+})
+
+function rowHighLight(row: number) {
+  isHighLight.value[row] = true
+}
+function clearHighLight(row: number) {
+  isHighLight.value[row] = false
 }
 </script>
 
@@ -45,7 +38,7 @@ export default {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(head, index) in headers" :key="index" :class="{ tableHighLite: isHighLight[index] }">
+        <tr v-for="(head, index) in requestHeaders" :key="index" :class="{ tableHighLite: isHighLight[index] }">
           <td>
             <span v-if="head.active">✅</span>
             <span v-else-if="head.active == null" />
