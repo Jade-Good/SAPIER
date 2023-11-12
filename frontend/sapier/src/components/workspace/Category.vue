@@ -13,15 +13,15 @@ export default defineComponent({
       const workspaceIdx = workspaceStore.selectedWorkspaceIndex
 
       if (idList !== null && workspaceStore.workspaceInfo
-    && workspaceListStore.WorkspaceList[workspaceIdx].collectionList) {
+    && workspaceStore.workspaceInfo.collectionList) {
         // console.log('workspaceIdx:', workspaceIdx.length)
         // console.log('WorkspaceList:', workspaceListStore.WorkspaceList.length)
-        for (let i = 0; i < workspaceListStore.WorkspaceList[workspaceIdx].collectionList.length; i++)
-          idList.push(workspaceListStore.WorkspaceList[workspaceIdx].collectionList[i].collectionKey)
+        for (let i = 0; i < workspaceStore.workspaceInfo.collectionList.length; i++)
+          idList.push(workspaceStore.workspaceInfo.collectionList[i].collectionKey)
       }
       else { idList.length = 0 }
 
-      // console.log('idList : ', idList)
+      console.log('idList : ', idList)
 
       const collectionId = {
         collectionId: idList,
@@ -29,11 +29,11 @@ export default defineComponent({
 
       // console.log('collectionId : ', JSON.stringify(collectionId))
 
+      collectionList.value.length = 0
       if (idList.length > 0) {
         axios.post(`/api/v1/collection/list`, collectionId)
           .then((response) => {
             collectionStore.collection = response.data
-            collectionList.value.length = 0
             for (let i = 0; i < response.data.length; i++)
               collectionList.value.push(response.data[i].collectionList)
 
