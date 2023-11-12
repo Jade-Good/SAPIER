@@ -7,7 +7,7 @@ const selectMethod = ref('GET')
 const requestURL = ref('http://')
 const requestName = ref('New Request')
 const requestHeaders = ref([{ active: null, key: '', value: '', description: '' }])
-const requestBody = ref({})
+const requestBody = ref('{body text}')
 const params = ref([{ active: null, key: '', value: '', description: '' }])
 
 provide('params', params)

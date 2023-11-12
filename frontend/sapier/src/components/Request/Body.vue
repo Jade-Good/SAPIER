@@ -1,14 +1,5 @@
-<script>
-export default {
-  data() {
-    return {
-      params: [
-        { active: true, key: 'exp_cnt', value: 'Y', description: '경험치 포함 조회 여부' },
-        { active: false, key: 'max_cnt', value: 10, description: '조회 리스트 개수 최대값' },
-      ],
-    }
-  },
-}
+<script setup lang="ts">
+const requestBody = inject('requestBody')
 </script>
 
 <template>
@@ -25,6 +16,7 @@ export default {
     </div>
     <div class="bodyTextBox" mt-2 h-full w-full>
       <br>
+      {{ requestBody }}
     </div>
     <div />
   </div>

@@ -6,7 +6,6 @@ const isHighLight = ref([] as boolean[])
 watch(() => useCollection.request, () => {
   if (params) {
     params.value.forEach(() => {
-      isHighLight.value.push(false)
     })
   }
 })
@@ -51,7 +50,7 @@ function clearHighLight(row: number) {
             <input v-model="param.value" placeholder="Value" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)">
           </td>
           <td>
-            <input v-model="paramx.description" placeholder="Description" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)">
+            <input v-model="param .description" placeholder="Description" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)">
           </td>
         </tr>
       </tbody>
