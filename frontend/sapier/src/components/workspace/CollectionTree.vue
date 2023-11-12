@@ -61,6 +61,47 @@ export default {
     selectAPI(api) {
       collectionStore.request = api
       console.log('자식 api 호출: ', api)
+      console.log('스토어에 저장되나?', collectionStore.request)
+    },
+    addChildRequest(childCollection) {
+      const newApi = {
+        body: {},
+
+        createdTime: new Date().toISOString(),
+
+        formData: {},
+
+        headers: {},
+
+        method: 'GET',
+
+        modifiedTime: new Date().toISOString(),
+
+        queryParams: {},
+
+        requestName: 'New Request',
+
+        requestURL: '',
+        // workspacesId: workspaceStore.workspaceInfo?.key,
+        id: '',
+
+      }
+
+      if (childCollection.apiList === null) {
+        childCollection.apiList = []
+        console.log('null배열 추가')
+      }
+
+      childCollection.apiList.push(newApi)
+      console.log('수정된 collection.apiList', childCollection.apiList)
+      this.saveChanges()
+    },
+    deleteChildRequest(childCollection, api) {
+      const index = childCollection.apiList.indexOf(api)
+      if (index !== -1) {
+        childCollection.apiList.splice(index, 1)
+        this.saveChanges()
+      }
     },
   },
 }
@@ -95,10 +136,16 @@ function createNewCollection() {
       </button>
       <button class="btn" @click="addChildCollection(childCollection)">
         자식 추가
+      </button><button class="btn" @click="addChildRequest(childCollection)">
+        C리퀘추가
       </button>
       <ul v-if="childCollection.apiList && childCollection.apiList.length > 0" :style="{ marginLeft: `${level * 15}px` }">
         <li v-for="api in childCollection.apiList" :key="api.requestName">
           <a @click="selectAPI(api)">{{ api.requestName }}</a>
+
+          <button class="btn" @click="deleteChildRequest(childCollection, api)">
+            C리퀘삭제
+          </button>
         </li>
       </ul>
       <CollectionTree :collection="childCollection" :level="level + 1" />
@@ -111,5 +158,10 @@ function createNewCollection() {
   border: 1px solid black;
   background-color: white;
   color: black;
+}
+.er{
+  border: 1px solid black;
+  background-color: red;
+  color: white;
 }
 </style>
