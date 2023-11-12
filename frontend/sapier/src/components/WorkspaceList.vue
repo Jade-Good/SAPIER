@@ -44,12 +44,13 @@ function truncateText(text: string, maxLength: number) {
     return text
 }
 
-function showInfoComponent(workspaceInfoOne: any) {
+function showInfoComponent(workspaceInfoOne: any, index) {
   currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
   // workspaceinfo.value = workspaceInfoOne
   // console.log('----------main------------')
   // console.log(workspaceinfo)
   WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
+  WorkspaceOneInfo.selectedWorkspaceIndex = index
   // WorkspaceOneInfo.$patch(workspaceInfoOne)
 //
   // console.log(WorkspaceOneInfo)
@@ -84,8 +85,8 @@ async function addWorkSpace() {
 
 <template>
   <div w-18 border-r-2 class="list">
-    <div v-for="workspace in WorkspaceListInfo.WorkspaceList" :key="workspace.name" class="box" :style="{ backgroundColor: workspace.color }">
-      <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace)">
+    <div v-for="(workspace, index) in WorkspaceListInfo.WorkspaceList" :key="workspace.name" class="box" :style="{ backgroundColor: workspace.color }">
+      <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace, index)">
         {{ truncateText(workspace.name, 4) }}
       </div>
     </div>
