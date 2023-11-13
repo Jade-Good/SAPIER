@@ -25,6 +25,7 @@ const requestBody = inject('requestBody')
 <style scoped>
 .bodyTextBox {
   border: 1px solid var(--color-gray3);
+  white-space: pre;
 }
 
 .formStyleBtn {
