@@ -1,15 +1,20 @@
 <script setup lang="ts">
 const useCollection = useCollectionStore()
+const isMounted = useMounted()
+
 const queryParams = inject('queryParams')
 const isHighLight = ref([] as boolean[])
 
+if (isMounted) {
+  queryParams.rows.forEach(() => {
+    isHighLight.value.push(false)
+  })
+}
+
 watch(() => useCollection.request, () => {
-  if (queryParams) {
-    console.log('params : ', queryParams)
-    queryParams.value.forEach(() => {
-      isHighLight.value.push(false)
-    })
-  }
+  queryParams.rows.forEach(() => {
+    isHighLight.value.push(false)
+  })
 })
 
 function rowHighLight(row: number) {
@@ -39,7 +44,7 @@ function clearHighLight(row: number) {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(param, index) in queryParams" :key="index" :class="{ tableHighLite: isHighLight[index] }">
+        <tr v-for="(param, index) in queryParams.rows" :key="index" :class="{ tableHighLite: isHighLight[index] }">
           <td>
             <span v-if="param.active === 'true'">✅</span>
             <span v-else-if="param.active === 'false'">⬜</span>

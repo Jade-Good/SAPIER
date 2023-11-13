@@ -29,7 +29,12 @@ const requestBody = ref('')
 const copyRequestBody = ref('')
 
 const isSaveEnable = computed(() => {
-  return copySelectMethod.value !== selectMethod.value || copyRequestURL.value !== requestURL.value || copyRequestName.value !== requestName.value || copyRequestBody.value !== requestBody.value || copyRequestHeaders.value !== JSON.stringify(requestHeaders.rows) || copyQueryParams.value !== JSON.stringify(queryParams.rows)
+  return copySelectMethod.value !== selectMethod.value
+   || copyRequestURL.value !== requestURL.value
+    || copyRequestName.value !== requestName.value
+     || copyRequestBody.value !== requestBody.value
+      || copyRequestHeaders.value !== JSON.stringify(requestHeaders.rows)
+       || copyQueryParams.value !== JSON.stringify(queryParams.rows)
 })
 
 provide('queryParams', queryParams)
@@ -93,9 +98,14 @@ function setValues() {
   requestBody.value = useCollection.request.body
 
   if (useCollection.request.headers[0])
-    requestHeaders.rows = useCollection.request.headers
+    requestHeaders.rows = copyRows(useCollection.request.headers)
+  else
+    requestHeaders.rows = [{ active: '', key: '', value: '', description: '' }]
+
   if (useCollection.request.queryParams[0])
-    queryParams.rows = useCollection.request.queryParams
+    queryParams.rows = copyRows(useCollection.request.queryParams)
+  else
+    queryParams.rows = [{ active: '', key: '', value: '', description: '' }]
 
   copySelectMethod.value = selectMethod.value
   copyRequestURL.value = requestURL.value
@@ -105,8 +115,20 @@ function setValues() {
   copyQueryParams.value = JSON.stringify(queryParams.rows)
 }
 
+function copyRows(objs: any) {
+  const result = []
+
+  objs.forEach ((obj) => {
+    if (obj.active !== '')
+      result.push({ active: obj.active, key: obj.key, value: obj.value, description: obj.description })
+  })
+
+  result.push({ active: '', key: '', value: '', description: '' })
+  return result
+}
+
 function requestSave() {
-  if (!useCollection.request || !isSaveEnable)
+  if (!useCollection.request || !isSaveEnable.value)
     return
 
   useCollection.request.method = selectMethod.value
@@ -115,6 +137,7 @@ function requestSave() {
   useCollection.request.body = requestBody.value
   useCollection.request.headers = requestHeaders.rows
   useCollection.request.queryParams = queryParams.rows
+  setValues()
 }
 
 // ---------------- 메서드 리스트 토글기능 ----------------
