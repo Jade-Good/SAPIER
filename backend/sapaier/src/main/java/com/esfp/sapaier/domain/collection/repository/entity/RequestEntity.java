@@ -1,5 +1,6 @@
 package com.esfp.sapaier.domain.collection.repository.entity;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -18,10 +19,9 @@ public class RequestEntity {
 	private String requestName;
 	private String requestURL;
 	private String method;
-	private HashMap<String, String> headers;
-	private HashMap<String, String> queryParams;
-	private HashMap<String, String> body;
-	private HashMap<String, String> formData;
+	private HashMap<String, String>[] headers;
+	private HashMap<String, String>[] queryParams;
+	private String body;
 	private Date createdTime;
 	private Date modifiedTime;
 
@@ -32,10 +32,9 @@ public class RequestEntity {
 			", requestName='" + requestName + '\'' +
 			", requestURL='" + requestURL + '\'' +
 			", method='" + method + '\'' +
-			", headers=" + headers +
-			", queryParams=" + queryParams +
+			", headers=" + Arrays.toString(headers) +
+			", queryParams=" + Arrays.toString(queryParams) +
 			", body=" + body +
-			", formData=" + formData +
 			", createdTime=" + createdTime +
 			", modifiedTime=" + modifiedTime +
 			'}';

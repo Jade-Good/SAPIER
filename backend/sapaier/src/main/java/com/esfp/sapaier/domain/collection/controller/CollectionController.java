@@ -6,8 +6,10 @@ import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequ
 import com.esfp.sapaier.domain.collection.model.dto.request.RequestRequestDTO;
 import com.esfp.sapaier.domain.collection.model.dto.response.CollectionResponseDto;
 import com.esfp.sapaier.domain.collection.service.CollectionService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -37,12 +39,13 @@ public class CollectionController {
 	}
 
 	@GetMapping("/{collectionId}")
-	public ResponseEntity<String> rootCollectionName(@PathVariable String collectionId){
-		return new ResponseEntity<>(collectionService.rootCollectionName(collectionId),HttpStatus.OK);
+	public ResponseEntity<String> rootCollectionName(@PathVariable String collectionId) {
+		return new ResponseEntity<>(collectionService.rootCollectionName(collectionId), HttpStatus.OK);
 	}
 
 	@PatchMapping("/modify")
-	public ResponseEntity<Object> modifyCollection(@RequestBody List<ModifyCollectionRequestDto> modifyCollectionRequestDto) {
+	public ResponseEntity<Object> modifyCollection(
+		@RequestBody List<ModifyCollectionRequestDto> modifyCollectionRequestDto) {
 		collectionService.modifyCollection(modifyCollectionRequestDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -51,10 +54,10 @@ public class CollectionController {
 	public ResponseEntity<String> sendRequest(@RequestBody RequestRequestDTO requestRequestDTO) {
 		RestTemplate restTemplate = new RestTemplate(); // SpringBoot의 RestTemplate : HTTP + RestFUL API
 		HttpHeaders httpHeaders = new HttpHeaders();    // 헤더 객체
-		Map<String, String> map = requestRequestDTO.getHeaders(); // 전달 받은 헤더 맵
+		Map<String, String>[] maps = requestRequestDTO.getHeaders(); // 전달 받은 헤더 맵
 
-		for (String key : map.keySet()) { // 헤더 객체에 전달 받은 헤더 맵 넣어주기
-			httpHeaders.set(key, map.get(key));
+		for (Map<String, String> map : maps) {
+				httpHeaders.set(map.get("key"), map.get("value"));
 		}
 
 		return restTemplate.exchange( // API 요청 결과를 바로 반환
