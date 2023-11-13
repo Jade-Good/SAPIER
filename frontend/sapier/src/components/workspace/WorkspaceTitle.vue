@@ -21,7 +21,7 @@ watchEffect(() => {
 
 <template>
   <div>
-    <li>name : {{ selectedWorkspaceName }}</li>
+    <li>name : {{ workspaceStore.name }}</li>
 
     <p>검색바 자리</p>
   </div>

@@ -39,13 +39,13 @@ import OverviewComponent from './OverviewComponent.vue'
 import SettingComponent from './SettingComponent.vue'
 
 // const { workspaceone } = defineProps(['workspaceone'])
-
+const collectionStore = useCollectionStore()
 const currentComponent = ref(OverviewComponent)
 const WorkspaceOneInfo = useWorkspaceStore()
 const workspaceTap = ref('overview')
 
-// console.log(workspaceone)
-// console.log('workspaceinfovue data')
+console.log(collectionStore.request)
+console.log('workspaceinfo Request data')
 </script>
 
 <template>
@@ -58,7 +58,7 @@ const workspaceTap = ref('overview')
         <img src="/person.png">
       </div>
       <div class="workspace-name">
-        {{ WorkspaceOneInfo.workspaceInfo.name }}
+        {{ WorkspaceOneInfo.workspaceInfo ? WorkspaceOneInfo.workspaceInfo.name : '' }}
       </div>
     </div>
     <div class="overviewSettingHead">
@@ -147,7 +147,7 @@ const workspaceTap = ref('overview')
   font-weight: var(--font-H1-weight);
 }
 .workspaceHead {
-  border-bottom: 1px solid #000; /* 밑줄 추가 */
+  border-bottom: 1px solid #C9C9C9; /* 밑줄 추가 */
   padding-bottom: 10px;
   display: flex; /* .workspaceHead를 플렉스 컨테이너로 설정 */
   align-items: center; /* 수평 가운데 정렬 */
