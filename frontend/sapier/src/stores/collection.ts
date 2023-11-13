@@ -3,31 +3,42 @@ import { ref } from 'vue'
 
 interface CollectionTree {
   collectionName: string
-  apiList: Api[]
+  apiList: RequestInfo[]
   collectionList: CollectionTree[]
+  modifiedTime: string
+  request: RequestInfo
+}
+
+interface RequestInfo {
+  requestName: string
+  requestURL: string
+  method: string
+  headers: any
+  body: any
+  queryParams: any
+  formData: any
+  workspacesId: string
+  id: string
   modifiedTime: string
 }
 
-interface Api {
-  apitName: string
-  url: string
-  method: string
-  headers: []
-  body: []
-  params: []
-  path: []
-  workspacesId: string
+interface Response {
+  status: number
+  headers: any
+  data: []
 }
 
 export type { CollectionTree }
 
 export const useCollectionStore = defineStore('collection', () => {
   const collection = ref<CollectionTree | null>(null)
-  const api = ref<Api>()
+  const request = ref<RequestInfo | null>(null)
+  const response = ref<Response>()
 
   return {
     collection,
-    api,
+    request,
+    response,
   }
 })
 

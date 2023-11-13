@@ -1,14 +1,16 @@
-<script>
+<script setup>
 </script>
 
 <template>
-  <div class="list">
-    유저 인포
+  <div class="user_info">
+    <UserInfoProfile />
+    <UserInfoDetailContainer />
   </div>
 </template>
 
 <style scoped>
-.list{
-    background: #C9C9C9;
+.user_info{
+    width: 20%;
+    background-color: #F0F0F0;
 }
 </style>

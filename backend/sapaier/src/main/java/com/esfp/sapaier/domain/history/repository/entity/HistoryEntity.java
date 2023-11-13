@@ -1,6 +1,7 @@
 package com.esfp.sapaier.domain.history.repository.entity;
 
 import com.esfp.sapaier.domain.collection.repository.entity.RequestEntity;
+import com.esfp.sapaier.domain.history.model.dto.ResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -19,7 +20,7 @@ public class HistoryEntity {
     private String historyId;
 
     private RequestEntity request;
-    //private ResponseEntity response;
+    private ResponseDto response;
 
     @CreatedDate
     private LocalDateTime createdTime;

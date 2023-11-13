@@ -67,19 +67,11 @@ public class SecurityConfig {
 		httpSecurity
 			.authorizeHttpRequests(c -> {
 				c
-					.requestMatchers(HttpMethod.GET, LOGIN_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
-					.requestMatchers(HttpMethod.GET, SWAGGER_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
-					.requestMatchers("/**").hasAnyRole("USER")//권한 별 접근 URL 설정
+					// .requestMatchers(HttpMethod.GET, LOGIN_URI_LIST).permitAll()//권한 필요없는 GET 허용 리스트 설정
+					.requestMatchers(HttpMethod.GET, SWAGGER_URI_LIST).hasAnyRole("ADMIN")
+					.requestMatchers("/**").hasAnyRole("ADMIN", "USER")//권한 별 접근 URL 설정
 					.anyRequest().authenticated();
 			});  //그 외에 대한 URL에 대해서는 Authentication이 필요함을 설정
-
-		//TEST
-		// httpSecurity
-		// 	.authorizeHttpRequests(c -> {c
-		// 				.requestMatchers(HttpMethod.GET, "/**").permitAll()
-		// 				.requestMatchers(HttpMethod.POST, "/**").permitAll()
-		// 				.requestMatchers(HttpMethod.PATCH, "/**").permitAll()
-		// 				.requestMatchers(HttpMethod.DELETE, "/**").permitAll();});
 
 		//인증 (Oauth2)
 		//Oauth2 인증방식을 사용한다.
@@ -110,9 +102,8 @@ public class SecurityConfig {
 
 		// 커스텀필터
 		httpSecurity
-			.addFilterBefore(customFilterFactory.createJwtAuthenticationFilter(),
+			.addFilterAfter(customFilterFactory.createJwtAuthenticationFilter(),
 				UsernamePasswordAuthenticationFilter.class);
-		// .securityMatcher("/api/v1/**");
 
 		return httpSecurity.build();
 	}
@@ -122,17 +113,11 @@ public class SecurityConfig {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-		corsConfiguration.addAllowedOriginPattern("http://192.168.31.175:3333");
-		corsConfiguration.addAllowedOriginPattern("http://localhost:3333");
-
+		// corsConfiguration.addAllowedOriginPattern("http://192.168.31.175:3333");
+		// corsConfiguration.addAllowedOriginPattern("http://localhost:3333");
+		corsConfiguration.addAllowedOriginPattern("*");
 		corsConfiguration.addAllowedHeader("*");
-
-		corsConfiguration.addAllowedMethod(HttpMethod.GET);
-		corsConfiguration.addAllowedMethod(HttpMethod.POST);
-		corsConfiguration.addAllowedMethod(HttpMethod.PATCH);
-		corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
-		corsConfiguration.addAllowedMethod(HttpMethod.HEAD);
-		corsConfiguration.addAllowedMethod(HttpMethod.OPTIONS);
+		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.setAllowCredentials(true);
 		source.registerCorsConfiguration("/**", corsConfiguration);
 

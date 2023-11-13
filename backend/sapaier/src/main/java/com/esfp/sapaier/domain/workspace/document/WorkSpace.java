@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -26,6 +28,8 @@ public class WorkSpace {
     private String key;
     @NotNull
     private String name;
+
+    private String color="#0F4C81";
     @NotNull
     private List<CollectionListDto> collectionList;
     @NotNull

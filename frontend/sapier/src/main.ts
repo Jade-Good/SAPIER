@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import NProgress from 'nprogress'
+import axios from './plugins/axios'
 
 import App from './App.vue'
 import generatedRoutes from '~pages'
@@ -20,6 +21,10 @@ const router = createRouter({
 // 앱과 라우터를 사용합니다.
 app.use(router)
 app.use(pinia)
+
+app.config.globalProperties.axios = axios
+
+app.provide('$axios', axios)
 
 router.beforeEach((to, from) => {
   if (to.path !== from.path)
