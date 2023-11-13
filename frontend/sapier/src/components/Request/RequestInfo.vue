@@ -1,14 +1,36 @@
 <script setup lang="ts">
 const axios = inject('$axios')
 const useCollection = useCollectionStore()
+const userInfo = useUserStore()
+const selectedWorkspaceIndex = useWorkspaceStore(0)
+const workspaceList = useWorkspaceListStore()
+
 const isMounted = useMounted()
 
 const selectMethod = ref('GET')
+const copySelectMethod = ref('')
 const requestURL = ref('http://')
+const copyRequestURL = ref('')
 const requestName = ref('New Request')
-const requestHeaders = ref([{ active: null }])
+const copyRequestName = ref('')
+const queryParams = reactive({
+  rows: [
+    { active: '', key: '', value: '', description: '' },
+  ],
+})
+const copyQueryParams = ref('')
+const requestHeaders = reactive({
+  rows: [
+    { active: '', key: '', value: '', description: '' },
+  ],
+})
+const copyRequestHeaders = ref('')
 const requestBody = ref('')
-const queryParams = ref([{ active: null }])
+const copyRequestBody = ref('')
+
+const isSaveEnable = computed(() => {
+  return copySelectMethod.value !== selectMethod.value || copyRequestURL.value !== requestURL.value || copyRequestName.value !== requestName.value || copyRequestBody.value !== requestBody.value || copyRequestHeaders.value !== JSON.stringify(requestHeaders.rows) || copyQueryParams.value !== JSON.stringify(queryParams.rows)
+})
 
 provide('queryParams', queryParams)
 provide('requestHeaders', requestHeaders)
@@ -32,19 +54,7 @@ const startY = ref(0) // 크기 조절 시작 지점
 const startHeight = ref(0) // 크기 조절 시작 시 Request 엘리먼트의 높이
 
 if (isMounted) {
-  if (useCollection.request) {
-    console.log('api : ', useCollection.request)
-
-    selectMethod.value = useCollection.request.method
-    requestURL.value = useCollection.request.requestURL
-    requestName.value = useCollection.request.requestName
-
-    if (useCollection.request.headers[0])
-      requestHeaders.value = useCollection.request.headers
-    if (useCollection.request.queryParams[0])
-      queryParams.value = useCollection.request.queryParams
-    requestBody.value = useCollection.request.body
-  }
+  setValues()
 
   // 메서드 리스트 이벤트 등록
   document.addEventListener('click', handleDocumentClick)
@@ -61,19 +71,7 @@ if (isMounted) {
 };
 
 watch(() => useCollection.request, () => {
-  if (useCollection.request) {
-    console.log('api : ', useCollection.request)
-
-    selectMethod.value = useCollection.request.method
-    requestURL.value = useCollection.request.requestURL
-    requestName.value = useCollection.request.requestName
-
-    if (useCollection.request.headers[0])
-      requestHeaders.value = useCollection.request.headers
-    if (useCollection.request.queryParams[0])
-      queryParams.value = useCollection.request.queryParams
-    requestBody.value = useCollection.request.body
-  }
+  setValues()
 })
 
 onUnmounted(() => {
@@ -81,6 +79,43 @@ onUnmounted(() => {
   window.removeEventListener('mousemove', handleResizing)
   window.removeEventListener('mouseup', stopResizing)
 })
+
+// ---------------- 데이터 바인딩과 수정/저장 ----------------
+function setValues() {
+  if (!useCollection.request)
+    return
+
+  // console.log('api : ', useCollection.request)
+
+  selectMethod.value = useCollection.request.method
+  requestURL.value = useCollection.request.requestURL
+  requestName.value = useCollection.request.requestName
+  requestBody.value = useCollection.request.body
+
+  if (useCollection.request.headers[0])
+    requestHeaders.rows = useCollection.request.headers
+  if (useCollection.request.queryParams[0])
+    queryParams.rows = useCollection.request.queryParams
+
+  copySelectMethod.value = selectMethod.value
+  copyRequestURL.value = requestURL.value
+  copyRequestName.value = requestName.value
+  copyRequestBody.value = requestBody.value
+  copyRequestHeaders.value = JSON.stringify(requestHeaders.rows)
+  copyQueryParams.value = JSON.stringify(queryParams.rows)
+}
+
+function requestSave() {
+  if (!useCollection.request || !isSaveEnable)
+    return
+
+  useCollection.request.method = selectMethod.value
+  useCollection.request.requestURL = requestURL.value
+  useCollection.request.requestName = requestName.value
+  useCollection.request.body = requestBody.value
+  useCollection.request.headers = requestHeaders.rows
+  useCollection.request.queryParams = queryParams.rows
+}
 
 // ---------------- 메서드 리스트 토글기능 ----------------
 function setMethodBtnStyle() {
@@ -215,8 +250,8 @@ function setResponseStyle() {
 
 async function sendAPI() {
   const sendData = {
-    requestURL:	requestURL.value,
-    method:	selectMethod.value,
+    requestURL: requestURL.value,
+    method: selectMethod.value,
     headers: {},
     queryParams: {},
     body: {},
@@ -227,9 +262,33 @@ async function sendAPI() {
 
   try {
     const res = await axios.post(`/api/v1/collection/request`, sendData)
-    console.log('API 전송 성공', res)
+    // console.log('API 전송 성공', res)
 
     useCollection.response = res
+
+    const history = {
+      request: {
+        requestName,
+        requestURL,
+        method: selectMethod,
+        headers: requestHeaders,
+        body: requestBody,
+        queryParams,
+        path: useCollection.request?.path,
+      },
+      response: useCollection.response,
+      uuid: userInfo.userInfo?.uuid,
+      workspaceId: workspaceList.WorkspaceList?.workspaceList[selectedWorkspaceIndex.selectedWorkspaceIndex ? selectedWorkspaceIndex.selectedWorkspaceIndex : 0],
+    }
+
+    try {
+      const res2 = await axios.post(`/api/v1/history/save`, history)
+
+      console.log('History 저장 성공 : ', res2)
+    }
+    catch (error) {
+      console.error('History 저장 실패', error)
+    }
   }
   catch (error) {
     console.error('API 전송 실패:', error)
@@ -257,7 +316,7 @@ async function sendAPI() {
           <p>{{ requestName }}</p>
         </div>
         <div flex flex-gap-3>
-          <div class="grayBtn">
+          <div :class="isSaveEnable ? 'grayBtn' : 'grayBtnOff'" @click="requestSave">
             <div i-carbon-save />
             Save
           </div>
@@ -412,6 +471,26 @@ input:focus {
   font-weight: var(--font-H5-weight);
 
   cursor: pointer;
+}
+
+.grayBtnOff {
+  /* layout */
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  line-height: 1.2rem;
+
+  /* Style */
+  border-radius: 5px;
+
+  color: var(--color-gray2);
+  background-color: var(--color-gray1);
+
+  font-size: var(--font-H5-size);
+  font-weight: var(--font-H5-weight);
+
+  cursor: auto;
 }
 
 .grayBtn:hover {
