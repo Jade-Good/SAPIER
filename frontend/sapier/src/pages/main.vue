@@ -20,25 +20,25 @@
 </route> -->
 
 <script setup lang="ts">
-import axios from 'axios'
-import { ref } from 'vue'
+// import CategoryInfo from '../components/workspace/Category.vue'
 
-import MainInfo from '../components/main/MainInfo.vue'
-import WorkspaceInfo from '../components/workspace/WorkSpaceInfo.vue'
+const axios = inject('$axios')
 
-const WorkspaceListInfo = useWorkspaceStore()
+const WorkspaceListInfo = useWorkspaceListStore()
+const WorkspaceOneInfo = useWorkspaceStore()
+const route = useRouter()
+
 const isMounted = useMounted()
-const currentComponent = ref<Component | null>(MainInfo)// 초기값은 MainInfo 컴포넌트로 설정
-const workspaceinfo = ref<any>(null) // workspaceInfoOne 데이터를 저장할 ref
+// const currentUserComponent = ref<Component | null>(UserInfo)
 
 axios.defaults.withCredentials = true
 
 if (isMounted) {
   axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`)
+    .get(`/api/v1/workspaces`)
     .then((res) => {
-      console.log(res)
-      WorkspaceListInfo.workspaceInfo = res.data
+      // console.log(res)
+      WorkspaceListInfo.WorkspaceList = res.data
     })
     .catch((error) => {
       console.error(error)
@@ -46,35 +46,19 @@ if (isMounted) {
     )
 }
 
-function showInfoComponent(workspaceInfoOne: any) {
-  currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
-  workspaceinfo.value = workspaceInfoOne
-  console.log('----------main------------')
-  console.log(workspaceinfo)
-}
+watch(() => WorkspaceOneInfo.workspaceInfo, () => {
+  route.push('/workspaces/workspace')
+})
 </script>
 
 <template>
   <TheNav />
   <div flex class="mid">
-    <div w-18 border-r-2 class="list">
-      <div v-for="workspace in WorkspaceListInfo.workspaceInfo" :key="workspace.name" class="box">
-        <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace)">
-          {{ workspace.name }}
-        </div>
-      </div>
-    </div>
-
+    <WorkspaceList w-20 />
     <UserInfo w-60 />
-    <!-- <MainInfo w-full /> -->
-    <component :is="currentComponent" w-full :workspaceone="workspaceinfo" />
+    <MainInfo w-full />
   </div>
   <RouterView />
-
-  <!-- <TheFooter />
-    <div mx-auto mt-5 text-center text-sm opacity-50>
-      [Default Layout]
-    </div> -->
 </template>
 
 <style scoped>
@@ -95,12 +79,56 @@ function showInfoComponent(workspaceInfoOne: any) {
   width: 50px;
   height: 50px;
   border: 2px solid #000; /* 테두리 스타일 및 색상 설정 */
-  background-color: yellow; /* 배경색 설정 */
+  background-color:#0F4C81; /* 배경색 설정 */
+  color:#F0F0F0;
+  cursor: pointer;
+
+}
+.plus-box{
+  margin-top: 5px ;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000; /* 테두리 스타일 및 색상 설정 */
+  background-color :#658DC6; /* 배경색 설정 */
+  color:#F0F0F0;
+  cursor: pointer;
+
 }
 
 .workspaceId{
   text-align: center; /* 텍스트 가운데 정렬 */
     line-height: 50px; /* 텍스트를 수직 중앙으로 정렬 */
+}
+
+.cross {
+  position: relative;
+}
+
+.cross::before,
+.cross::after {
+  content: '';
+  position: absolute;
+  background-color: #F0F0F0; /* 바의 색상을 설정하세요. */
+}
+
+.cross::before {
+  width: 2px;
+  height: 50%;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px
+}
+
+.cross::after {
+  width: 50%;
+  height: 2px;
+  top: 50%;
+  left: 25%;
+  transform: translateY(-50%);
+  border-radius: 50px
+
 }
 
 .workspaceId:hover {

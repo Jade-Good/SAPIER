@@ -1,56 +1,104 @@
 <script setup lang="ts">
-import axios from 'axios'
+import type { Component } from 'vue'
+import { ref } from 'vue'
+import MainInfo from '../components/main/MainInfo.vue'
+import WorkspaceInfo from '../components/workspace/WorkSpaceInfo.vue'
+import UserInfo from '../components/main/UserInfo.vue'
 
-const WorkspaceListInfo = useWorkspaceStore()
+const axios = inject('$axios')
+
+const WorkspaceListInfo = useWorkspaceListStore()
+const WorkspaceOneInfo = useWorkspaceStore()
+const User = useUserStore()
+
 const isMounted = useMounted()
+const currentComponent = ref<Component | null>(MainInfo)// 초기값은 MainInfo 컴포넌트로 설정
+// const currentUserComponent = ref<Component | null>(UserInfo)
+const workspaceinfo = ref<any>(null) // workspaceInfoOne 데이터를 저장할 ref
 
-axios.defaults.withCredentials = true
 // const dataElement = document.getElementById('workSpaceListData')
 
-if (isMounted) {
-  axios
-    .get(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`)
-    .then((res) => {
-      console.log(res)
-      WorkspaceListInfo.workspaceInfo = res.data
-      // dataElement.textContent = WorkspaceListInfo.workSpaceInfo.
-    })
-    .catch((error) => {
-      console.log(error)
-    },
-    )
-}
+// if (isMounted) {
+//   axios
+//     .get(`/api/v1/workspaces`)
+//     .then((res) => {
+//       // console.log('워크스페이스 리스트 : ', res)
+//       WorkspaceListInfo.workspaceInfo = res.data
+//       // dataElement.textContent = WorkspaceListInfo.workSpaceInfo.
+//     })
+//     .catch((error) => {
+//       console.error('워크스페이스 리스트 조회 실패 : ', error)
+//     },
+//     )
+// }
 
-function workspaceInfo(workspaceName) {
-  const workspaceInfoUrl = `${import.meta.env.VITE_FRONT_URL}/workspaces/workspace?name=${workspaceName}`
-  window.location.href = workspaceInfoUrl
-}
+// function handleWorkspaceClick(index) {
+//   WorkspaceListInfo.selectedWorkspaceIndex = index
+// }
 
 function truncateText(text: string, maxLength: number) {
   if (text.length > maxLength)
-    return `${text.slice(0, maxLength)}...`
+    return `${text.slice(0, maxLength)}`
 
   else
     return text
 }
-// const dataToSend = {
-//   param1: ,
-// };
 
-// const hashString = JSON.stringify(dataToSend);
+function showInfoComponent(workspaceInfoOne: any, index) {
+  currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
+  // workspaceinfo.value = workspaceInfoOne
+  // console.log('----------main------------')
+  // console.log(workspaceinfo)
+  WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
+  WorkspaceOneInfo.selectedWorkspaceIndex = index
+  // WorkspaceOneInfo.$patch(workspaceInfoOne)
+//
+  // console.log(WorkspaceOneInfo)
+  // console.log('asdfasfasdfadsfasdf')
+}
+
+async function addWorkSpace() {
+  try {
+    const Userdata = {
+
+      memberList: [
+        {
+          uuId: User.userInfo?.uuid,
+          userPermission: 'admin',
+        },
+
+      ],
+      name: 'My  workspace',
+    }
+
+    // axios를 사용하여 서버에 POST 요청을 보냅니다.
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`, Userdata)
+
+    // 요청이 성공하면 WorkspaceList에 새로운 데이터를 추가합니다.
+    this.WorkspaceListInfo.WorkspaceList.push(Userdata)
+  }
+  catch (error) {
+    console.error('Error adding workspace:', error)
+  }
+}
 </script>
 
 <template>
   <div w-18 border-r-2 class="list">
-    <div v-for="workspace in WorkspaceListInfo.workspaceInfo" :key="workspace.name" class="box">
-      <div id="workSpaceListData" class="workspaceId" @click="workspaceInfo(workspace.name)">
+    <div v-for="(workspace, index) in WorkspaceListInfo.WorkspaceList" :key="workspace.name" class="box" :style="{ backgroundColor: workspace.color }">
+      <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace, index)">
         {{ truncateText(workspace.name, 4) }}
       </div>
     </div>
+    <div class="plus-box cross" @click="addWorkSpace()" />
   </div>
 </template>
 
 <style scoped>
+.mid {
+  height: calc(100% - 70px);
+}
+
 .list{
   background: #C9C9C9;
   border-color: #B6B6B6;
@@ -64,16 +112,62 @@ function truncateText(text: string, maxLength: number) {
   width: 50px;
   height: 50px;
   border: 2px solid #000; /* 테두리 스타일 및 색상 설정 */
-  background-color: yellow; /* 배경색 설정 */
-}
-.workspaceId{
+  background-color:#0F4C81; /* 배경색 설정 */
+  color:#F0F0F0;
+  cursor: pointer;
 
+}
+.plus-box{
+  margin-top: 5px ;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000; /* 테두리 스타일 및 색상 설정 */
+  background-color :#658DC6; /* 배경색 설정 */
+  color:#F0F0F0;
+  cursor: pointer;
+
+}
+
+.workspaceId{
   text-align: center; /* 텍스트 가운데 정렬 */
-  line-height: 50px; /* 텍스트를 수직 중앙으로 정렬 */
+    line-height: 50px; /* 텍스트를 수직 중앙으로 정렬 */
+}
+
+.cross {
+  position: relative;
+}
+
+.cross::before,
+.cross::after {
+  content: '';
+  position: absolute;
+  background-color: #F0F0F0; /* 바의 색상을 설정하세요. */
+}
+
+.cross::before {
+  width: 2px;
+  height: 50%;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px
+}
+
+.cross::after {
+  width: 50%;
+  height: 2px;
+  top: 50%;
+  left: 25%;
+  transform: translateY(-50%);
+  border-radius: 50px
 
 }
 
 .workspaceId:hover {
   cursor: pointer; /* 호버 시 커서를 손가락 아이콘으로 변경 */
+}
+.active {
+  border-color: #000;
 }
 </style>

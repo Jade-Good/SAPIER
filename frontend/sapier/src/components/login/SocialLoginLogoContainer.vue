@@ -1,35 +1,22 @@
-
 <script setup lang="ts">
 
 </script>
 
-
-
 <template>
-  
-  <div class="social_login_logo_container_blacnk_space">
-
-    <div class="social_login_button_container_blacnk_space"></div>
-
+  <div class="social_login_logo_container">
     <div class="social_login_logo_container_item">
-        <span class="social_login_logo_image">
-            <img src="./logo_sapier.png"/>
-        </span>
-    </div>
-    
-    <div class="social_login_logo_container_item">
-        <span class="social_login_logo_text">오픈소스 API 테스터</span>
+      <span class="social_login_logo_image">
+        <img src="./logo_sapier.png">
+      </span>
     </div>
 
+    <div class="social_login_logo_container_item">
+      <span class="social_login_logo_text">오픈소스 API 테스터</span>
+    </div>
   </div>
-
 </template>
 
-
-
-
 <style scoped>
-
 .social_login_logo_container{
     display: flex;
     flex-direction: column;
@@ -48,14 +35,7 @@
 
 .social_login_logo_text{
     color: #0F4C81;
-    font-size: 1.5rem;
+    font-size: 2vw;
     font-weight: 700;
 }
-
-.social_login_logo_container_blacnk_space{
-  margin-top: 40%;
-}
-
-
 </style>
-
