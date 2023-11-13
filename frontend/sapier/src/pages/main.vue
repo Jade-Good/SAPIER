@@ -20,25 +20,16 @@
 </route> -->
 
 <script setup lang="ts">
-import type { Component } from 'vue'
-import { ref } from 'vue'
-
-import MainInfo from '../components/main/MainInfo.vue'
-import WorkspaceInfo from '../components/workspace/WorkSpaceInfo.vue'
-import UserInfo from '../components/main/UserInfo.vue'
-
 // import CategoryInfo from '../components/workspace/Category.vue'
 
 const axios = inject('$axios')
 
 const WorkspaceListInfo = useWorkspaceListStore()
 const WorkspaceOneInfo = useWorkspaceStore()
-const User = useUserStore()
+const route = useRouter()
 
 const isMounted = useMounted()
-const currentComponent = ref<Component | null>(MainInfo)// 초기값은 MainInfo 컴포넌트로 설정
 // const currentUserComponent = ref<Component | null>(UserInfo)
-const workspaceinfo = ref<any>(null) // workspaceInfoOne 데이터를 저장할 ref
 
 axios.defaults.withCredentials = true
 
@@ -55,77 +46,19 @@ if (isMounted) {
     )
 }
 
-function showInfoComponent(workspaceInfoOne: any) {
-  currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
-  // workspaceinfo.value = workspaceInfoOne
-  console.log('----------main------------')
-  console.log(workspaceinfo)
-  WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
-  // WorkspaceOneInfo.$patch(workspaceInfoOne)
-
-  console.log(WorkspaceOneInfo)
-  console.log('asdfasfasdfadsfasdf')
-}
-
-function truncateText(text: string, maxLength: number) {
-  if (text.length > maxLength)
-    return `${text.slice(0, maxLength)}`
-
-  else
-    return text
-}
-
-async function addWorkSpace() {
-  try {
-    const Userdata = {
-
-      memberList: [
-        {
-          uuId: User.userInfo?.uuid,
-          userPermission: 'admin',
-        },
-
-      ],
-      name: 'My  workspace',
-    }
-
-    // axios를 사용하여 서버에 POST 요청을 보냅니다.
-    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`, Userdata)
-
-    // 요청이 성공하면 WorkspaceList에 새로운 데이터를 추가합니다.
-    this.WorkspaceListInfo.WorkspaceList.push(Userdata)
-  }
-  catch (error) {
-    console.error('Error adding workspace:', error)
-  }
-}
+watch(() => WorkspaceOneInfo.workspaceInfo, () => {
+  route.push('/workspaces/workspace')
+})
 </script>
 
 <template>
   <TheNav />
   <div flex class="mid">
-    <div w-18 border-r-2 class="list">
-      <div v-for="workspace in WorkspaceListInfo.WorkspaceList" :key="workspace.name" class="box" :style="{ backgroundColor: workspace.color }">
-        <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace)">
-          {{ truncateText(workspace.name, 4) }}
-        </div>
-      </div>
-      <div class="plus-box cross" @click="addWorkSpace()" />
-    </div>
-
+    <WorkspaceList w-20 />
     <UserInfo w-60 />
-    <!-- <component :is="currentUserComponent" w-60 /> -->
-    <Category w-60 />
-    <!-- <MainInfo w-full /> -->
-    <component :is="currentComponent" w-full /><!--    <component :is="currentComponent" w-full :workspaceone="workspaceinfo" />
--->
+    <MainInfo w-full />
   </div>
   <RouterView />
-
-  <!-- <TheFooter />
-    <div mx-auto mt-5 text-center text-sm opacity-50>
-      [Default Layout]
-    </div> -->
 </template>
 
 <style scoped>
