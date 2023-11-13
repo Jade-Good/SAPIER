@@ -1,11 +1,13 @@
 <script setup lang="ts">
 const useCollection = useCollectionStore()
-const params = inject('params')
+const queryParams = inject('queryParams')
 const isHighLight = ref([] as boolean[])
 
 watch(() => useCollection.request, () => {
-  if (params) {
-    params.value.forEach(() => {
+  if (queryParams) {
+    console.log('params : ', queryParams)
+    queryParams.value.forEach(() => {
+      isHighLight.value.push(false)
     })
   }
 })
@@ -37,11 +39,11 @@ function clearHighLight(row: number) {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(param, index) in params" :key="index" :class="{ tableHighLite: isHighLight[index] }">
+        <tr v-for="(param, index) in queryParams" :key="index" :class="{ tableHighLite: isHighLight[index] }">
           <td>
-            <span v-if="param.active">✅</span>
-            <span v-else-if="param.active == null" />
-            <span v-else>⬜</span>
+            <span v-if="param.active === 'true'">✅</span>
+            <span v-else-if="param.active === 'false'">⬜</span>
+            <span v-else />
           </td>
           <td>
             <input v-model="param.key" placeholder="Key" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)">
