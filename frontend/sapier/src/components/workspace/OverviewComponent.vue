@@ -58,24 +58,23 @@ function showCollectionsDropdown() {
 
 function addCollectionToPinned(collection) {
   const selectedCollection = collections.value.find(c => c.id === collection.id)
-  if (selectedCollection && !selectedCollection.disabled) {
+  if (selectedCollection && !selectedCollection.disabled)
     selectedDataArray.value.push({ id: collection.id, name: collection.collectionName })
-    selectedCollection.disabled = true
-    // console.log(`Adding "${collection.collectionName}" to pinned collections`)
-  }
+  selectedCollection.disabled = true
+  // console.log(`Adding "${collection.collectionName}" to pinned collections`)
 }
 
-function dropdownClick(event) {
-  // 드롭다운 메뉴를 클릭해도 이벤트 버블링을 중지시키지 않음
-  event.stopPropagation()
-}
+// function dropdownClick(event) {
+//   // 드롭다운 메뉴를 클릭해도 이벤트 버블링을 중지시키지 않음
+//   event.stopPropagation()
+// }
 
 function removeCollection(collectionId) {
   // 선택한 컬렉션을 삭제
   selectedDataArray.value = selectedDataArray.value.filter(data => data.id !== collectionId)
   const selectedCollection = collections.value.find(c => c.id === collectionId)
-  if (selectedCollection)
-    selectedCollection.disabled = false
+  // if (selectedCollection)
+  //   selectedCollection.disabled = false
 }
 </script>
 
@@ -124,6 +123,7 @@ function removeCollection(collectionId) {
         <div class="maindivText">
           <!-- {{ workspaceone }} -->
           <div v-for="data in selectedDataArray" :key="data.id" class="collection-border">
+            <img src="/folder.svg">
             {{ data.name }}
             <span class="remove-button" @click="removeCollection(data.id)">X</span>
           </div>
