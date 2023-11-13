@@ -58,24 +58,23 @@ function showCollectionsDropdown() {
 
 function addCollectionToPinned(collection) {
   const selectedCollection = collections.value.find(c => c.id === collection.id)
-  if (selectedCollection && !selectedCollection.disabled) {
+  if (selectedCollection && !selectedCollection.disabled)
     selectedDataArray.value.push({ id: collection.id, name: collection.collectionName })
-    selectedCollection.disabled = true
-    // console.log(`Adding "${collection.collectionName}" to pinned collections`)
-  }
+  selectedCollection.disabled = true
+  // console.log(`Adding "${collection.collectionName}" to pinned collections`)
 }
 
-function dropdownClick(event) {
-  // 드롭다운 메뉴를 클릭해도 이벤트 버블링을 중지시키지 않음
-  event.stopPropagation()
-}
+// function dropdownClick(event) {
+//   // 드롭다운 메뉴를 클릭해도 이벤트 버블링을 중지시키지 않음
+//   event.stopPropagation()
+// }
 
 function removeCollection(collectionId) {
   // 선택한 컬렉션을 삭제
   selectedDataArray.value = selectedDataArray.value.filter(data => data.id !== collectionId)
   const selectedCollection = collections.value.find(c => c.id === collectionId)
-  if (selectedCollection)
-    selectedCollection.disabled = false
+  // if (selectedCollection)
+  //   selectedCollection.disabled = false
 }
 </script>
 
@@ -124,6 +123,7 @@ function removeCollection(collectionId) {
         <div class="maindivText">
           <!-- {{ workspaceone }} -->
           <div v-for="data in selectedDataArray" :key="data.id" class="collection-border">
+            <img src="/folder.svg">
             {{ data.name }}
             <span class="remove-button" @click="removeCollection(data.id)">X</span>
           </div>
@@ -158,16 +158,16 @@ function removeCollection(collectionId) {
           </h5>
           <div class="maindivText">
             <div w-18 border-r-2 class="list">
-              <div v-for="m in memberInfo.member" :key="m.uuid" class="box">
+              <div v-for="m in memberInfo.member" :key="m?.uuid" class="box">
                 <div id="workSpaceListData" class="workspaceId">
                   <div class="boxs" style="background: #BDBDBD;">
-                    <img :src="m.profileImageUrl" class="profile" alt="User Profile Image">s
+                    <img :src="m?.profileImageUrl" class="profile" alt="User Profile Image">s
                   </div>
                   <div class="name" @click="showUserInfo(m)">
-                    {{ m.nickname }}
+                    {{ m?.nickname }}
                   </div>
                   <div>
-                    {{ m.email }}
+                    {{ m?.email }}
                   </div>
                 </div>
               </div>
@@ -198,14 +198,14 @@ function removeCollection(collectionId) {
   display: flex;
   margin-bottom: 2em; /*그룹 간의 간격 조절*/
   width: max-content;
-  gap: 10em;
+  gap: 2em;
   margin-top:2em;
   margin-left: 13em;
 }
 
 .document-group {
   display: flex;
-  gap: 10em;
+  gap: 2em;
   margin-left: 13em;
 
 }
@@ -256,7 +256,7 @@ function removeCollection(collectionId) {
 
 .maindivHeader {
   display: inline-block;
-  font-size: 1.5em;
+  font-size: var(--font-H2-size);
   font-weight: 700;
 }
 
@@ -270,9 +270,8 @@ function removeCollection(collectionId) {
 
 }
 .maindivText {
-  font-size: 1em;
-  font-weight: 400;
-  margin-left: 0.5em;
+  margin-left: 1em;
+  font-size: var(--font-H6-size);
 }
 .name{
   text-align: center; /* 가로 중앙 정렬 */

@@ -2,7 +2,8 @@
 const useCollection = useCollectionStore()
 const requestCode = ref(0)
 const requestHeaders = ref({ test1: '123', test2: 12321 })
-const requestBody = ref('testtest')
+const requestBody = ref(JSON.stringify({}, null, 2))
+const textarea = ref<null | HTMLTextAreaElement>(null)
 
 watch(() => useCollection.response, () => {
   if (useCollection.response) {
@@ -10,7 +11,7 @@ watch(() => useCollection.response, () => {
 
     requestCode.value = useCollection.response.status
     requestHeaders.value = useCollection.response.headers
-    requestBody.value = useCollection.response.data
+    requestBody.value = JSON.stringify(useCollection.response.data, null, 4)
   }
 })
 
@@ -42,29 +43,22 @@ function resultCodeStyle() {
   }
 }
 
-// ---------------- 메서드 리스트 토글기능 ----------------
-function setMethodBtnStyle() {
-  return {
-    /* layout */
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '0 0.5rem 0 0.8rem',
-    width: '10rem',
-    lineHeight: '2rem',
-
-    /* Style */
-    borderRadius: '5px',
-    outline: isMethodList.value ? '3px solid var(--color-blue2)' : 'none',
-
-    color: 'white',
-    backgroundColor: `var(--color-${selectMethod.value})`,
-
-    fontSize: 'var(--font-H2-size)',
-    fontWeight: 'var(--font-H2-weight)',
-
-    cursor: 'pointer',
+// textarea 높이를 자동으로 조절하는 함수
+function adjustTextareaHeight() {
+  if (textarea.value) {
+    textarea.value.style.height = 'auto' // 초기 높이를 자동으로 설정
+    textarea.value.style.height = `${textarea.value.scrollHeight}px` // 스크롤 높이를 설정
   }
-};
+}
+
+watch(requestBody, () => {
+  adjustTextareaHeight()
+})
+
+// 컴포넌트가 마운트된 후 textarea 높이 조절
+onMounted(() => {
+  adjustTextareaHeight()
+})
 </script>
 
 <template>
@@ -75,39 +69,34 @@ function setMethodBtnStyle() {
     <div v-if="requestCode > 0" :style="resultCodeStyle()">
       {{ requestCode }}
     </div>
-    <div v-if="requestCode > 0" flex flex-gap-5 style="height: calc(100% - 2rem); padding: 1.25rem 1.25rem 0 1.25rem;">
-      <div style="width: 100%; min-width: 20rem; max-width: 100%;" pb-3>
+    <div v-if="requestCode > 0" class="resHeaders">
+      <div style="width: 40%;">
         <p style="font-size: var(--font-H2-size); font-weight: var(--font-H2-weight); border-bottom: 1px solid var(--color-gray3);" mb-2 pb-2>
           HEADERS
         </p>
-        <table name="headersTable" w-full>
-          <colgroup>
-            <col style="width: 30%; ">
-            <col style="width: 70%;">
-          </colgroup>
-          <tbody>
-            <tr v-for="(value, key) in requestHeaders" :key="key">
-              <td>
-                {{ key }}
-              </td>
-              <td>{{ value }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div style="overflow: auto;  max-height: 100%;">
+          <table class="headersTable" w-18>
+            <colgroup>
+              <col style="width: 30%; ">
+              <col style="width: 70%;">
+            </colgroup>
+            <tbody>
+              <tr v-for="(value, key) in requestHeaders" :key="key">
+                <td>
+                  {{ value[0] }}
+                </td>
+                <td>{{ value[1] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-
-      <div
-        class="resize-line"
-        @mousedown="startResizing"
-        @mousemove="handleResizing"
-        @mouseup="stopResizing"
-      />
 
       <div style="width: 60%;">
         <p style="font-size: var(--font-H2-size); font-weight: var(--font-H2-weight); border-bottom: 1px solid var(--color-gray3);" pb-2>
           BODY
         </p>
-        <textarea class="bodyText" readonly>{{ requestBody }}</textarea>
+        <textarea ref="textarea" v-model="requestBody" class="bodyText" readonly />
       </div>
     </div>
   </div>
@@ -123,6 +112,7 @@ table, tr, td {
   border: 1px solid black;
   text-align: left; /* 텍스트를 왼쪽에 정렬합니다. */
   vertical-align: top; /* 텍스트를 상단에 정렬합니다. */
+  word-wrap: break-word; /* 너무 긴 텍스트가 있는 경우 자동 줄바뀜 활성화 */
 }
 
 textarea:focus {
@@ -131,9 +121,10 @@ textarea:focus {
 
 textarea.bodyText {
   padding: 1rem;
-  height: calc(100% - 3rem);
+  height: 100%;
   width: 100%;
   resize: none;
+  overflow: auto;
 }
 
 .resize-line {
@@ -141,5 +132,18 @@ textarea.bodyText {
   cursor: ew-resize; /* 세로 크기 조절 커서 모양 */
   width: 5px; /* 가로 너비를 100%로 설정하여 전체 너비에서 크기 조절 가능 */
   background-color:var(--color-gray2); /* 크기 조절 선의 배경색 설정 */
+}
+
+.resHeaders {
+  display: flex;
+  gap: 1.25rem;
+  width: 100%;
+  height: calc(100% - 12rem);
+  padding: 1.25rem 1.25rem 0 1.25rem;
+
+}
+.headersTable {
+  table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
+  width: 100%; /* 테이블 전체 너비 설정 */
 }
 </style>

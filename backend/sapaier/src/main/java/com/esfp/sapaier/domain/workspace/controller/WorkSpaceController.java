@@ -3,11 +3,13 @@ package com.esfp.sapaier.domain.workspace.controller;
 
 import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequestDto;
 import com.esfp.sapaier.domain.workspace.document.WorkSpace;
+import com.esfp.sapaier.domain.workspace.dto.EmailRequest;
 import com.esfp.sapaier.domain.workspace.dto.UserDataDto;
 import com.esfp.sapaier.domain.workspace.dto.AddMemberDto;
 import com.esfp.sapaier.domain.workspace.dto.UserPermissionDto;
 import com.esfp.sapaier.domain.workspace.service.WorkSpaceService;
 import com.esfp.sapaier.global.auth.util.JwtTokenProvider;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,6 +99,14 @@ public class WorkSpaceController {
     public void changePermissionMember(  @PathVariable String memberUUID,@RequestBody AddMemberDto addMemberDto){
         workSpaceService.changePermissionMember(addMemberDto, memberUUID);
     }
+
+    @PostMapping("api/v1/send-email")
+    public void sendEmail(@RequestBody EmailRequest emailRequest) throws MessagingException {//@RequestHeader("Authorization") String authorizationToken,
+//        String accessToken = jwtTokenProvider.resolveToken(authorizationToken);
+//        String userUuid = jwtTokenProvider.parseClaims(accessToken).getSubject();
+        workSpaceService.sendEmail(emailRequest);
+    }
+
 
 //
 //    private final MemberAuthService memberAuthService;
