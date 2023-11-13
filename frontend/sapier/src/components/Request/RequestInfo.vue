@@ -6,11 +6,11 @@ const isMounted = useMounted()
 const selectMethod = ref('GET')
 const requestURL = ref('http://')
 const requestName = ref('New Request')
-const requestHeaders = ref([{ active: null, key: '', value: '', description: '' }])
-const requestBody = ref('{body text}')
-const params = ref([{ active: null, key: '', value: '', description: '' }])
+const requestHeaders = ref([{ active: null }])
+const requestBody = ref('')
+const queryParams = ref([{ active: null }])
 
-provide('params', params)
+provide('queryParams', queryParams)
 provide('requestHeaders', requestHeaders)
 provide('requestBody', requestBody)
 
@@ -33,12 +33,19 @@ const startHeight = ref(0) // 크기 조절 시작 시 Request 엘리먼트의 �
 
 if (isMounted) {
   if (useCollection.request) {
-    // console.log('api : ', useCollection.request)
+    console.log('api : ', useCollection.request)
 
     selectMethod.value = useCollection.request.method
     requestURL.value = useCollection.request.requestURL
     requestName.value = useCollection.request.requestName
+
+    if (useCollection.request.headers[0])
+      requestHeaders.value = useCollection.request.headers
+    if (useCollection.request.queryParams[0])
+      queryParams.value = useCollection.request.queryParams
+    requestBody.value = useCollection.request.body
   }
+
   // 메서드 리스트 이벤트 등록
   document.addEventListener('click', handleDocumentClick)
 
@@ -55,14 +62,17 @@ if (isMounted) {
 
 watch(() => useCollection.request, () => {
   if (useCollection.request) {
-    // console.log('api : ', useCollection.request)
+    console.log('api : ', useCollection.request)
 
     selectMethod.value = useCollection.request.method
     requestURL.value = useCollection.request.requestURL
     requestName.value = useCollection.request.requestName
-    requestHeaders.value = useCollection.request.requestHeaders
-    requestBody.value = useCollection.request.requestBody
-    params.value = useCollection.request.params
+
+    if (useCollection.request.headers[0])
+      requestHeaders.value = useCollection.request.headers
+    if (useCollection.request.queryParams[0])
+      queryParams.value = useCollection.request.queryParams
+    requestBody.value = useCollection.request.body
   }
 })
 
