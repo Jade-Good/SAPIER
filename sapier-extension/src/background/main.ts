@@ -66,3 +66,14 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     browser.runtime.sendMessage({ loggedIn: true })
   }
 })
+
+// 11/13
+// browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//   if (message.type === 'saveUserData') {
+//     // chrome.storage에 데이터 저장
+//     browser.storage.local.set({ sapierUserData: message.data }).then((data) => {
+//       // eslint-disable-next-line no-console
+//       console.log(`사용자 데이터 저장됨${data.email}`)
+//     })
+//   }
+// })

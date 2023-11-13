@@ -1,14 +1,16 @@
 <script setup lang="ts">
+const extensionUrl = browser.runtime.getURL('dist/options/index.html')
+
 function googleLogin() {
   // const googleLoginUrl = `${import.meta.env.VITE_SERVER_URL}/api/oauth2/authorization/google?redirect_uri=${import.meta.env.VITE_FRONT_URL}/login/redirect`
-  const googleLoginUrl = 'http://sapier.co.kr:8080/api/oauth2/authorization/google?redirect_uri=https://sapier.co.kr/login/redirect'
+  const googleLoginUrl = `http://sapier.co.kr:8080/api/oauth2/authorization/google?redirect_uri=${extensionUrl}`
   browser.tabs.create({ url: googleLoginUrl })
   // window.location.href = googleLoginUrl
 }
 
 function githubLogin() {
   // const githubLoginUrl = `${import.meta.env.VITE_SERVER_URL}/api/oauth2/authorization/github?redirect_uri=${import.meta.env.VITE_FRONT_URL}/login/redirect`
-  const githubLoginUrl = 'http://sapier.co.kr:8080/api/oauth2/authorization/github?redirect_uri=https://sapier.co.kr/login/redirect'
+  const githubLoginUrl = `http://sapier.co.kr:8080/api/oauth2/authorization/github?redirect_uri=${extensionUrl}`
   browser.tabs.create({ url: githubLoginUrl })
   // window.location.href = githubLoginUrl
 }
@@ -18,12 +20,12 @@ function githubLogin() {
   <div class="social_login_button_container">
     <button class="social_login_button">
       <span class="social_login_button_img">
-        <img src="images/btn_google_siginIn.png" @click="googleLogin">
+        <img src="/assets/btn_google_siginIn.png" @click="googleLogin">
       </span>
     </button>
     <button class="social_login_button">
       <span class="social_login_button_img">
-        <img src="images/btn_github_siginIn.png" @click="githubLogin">
+        <img src="/assets/btn_github_siginIn.png" @click="githubLogin">
       </span>
     </button>
     <div class="blacnk_space" />

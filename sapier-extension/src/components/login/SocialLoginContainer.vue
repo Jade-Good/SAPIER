@@ -10,8 +10,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 300px;
-    height: 100px;
     background: white;
     border-radius: 5%;
 }

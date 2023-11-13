@@ -5,7 +5,7 @@
   <div class="social_login_logo_container">
     <div class="social_login_logo_container_item">
       <span class="social_login_logo_image">
-        <img src="images/logo_sapier.png" w-50>
+        <img src="/assets/logo_sapier.png" w-50>
       </span>
     </div>
     <div class="social_login_logo_container_item">

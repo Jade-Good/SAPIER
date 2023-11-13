@@ -74,5 +74,8 @@
   },
   "lint-staged": {
     "*": "eslint --fix"
+  },
+  "dependencies": {
+    "axios": "^1.6.1"
   }
 }
