@@ -12,6 +12,7 @@ const WorkspaceOneInfo = useWorkspaceStore()
 
 const memberInfo = useUserStore()
 const userInfo = useUserStore()
+const route = useRouter()
 
 const isMounted = useMounted()
 
@@ -20,9 +21,8 @@ const shouldRender = ref(true) // 초기값 설정
 const searchInput = ref('')
 
 const boxColor = ref('yellow') // 초기 색상 설정
-const colors = ['red', 'blue', 'green', 'purple', 'orange'] // 사용할 색상 목록
+const colors = ['#0b3f6c', '#0F4C81', '#658DC6', '#C9C9C9', 'White'] // 사용할 색상 목록
 const alphabet = ['A', 'B', 'C', 'D', 'E'] // 사용할 색상 목록
-
 function firstChangeBoxColor(color) {
   boxColor.value = color
   WorkspaceOneInfo.workspaceInfo.color = color
@@ -179,24 +179,52 @@ function deleteWorkspace() {
     .then((res) => {
       // console.log('deleteWorkspace (setting component)delete')
       // console.log(res)
-      window.location.reload()
+
     })
     .catch((error) => {
       console.error('deleteWorkspace (setting component)delete : ', error)
     },
     )
+  route.push('/main')
+  // window.location.reload()
 }
 
 const isAdmin = computed(() => {
   // Replace the condition with your actual logic
   return WorkspaceOneInfo.workspaceInfo.memberList.some(mber => mber.uuId === userInfo.userInfo.uuid && mber.userPermission == 'admin')
 })
+
+function sendEmail() {
+  console.log(searchInput.value)
+  const EmailRequest = {
+    to: searchInput.value,
+    subject: 'Invitation to Workspace',
+    text: 'You are invited to join our workspace!',
+    AddMemberDto: {
+      workspaceIdx: WorkspaceOneInfo.workspaceInfo.key,
+      memberUuid: null,
+      permission: 'viewer',
+    },
+  }
+
+  // axios
+  //   .post(/api/v1/send-email', EmailRequest)
+  //   .then((response) => {
+  //     console.log(response.data)
+  //   })
+  //   .catch((error) => {
+  //     console.error('Error sending email:', error)
+  //   })
+}
 </script>
 
 <template>
   <div class="mainInfo">
     <div class="overview">
       <div class="maindiv">
+        <h2 class="settingHeader">
+          Workspace settings
+        </h2>
         <h5 class="maindivHeader">
           Information
         </h5>
@@ -235,7 +263,7 @@ const isAdmin = computed(() => {
           </h5>
           <div class="invite_div">
             <input v-model="searchInput" ml-1 class="invite_input" placeholder="  Search by name or email" type="text">
-            <button mr-1 p-1 class="invite_box" :disabled="searchInput === ''" :style="{ backgroundColor: searchInput === '' ? 'grey' : 'aqua' }" @click="search">
+            <button mr-1 p-1 class="invite_box" :disabled="searchInput === ''" :style="{ backgroundColor: searchInput === '' ? 'grey' : 'aqua' }" @click="sendEmail">
               Invite
             </button>
           </div>
@@ -323,13 +351,18 @@ const isAdmin = computed(() => {
 .box{
   margin-top: 5px ;
   border-radius: 10px;
-  width: 100px;
-  height: 100px;
-  border: 2px solid #000; /* 테두리 스타일 및 색상 설정 */
+  width: 200px;
+  height: 200px;
+  border-radius: 50px;
+  border: 4px solid #C9C9C9; /* 테두리 스타일 및 색상 설정 */
   background-color: #0F4C81; /* 배경색 설정 */
-  color:#F0F0F0
+  color:#F0F0F0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
 }
+
 .color_type{
   text-align: center; /* 가로 중앙 정렬 */
   display: flex;
@@ -339,7 +372,7 @@ const isAdmin = computed(() => {
 }
 .workspaceId{
   text-align: center; /* 텍스트 가운데 정렬 */
-
+  font-size: 64px;
 }
 .maindivHeader{
 
@@ -366,10 +399,11 @@ const isAdmin = computed(() => {
     overflow: hidden;
     margin: 0.5%;
     cursor: pointer;
-    border: 1px solid gray;
+    border: 1px solid #C9C9C9;
     /* background-color: yellow; 배경색 설정 */
 
 }
+
 .invite_div{
   display: flex; /* 자식 요소를 가로로 정렬하기 위해 Flexbox 레이아웃을 사용합니다. */
   justify-content: space-between; /* 자식 요소 사이에 공간을 균등하게 배치합니다. */
@@ -380,6 +414,8 @@ const isAdmin = computed(() => {
 }
 .invite_input {
   font-size: 80%; /* 힌트 텍스트의 글꼴 크기 설정 */
+  border: 1px solid #C9C9C9;
+  width:30rem
 }
 /* .name{
   text-align: center; 가로 중앙 정렬

@@ -23,6 +23,13 @@ const startY = ref(0) // 크기 조절 시작 지점
 const startHeight = ref(0) // 크기 조절 시작 시 Request 엘리먼트의 높이
 
 if (isMounted) {
+  if (useCollection.request) {
+    // console.log('api : ', useCollection.request)
+
+    selectMethod.value = useCollection.request.method
+    requestURL.value = useCollection.request.requestURL
+    requestName.value = useCollection.request.requestName
+  }
   // 메서드 리스트 이벤트 등록
   document.addEventListener('click', handleDocumentClick)
 
