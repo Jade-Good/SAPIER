@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class CollectionEntity {
 	private List<CollectionEntity> collectionList;
 
 	@CreatedDate
-	private LocalDateTime createdTime;
+	private Instant createdTime;
 	@LastModifiedDate
 	private LocalDateTime modifiedTime;
 
@@ -33,6 +34,7 @@ public class CollectionEntity {
 	public CollectionEntity(String collectionName , List<CollectionEntity> collectionList) {
 		this.collectionName = collectionName;
 		this.collectionList = collectionList;
+		this.createdTime = Instant.now();
 	}
 
 	@Override

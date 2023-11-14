@@ -1,11 +1,11 @@
 package com.esfp.sapaier.domain.workspace.controller;
 
 
-import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequestDto;
 import com.esfp.sapaier.domain.workspace.document.WorkSpace;
 import com.esfp.sapaier.domain.workspace.dto.EmailRequest;
 import com.esfp.sapaier.domain.workspace.dto.UserDataDto;
 import com.esfp.sapaier.domain.workspace.dto.AddMemberDto;
+import com.esfp.sapaier.domain.workspace.dto.CollectionListDto;
 import com.esfp.sapaier.domain.workspace.dto.UserPermissionDto;
 import com.esfp.sapaier.domain.workspace.service.WorkSpaceService;
 import com.esfp.sapaier.global.auth.util.JwtTokenProvider;
@@ -107,6 +107,12 @@ public class WorkSpaceController {
         workSpaceService.sendEmail(emailRequest);
     }
 
+
+    @PostMapping("/api/v1/workspaces/{workspaceId}")
+    ResponseEntity<Object> addCollectionDocument(@PathVariable String workspaceId, @RequestBody CollectionListDto collectionListDto){
+        workSpaceService.addCollectionDocument(workspaceId,collectionListDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 //
 //    private final MemberAuthService memberAuthService;
