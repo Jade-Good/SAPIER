@@ -2,10 +2,6 @@ package com.esfp.sapaier.domain.user.model.dto;
 
 import java.util.List;
 
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.MongoId;
-import org.springframework.stereotype.Service;
-
 import com.esfp.sapaier.domain.user.model.vo.Role;
 import com.esfp.sapaier.global.auth.model.vo.OAuth2Provider;
 
@@ -35,4 +31,19 @@ public class UserDto {
 	private List<String> workspaces;
 
 	private Role role;
+
+	@Override
+	public String toString() {
+		return "UserDto{" +
+			"uuid='" + uuid + '\'' +
+			", nickname='" + nickname + '\'' +
+			", email='" + email + '\'' +
+			", socialId='" + socialId + '\'' +
+			", socialProvider=" + socialProvider +
+			", profileImageUrl='" + profileImageUrl + '\'' +
+			", countOfApiRequest=" + countOfApiRequest +
+			", workspaces=" + workspaces +
+			", role=" + role +
+			'}';
+	}
 }
