@@ -82,7 +82,7 @@ export default defineComponent({
             <div>{{ dailyHistory.date }}</div>
             <ul v-for="(histories, wIdx) in dailyHistory.workspaceHistories" :key="wIdx">
                 <!-- <div>{{ histories.workspaceKey }}</div> -->
-                <li class="history" v-for="(history, hIdx) in histories" :key="hIdx">
+                <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
                     <div>{{ histories.workspaceKey }}</div>
                     <div>{{ history.request.requestName }}</div>
                     <div>{{ history.response.statusCode }}</div>
