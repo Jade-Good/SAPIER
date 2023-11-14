@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.esfp.sapaier.global.auth.exception.UnAuthorizationException;
 import com.esfp.sapaier.global.auth.model.dto.UserAuthDto;
 import com.esfp.sapaier.global.auth.model.vo.JwtToken;
 import com.esfp.sapaier.global.auth.repository.OAuth2AuthorizationRequestRepository;
@@ -42,12 +43,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		try {
 			log.info("[JwtAuthenticationFilter] function : doFilterInternal | message : 토큰 인증 시도");
 
-			String jwtToken = cookieManager
-				.getCookie(request, OAuth2AuthorizationRequestRepository.ACCESS_TOKEN)
-				.orElseThrow(() -> new NoSuchElementException("Access Token이 존재하지 않습니다"))
-				.getValue();
+			String jwtToken = request.getHeader("Authorization");
+			String accessToken = "";
 
-			Authentication authentication = jwtTokenProvider.getAuthentication(jwtToken);
+			if (jwtToken == null || jwtToken.isEmpty() == true) {
+
+				accessToken = cookieManager
+					.getCookie(request, OAuth2AuthorizationRequestRepository.ACCESS_TOKEN)
+					.orElseThrow(() -> new NoSuchElementException("Access Token이 존재하지 않습니다"))
+					.getValue();
+			} else {
+				accessToken = jwtTokenProvider.getAccessTokenFromAuthorization(jwtToken);
+			}
+
+			Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			log.info("[JwtAuthenticationFilter] function : doFilterInternal | message : 토큰 인증 완료");
@@ -80,6 +89,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private JwtToken refreshToken(HttpServletRequest request, HttpServletResponse response) {
 
 		log.info("[JwtAuthenticationFilter] function : refreshToken | message : 재발급 시도");
+
+		if (request.getHeader("Authorization").isEmpty() != true) {
+			log.info("[JwtAuthenticationFilter] function : refreshToken | meesage : 크롬익스텐션은 재발급 불가");
+			throw new UnAuthorizationException("로그인이 필요합니다.");
+		}
 
 		String refreshTokenInCookie = getRefreshTokenFromCookie(request);
 

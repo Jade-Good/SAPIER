@@ -5,6 +5,7 @@ import com.esfp.sapaier.domain.history.model.dto.DailyHistoryDto;
 import com.esfp.sapaier.domain.history.model.dto.ResponseDto;
 import com.esfp.sapaier.domain.history.model.dto.request.HistoryRequestDto;
 import com.esfp.sapaier.domain.history.service.HistoryService;
+import com.esfp.sapaier.global.auth.service.UserAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,14 @@ import java.util.List;
 @RestController
 public class HistoryController {
     private final HistoryService historyService;
+    private final UserAuthService userAuthService;
 
     @GetMapping
-    public ResponseEntity<List<DailyHistoryDto>> getHistoryList(@RequestParam String uuid){
+    public ResponseEntity<List<DailyHistoryDto>> getHistoryList(
+            @RequestHeader(name="Authorization", required=false) String bearerToken,
+            @CookieValue(name="accessToken", required = false) String accessToken
+    ){
+        String uuid = userAuthService.getUserKeyFromUuid(accessToken, bearerToken);
         List<DailyHistoryDto> historyList = historyService.getAllDailyHistoryList(uuid);
         return new ResponseEntity<>(historyList, HttpStatus.OK);
     }

@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 public class RequestRequestDTO {
 	private String requestURL;
 	private Method method;
-	private Map<String, String>[] headers;
-	private Map<String, String>[] queryParams;
+	private Map<String, String> headers;
 	private String body;
 
 	@Override
@@ -22,8 +21,7 @@ public class RequestRequestDTO {
 		return "RequestRequestDTO{" +
 			"requestURL='" + requestURL + '\'' +
 			", method=" + method +
-			", headers=" + Arrays.toString(headers) +
-			", queryParams=" + Arrays.toString(queryParams) +
+			", headers=" + headers +
 			", body='" + body + '\'' +
 			'}';
 	}
