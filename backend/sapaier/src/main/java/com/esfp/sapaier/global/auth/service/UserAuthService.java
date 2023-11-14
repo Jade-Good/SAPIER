@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserAuthService {
 
 	private final UserAuthRepository userAuthRepository;
+
 	public UserAuthDto getUserAuthInfo(String userUuid) {
 		UserAuthDto userAuthDto = userAuthRepository
 			.findById(userUuid)
@@ -24,7 +25,7 @@ public class UserAuthService {
 		return userAuthDto;
 	}
 
-	public String getUserKeyFromUuid(String userUuid){
+	public String getUserKeyFromUuid(String userUuid) {
 		return getUserAuthInfo(userUuid).getUserKey();
 	}
 }

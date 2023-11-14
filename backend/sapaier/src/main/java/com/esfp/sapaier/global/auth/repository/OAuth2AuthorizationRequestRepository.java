@@ -28,16 +28,14 @@ public class OAuth2AuthorizationRequestRepository implements
 	public static final String ACCESS_TOKEN = "accessToken";
 	public static final int COOKIE_EXPIRE_TIME = 2100000000;
 
-
 	private final CookieManager cookieManager;
-
 
 	@Override
 	public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
 
 		Optional<Cookie> cookie = cookieManager.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
 
-		if(cookie.isEmpty() == true)
+		if (cookie.isEmpty() == true)
 			return null;
 
 		return cookieManager.deserialize(cookie.get(), OAuth2AuthorizationRequest.class);
@@ -57,10 +55,10 @@ public class OAuth2AuthorizationRequestRepository implements
 		} else {
 
 			CookieDto cookieDto = CookieDto.builder()
-					.name(OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
-					.value(cookieManager.serialize(authorizationRequest))
-					.maxAge(COOKIE_EXPIRE_TIME)
-					.build();
+				.name(OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
+				.value(cookieManager.serialize(authorizationRequest))
+				.maxAge(COOKIE_EXPIRE_TIME)
+				.build();
 
 			cookieManager.addCookie(response, cookieDto);
 
@@ -74,13 +72,15 @@ public class OAuth2AuthorizationRequestRepository implements
 					.maxAge(COOKIE_EXPIRE_TIME)
 					.build();
 
-				cookieManager.addCookie(response, cookieDto);;
+				cookieManager.addCookie(response, cookieDto);
+				;
 			}
 		}
 	}
 
 	@Override
-	public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request, HttpServletResponse response) {
+	public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request,
+		HttpServletResponse response) {
 
 		return this.loadAuthorizationRequest(request);
 	}
@@ -93,7 +93,7 @@ public class OAuth2AuthorizationRequestRepository implements
 		cookieManager.deleteCookie(request, response, ACCESS_TOKEN);
 	}
 
-	public void updateTokenInCookie(HttpServletRequest request, HttpServletResponse response, JwtToken token){
+	public void updateTokenInCookie(HttpServletRequest request, HttpServletResponse response, JwtToken token) {
 
 		CookieDto refreshToken = CookieDto.builder()
 			.name(OAuth2AuthorizationRequestRepository.REFRESH_TOKEN)
