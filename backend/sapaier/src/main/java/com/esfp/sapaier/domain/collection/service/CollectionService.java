@@ -26,6 +26,7 @@ import com.esfp.sapaier.domain.collection.model.dto.request.CollectionListReques
 import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequestDto;
 import com.esfp.sapaier.domain.collection.model.dto.request.RequestRequestDTO;
 import com.esfp.sapaier.domain.collection.model.dto.response.CollectionResponseDto;
+import com.esfp.sapaier.domain.collection.model.dto.response.RequestResponseDTO;
 import com.esfp.sapaier.domain.collection.repository.CollectionRepository;
 import com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity;
 import lombok.RequiredArgsConstructor;
@@ -90,7 +91,7 @@ public class CollectionService {
 		return collection.getCollectionId();
 	}
 
-	public Map<String, Object> sendRequest(RequestRequestDTO requestRequestDTO) {
+	public RequestResponseDTO sendRequest(RequestRequestDTO requestRequestDTO) {
 		// 헤더 준비
 		HttpHeaders httpHeaders = new HttpHeaders();    // 헤더 객체
 		Map<String, String> headers = requestRequestDTO.getHeaders(); // 전달 받은 헤더 맵
@@ -105,7 +106,7 @@ public class CollectionService {
 		factory.setReadTimeout(5000); // 5 seconds
 		RestTemplate restTemplate = new RestTemplate(factory); // SpringBoot의 RestTemplate : HTTP + RestFUL API
 
-		Map<String, Object> result = new HashMap<>();
+		RequestResponseDTO requestResponseDTO = new RequestResponseDTO();
 
 		long startTime = System.currentTimeMillis(), endTime;
 		try {
@@ -119,34 +120,33 @@ public class CollectionService {
 			HttpHeaders responseHeaders = response.getHeaders();
 			String responseBody = response.getBody();
 
-			result.put("responseHeaders", responseHeaders.toSingleValueMap());
-			result.put("statusCode", statusCode.value());
-			result.put("responseBody", responseBody);
+			requestResponseDTO.setResponseHeaders(responseHeaders.toSingleValueMap());
+			requestResponseDTO.setStatusCode(statusCode.value());
+			requestResponseDTO.setStatusText(statusCode.toString());
+			requestResponseDTO.setResponseBody(responseBody);
 
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
 
-			result.put("statusCode", e.getStatusCode().value());
-			result.put("statusText", e.getStatusText());
-
-			result.put("responseHeaders", e.getResponseHeaders());
-			result.put("responseBody", e.getResponseBodyAsString());
-
-			result.put("errorMsg", e.getMessage());
-			result.put("errorCause", e.getCause());
+			requestResponseDTO.setStatusCode(e.getStatusCode().value());
+			requestResponseDTO.setStatusText(e.getStatusText());
+			requestResponseDTO.setResponseHeaders(e.getResponseHeaders().toSingleValueMap());
+			requestResponseDTO.setResponseBody(e.getResponseBodyAsString());
+			requestResponseDTO.setErrorMsg(e.getMessage());
+			requestResponseDTO.setErrorStackTrace(e.getStackTrace());
 
 		} catch (Exception e) {
-			result.put("statusCode", 777);
-			result.put("statusText", "정의되지 않은 에러 입니다.");
-			result.put("errorMsg", e.getMessage());
-			result.put("errorCause", e.getCause());
-			// 기타 RestClientException 예외에 대한 처리
+
+			requestResponseDTO.setStatusCode(777);
+			requestResponseDTO.setStatusText("정의되지 않은 에러 입니다.");
+			requestResponseDTO.setErrorMsg(e.getMessage());
+			requestResponseDTO.setErrorStackTrace(e.getStackTrace());
+
 		} finally {
 			endTime = System.currentTimeMillis();
 		}
 
-		// Response 처리
-		result.put("requestDuration", endTime - startTime);
+		requestResponseDTO.setResponseTime(endTime - startTime);
 
-		return result;
+		return requestResponseDTO;
 	}
 }
