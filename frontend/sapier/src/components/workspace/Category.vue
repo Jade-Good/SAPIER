@@ -161,26 +161,23 @@ export default defineComponent({
         await getDocumentName(i)
     })
 
-    const addRootRequest = (collection) => {
+    const addRootRequest = async (collection, index) => {
       const newApi = {
-        body: {},
+        body: '',
 
         createdTime: new Date().toISOString(),
 
-        formData: {},
-
-        headers: {},
+        headers: [],
 
         method: 'GET',
 
         modifiedTime: new Date().toISOString(),
 
-        queryParams: {},
+        queryParams: [],
 
         requestName: 'New Request',
 
         requestURL: '',
-        // workspacesId: workspaceStore.workspaceInfo?.key,
         id: '',
 
       }
