@@ -55,7 +55,7 @@ export default defineComponent({
                 console.log(response.data)
                 // HistoryListStore.historyList.value = response.data
                 // console.log(HistoryListStore.historyList.value)
-                HistoryList = response.data
+                HistoryList.value = response.data
                 // response.data.forEach(function(value){
                 //     console.log(value)
                 //     HistoryListStore.historyList.push(value)
