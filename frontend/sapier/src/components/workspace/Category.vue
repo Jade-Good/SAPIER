@@ -1,9 +1,6 @@
 <script lang="ts">
-import type RequestInfo from '../Request/RequestInfo.vue'
-
 export default defineComponent({
   setup() {
-    const route = useRouter()
     const axios = inject('$axios')
     const collectionStore = useCollectionStore()
     const collectionList = ref([])
@@ -38,7 +35,6 @@ export default defineComponent({
             for (let i = 0; i < response.data.length; i++)
               collectionList.value.push(response.data[i].collectionList)
               // collectionList.value.push(reactive(response.data[i].collectionList))
-
             // console.log('성공', collectionList.value)
           })
           .catch((error) => {
@@ -136,12 +132,13 @@ export default defineComponent({
       }
     }
 
+    // const busStore = useEventBusStore()
+
     const selectAPI = (api) => {
       collectionStore.request = api
       console.log('부모 api 호출: ', api)
       console.log('스토어에 저장되나?', collectionStore.request)
     }
-
     const documentName = ref<string[]>([])
     async function getDocumentName(index: number) {
       try {
