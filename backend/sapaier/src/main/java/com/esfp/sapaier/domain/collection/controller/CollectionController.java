@@ -52,20 +52,7 @@ public class CollectionController {
 	}
 
 	@PostMapping("/request")
-	public ResponseEntity<String> sendRequest(@RequestBody RequestRequestDTO requestRequestDTO) {
-		RestTemplate restTemplate = new RestTemplate(); // SpringBoot의 RestTemplate : HTTP + RestFUL API
-		HttpHeaders httpHeaders = new HttpHeaders();    // 헤더 객체
-		Map<String, String>[] maps = requestRequestDTO.getHeaders(); // 전달 받은 헤더 맵
-
-		for (Map<String, String> map : maps) {
-				httpHeaders.set(map.get("key"), map.get("value"));
-		}
-
-		return restTemplate.exchange( // API 요청 결과를 바로 반환
-			requestRequestDTO.getRequestURL(),
-			HttpMethod.valueOf(requestRequestDTO.getMethod().name()),
-			new HttpEntity<>(requestRequestDTO.getBody(), httpHeaders),
-			String.class
-		);
+	public ResponseEntity<Object> sendRequest(@RequestBody RequestRequestDTO requestRequestDTO) {
+		return new ResponseEntity<>(collectionService.sendRequest(requestRequestDTO), HttpStatus.OK);
 	}
 }
