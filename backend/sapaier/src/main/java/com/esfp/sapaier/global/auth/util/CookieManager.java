@@ -1,13 +1,8 @@
 package com.esfp.sapaier.global.auth.util;
 
-import java.net.URL;
 import java.util.Base64;
-import java.util.Collection;
 import java.util.Optional;
-import java.util.StringTokenizer;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
@@ -26,9 +21,8 @@ public class CookieManager {
 
 		Cookie[] cookies = request.getCookies();
 
-		if(cookies == null)
+		if (cookies == null)
 			return Optional.empty();
-
 
 		for (Cookie cookie : cookies) {
 			if (name.equals(cookie.getName())) {
@@ -44,11 +38,11 @@ public class CookieManager {
 		Cookie cookie = new Cookie(cookieDto.getName(), cookieDto.getValue());
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);
-		if(cookie.getName().equals("accessToken") == true) {
+		if (cookie.getName().equals("accessToken") == true) {
 			cookie.setSecure(true);
 			cookie.setAttribute("SameSite", "None");
 		}
-		if(cookie.getName().equals("refreshToken") == true) {
+		if (cookie.getName().equals("refreshToken") == true) {
 			cookie.setSecure(true);
 			cookie.setAttribute("SameSite", "Lax");
 		}
@@ -64,18 +58,18 @@ public class CookieManager {
 
 		Cookie[] cookies = request.getCookies();
 
-		if(cookies == null)
+		if (cookies == null)
 			return;
 
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals(targetName)) {
 				cookie.setValue("");
 				cookie.setPath("/");
-				if(cookie.getName().equals("accessToken") == true) {
+				if (cookie.getName().equals("accessToken") == true) {
 					cookie.setSecure(true);
 					cookie.setAttribute("SameSite", "None");
 				}
-				if(cookie.getName().equals("refreshToken") == true) {
+				if (cookie.getName().equals("refreshToken") == true) {
 					cookie.setSecure(true);
 					cookie.setAttribute("SameSite", "Lax");
 				}
@@ -90,11 +84,11 @@ public class CookieManager {
 	public void updateCookie(
 		HttpServletRequest request,
 		HttpServletResponse response,
-		CookieDto newCookieDto){
+		CookieDto newCookieDto) {
 
 		Cookie[] cookies = request.getCookies();
 
-		if(cookies == null)
+		if (cookies == null)
 			return;
 
 		boolean isExit = false;
@@ -104,7 +98,7 @@ public class CookieManager {
 			}
 		}
 
-		if(isExit == false){
+		if (isExit == false) {
 			addCookie(response, newCookieDto);
 			return;
 		}
@@ -115,11 +109,11 @@ public class CookieManager {
 				cookie.setPath("/");
 				cookie.setMaxAge(newCookieDto.getMaxAge());
 
-				if(cookie.getName().equals("accessToken") == true) {
+				if (cookie.getName().equals("accessToken") == true) {
 					cookie.setSecure(true);
 					cookie.setAttribute("SameSite", "None");
 				}
-				if(cookie.getName().equals("refreshToken") == true) {
+				if (cookie.getName().equals("refreshToken") == true) {
 					cookie.setSecure(true);
 					cookie.setAttribute("SameSite", "Lax");
 				}
@@ -131,7 +125,6 @@ public class CookieManager {
 		}
 
 	}
-
 
 	public String serialize(Object obj) {
 		return Base64.getUrlEncoder().encodeToString(SerializationUtils.serialize(obj));
