@@ -1,7 +1,6 @@
 package com.esfp.sapaier.domain.collection.controller;
 
 import com.esfp.sapaier.domain.collection.model.dto.request.CollectionListRequestDto;
-import com.esfp.sapaier.domain.collection.model.dto.request.CreateCollectionRequestDto;
 import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequestDto;
 import com.esfp.sapaier.domain.collection.model.dto.request.RequestRequestDTO;
 import com.esfp.sapaier.domain.collection.model.dto.response.CollectionResponseDto;
@@ -24,9 +23,8 @@ public class CollectionController {
 	private final CollectionService collectionService;
 
 	@PostMapping
-	public ResponseEntity<Object> registCollectionDocument(
-		@RequestBody CreateCollectionRequestDto createCollectionRequestDto) {
-		collectionService.createCollectionDocument(createCollectionRequestDto);
+	public ResponseEntity<Object> registCollectionDocument() {
+		collectionService.createCollectionDocument();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
@@ -37,31 +35,24 @@ public class CollectionController {
 	}
 
 	@GetMapping("/{collectionId}")
-	public ResponseEntity<String> rootCollectionName(@PathVariable String collectionId){
-		return new ResponseEntity<>(collectionService.rootCollectionName(collectionId),HttpStatus.OK);
+	public ResponseEntity<String> rootCollectionName(@PathVariable String collectionId) {
+		return new ResponseEntity<>(collectionService.rootCollectionName(collectionId), HttpStatus.OK);
 	}
 
-	@PatchMapping("/modify")
-	public ResponseEntity<Object> modifyCollection(@RequestBody List<ModifyCollectionRequestDto> modifyCollectionRequestDto) {
-		collectionService.modifyCollection(modifyCollectionRequestDto);
+
+	@PatchMapping("/modify/{nowIndex}")
+	public ResponseEntity<Object> modifyCollection(@RequestBody List<ModifyCollectionRequestDto> modifyCollectionRequestDto, @PathVariable String nowIndex) {
+		collectionService.modifyCollection(modifyCollectionRequestDto,nowIndex);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@GetMapping("/last")
+	public ResponseEntity<String> lastCreateDocument(){
+		return new ResponseEntity<>(collectionService.lastCreateDocument(),HttpStatus.OK);
+	}
+
 	@PostMapping("/request")
-	public ResponseEntity<String> sendRequest(@RequestBody RequestRequestDTO requestRequestDTO) {
-		RestTemplate restTemplate = new RestTemplate(); // SpringBoot의 RestTemplate : HTTP + RestFUL API
-		HttpHeaders httpHeaders = new HttpHeaders();    // 헤더 객체
-		Map<String, String> map = requestRequestDTO.getHeaders(); // 전달 받은 헤더 맵
-
-		for (String key : map.keySet()) { // 헤더 객체에 전달 받은 헤더 맵 넣어주기
-			httpHeaders.set(key, map.get(key));
-		}
-
-		return restTemplate.exchange( // API 요청 결과를 바로 반환
-			requestRequestDTO.getRequestURL(),
-			HttpMethod.valueOf(requestRequestDTO.getMethod().name()),
-			new HttpEntity<>(requestRequestDTO.getBody(), httpHeaders),
-			String.class
-		);
+	public ResponseEntity<Object> sendRequest(@RequestBody RequestRequestDTO requestRequestDTO) {
+		return new ResponseEntity<>(collectionService.sendRequest(requestRequestDTO), HttpStatus.OK);
 	}
 }

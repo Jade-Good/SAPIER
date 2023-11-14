@@ -1,8 +1,13 @@
 package com.esfp.sapaier.domain.collection.repository.entity;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -18,12 +23,14 @@ public class RequestEntity {
 	private String requestName;
 	private String requestURL;
 	private String method;
-	private HashMap<String, String> headers;
-	private HashMap<String, String> queryParams;
-	private HashMap<String, String> body;
-	private HashMap<String, String> formData;
-	private Date createdTime;
-	private Date modifiedTime;
+	private HashMap<String, String>[] headers;
+	private HashMap<String, String>[] queryParams;
+	private String body;
+
+	@CreatedDate
+	private Instant createdTime;
+	@LastModifiedDate
+	private LocalDateTime modifiedTime;
 
 	@Override
 	public String toString() {
@@ -32,10 +39,9 @@ public class RequestEntity {
 			", requestName='" + requestName + '\'' +
 			", requestURL='" + requestURL + '\'' +
 			", method='" + method + '\'' +
-			", headers=" + headers +
-			", queryParams=" + queryParams +
+			", headers=" + Arrays.toString(headers) +
+			", queryParams=" + Arrays.toString(queryParams) +
 			", body=" + body +
-			", formData=" + formData +
 			", createdTime=" + createdTime +
 			", modifiedTime=" + modifiedTime +
 			'}';

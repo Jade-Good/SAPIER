@@ -7,12 +7,11 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.esfp.sapaier.domain.user.model.dto.UserDto;
 import com.esfp.sapaier.domain.user.repository.UserRepository;
 import com.esfp.sapaier.domain.user.repository.entity.User;
 import com.esfp.sapaier.global.auth.model.dto.OAuth2UserInfoResponse;
-import com.esfp.sapaier.global.auth.model.vo.UserPrincipal;
 import com.esfp.sapaier.global.auth.model.vo.OAuth2Provider;
+import com.esfp.sapaier.global.auth.model.vo.UserPrincipal;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		try {
 
 			log.info("[OAuth2UserServiceCustom] function : loadUser | message : Oauth2.0 로그인 시도");
-			
+
 			OAuth2Provider oAuth2Provider = OAuth2Provider
 				.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 
@@ -47,23 +46,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			return new UserPrincipal(user.getKey(), user.getRole().name(), oAuth2user.getAttributes());
 
 		} catch (Exception ex) {
-			log.info("[OAuth2UserServiceCustom] function : loadUser | error : {}",ex.getMessage());
+			log.info("[OAuth2UserServiceCustom] function : loadUser | error : {}", ex.getMessage());
 			throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
 		}
 	}
 
-	private User registerUser(OAuth2Provider oAuth2Provider, OAuth2UserInfoResponse oAuth2UserInfoResponse){
+	private User registerUser(OAuth2Provider oAuth2Provider, OAuth2UserInfoResponse oAuth2UserInfoResponse) {
 
 		log.info("[OAuth2UserServiceCustom] function : registerUser | message : 회원 가입 시도");
 
 		String profileImageUrl = "";
-		if(oAuth2Provider.equals(OAuth2Provider.GITHUB))
+		if (oAuth2Provider.equals(OAuth2Provider.GITHUB))
 			profileImageUrl = oAuth2UserInfoResponse.getAttributes().get("avatar_url").toString();
-		if(oAuth2Provider.equals(OAuth2Provider.GOOGLE))
+		if (oAuth2Provider.equals(OAuth2Provider.GOOGLE))
 			profileImageUrl = oAuth2UserInfoResponse.getAttributes().get("picture").toString();
 
-
-		User newUser =  User.builder()
+		User newUser = User.builder()
 			.email(oAuth2UserInfoResponse.getEmail())
 			.nickname(oAuth2UserInfoResponse.getNickname())
 			.socialProvider(oAuth2Provider)
@@ -74,7 +72,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		userRepository.save(newUser);
 
 		log.info("[OAuth2UserServiceCustom] function : registerUser | message : 회원 가입 완료");
-		
+
 		return newUser;
 	}
 

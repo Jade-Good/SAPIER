@@ -3,6 +3,7 @@ const workspaceListStore = useWorkspaceListStore()
 const workspaceStore = useWorkspaceStore()
 const selectedWorkspaceIndex = ref<number>(-1)
 const selectedWorkspaceName = ref('-')
+let memberListSize = 1
 
 watchEffect(() => {
   selectedWorkspaceIndex.value = workspaceStore.selectedWorkspaceIndex !== null ? workspaceStore.selectedWorkspaceIndex : 0
@@ -16,15 +17,71 @@ watchEffect(() => {
     // console.log('선택한 워크스페이스 이름: ', workspaceName)
     selectedWorkspaceName.value = workspaceName
   }
+
+  memberListSize = workspaceStore.workspaceInfo?.memberList.length
+  console.log('길이', memberListSize)
+  console.log('스토어 확인', workspaceStore.workspaceInfo?.memberList)
 })
+
+// const imageSource = memberListSize >= 2 ? './group.svg' : './person.svg'
 </script>
 
 <template>
-  <div>
-    <li>name : {{ selectedWorkspaceName }}</li>
-
-    <p>검색바 자리</p>
+  <div class="titleBox">
+    <!-- <img :src="imageSource" class="people"> -->
+    <img v-if="memberListSize >= 2" src="./group.svg" class="people">
+    <img v-else src="./person.svg" class="people">
+    <div class="titleName">
+      {{ selectedWorkspaceName }}
+    </div>
+    <img src="./Group 70.png" class="plus">
   </div>
+  <!-- <p>검색바 자리</p> -->
+
+  <input type="text" placeholder="search" class="searchBox"><div class="searching" />
 </template>
 
-<style></style>
+<style scoped>
+  .titleBox {
+    display: flex;
+    align-items: center; /* 수직 가운데 정렬 */
+    justify-content: space-between; /* 수평으로 간격을 벌림 */
+    margin-top: 15%;
+    margin-bottom: 10%;
+    height: 30px;
+  }
+
+  .titleName {
+font-size: var(--font-H2-size);
+font-weight: var(--font-H5-weight);
+  }
+
+  .people {
+    margin-left: 10%;
+    margin-right: 5%;
+  }
+  .plus {
+    margin-right: 10%;
+    margin-left: 5%;
+  }
+
+  .searchBox{
+    background-color: var(--color-gray2);
+    margin-left: 5%;
+    border-radius: 10px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-image: url('./search.png');
+    background-position: 10px 6px
+
+  }
+  input:focus { outline:none; width: 75%;}
+
+  .searchBox::placeholder{
+    font-size: var(--font-H6-size);
+    font-weight: var(--font-H5-weight);
+    color: var(--color-gray4);
+    text-align: center;
+
+  }
+</style>

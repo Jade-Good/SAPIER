@@ -19,7 +19,8 @@ public class CustomFilterFactory {
 	private final UserAuthRepository userAuthRepository;
 	private final OAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
 
-	public JwtAuthenticationFilter createJwtAuthenticationFilter(){
-		return new JwtAuthenticationFilter(jwtTokenProvider, cookieManager, userAuthRepository, oAuth2AuthorizationRequestRepository);
+	public JwtAuthenticationFilter createJwtAuthenticationFilter() {
+		return new JwtAuthenticationFilter(jwtTokenProvider, cookieManager, userAuthRepository,
+			oAuth2AuthorizationRequestRepository);
 	}
 }

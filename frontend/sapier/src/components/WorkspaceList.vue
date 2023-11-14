@@ -10,6 +10,7 @@ const axios = inject('$axios')
 const WorkspaceListInfo = useWorkspaceListStore()
 const WorkspaceOneInfo = useWorkspaceStore()
 const User = useUserStore()
+const collectionStore = useCollectionStore()
 
 const isMounted = useMounted()
 const currentComponent = ref<Component | null>(MainInfo)// 초기값은 MainInfo 컴포넌트로 설정
@@ -51,6 +52,7 @@ function showInfoComponent(workspaceInfoOne: any, index) {
   // console.log(workspaceinfo)
   WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
   WorkspaceOneInfo.selectedWorkspaceIndex = index
+
   // WorkspaceOneInfo.$patch(workspaceInfoOne)
 //
   // console.log(WorkspaceOneInfo)

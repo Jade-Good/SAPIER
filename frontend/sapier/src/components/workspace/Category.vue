@@ -1,9 +1,6 @@
 <script lang="ts">
-import type RequestInfo from '../Request/RequestInfo.vue'
-
 export default defineComponent({
   setup() {
-    const route = useRouter()
     const axios = inject('$axios')
     const collectionStore = useCollectionStore()
     const collectionList = ref([])
@@ -38,17 +35,16 @@ export default defineComponent({
             for (let i = 0; i < response.data.length; i++)
               collectionList.value.push(response.data[i].collectionList)
               // collectionList.value.push(reactive(response.data[i].collectionList))
-
             // console.log('성공', collectionList.value)
           })
           .catch((error) => {
             console.error('Error:', error)
           })
       }
-      if (idList.length <= 0) {
+      if (idList.length <= 0)
         collectionStore.collection = null
-        console.log('널 : ', collectionStore.collection)
-      }
+        // console.log('널 : ', collectionStore.collection)
+
       // documentName.value = response
       // console.log('axios.get 성공, 이름:', response)
     })
@@ -57,27 +53,29 @@ export default defineComponent({
       const newRootCollection = createNewRootCollection()
       collectionList.value[documentIdx].push(newRootCollection)
       console.log('')
-      saveData()
+      saveData(documentIdx)
     }
 
-    const addChildCollection = (parentCollection) => {
+    const addChildCollection = (parentCollection, index) => {
       const newChildCollection = createNewRootCollection()
       parentCollection.collectionList.push(newChildCollection)
-      saveData()
+      saveData(index)
     }
 
     const addChildToCollection = (parentCollection, newChildCollection) => {
       parentCollection.collectionList.push(newChildCollection)
     }
 
-    const saveData = async () => {
+    const saveData = async (documnetIndex) => {
       const modifyData = collectionStore.collection
       const dataToSave = JSON.stringify(collectionStore.collection)
-
+      // console.log('현재 인덱스 호출: ', documnetIndex)
+      const nowIndex = documnetIndex
       try {
-        console.log('JSON: ', dataToSave)
+        // console.log('전송데이터', modifyData)
+        // console.log('JSON: ', dataToSave)
 
-        const res = await axios.patch(`/api/v1/collection/modify`, modifyData)
+        const res = await axios.patch(`/api/v1/collection/modify/${nowIndex}`, modifyData)
         console.log('데이터 저장 성공', res)
       }
       catch (error) {
@@ -90,13 +88,13 @@ export default defineComponent({
       collection.editing = !collection.editing
     }
 
-    const saveCollectionName = async (collection) => {
+    const saveCollectionName = async (collection, index) => {
       collection.collectionName = collection.newName
       toggleEditing(collection)
-      await saveData()
+      await saveData(index)
     }
 
-    const deleteCollection = (parentCollection, deleteToCollection) => {
+    const deleteCollection = (parentCollection, deleteToCollection, index) => {
       const deleteRecursive = (list) => {
         for (let i = 0; i < list.length; i++) {
           const currentCollection = list[i]
@@ -124,7 +122,7 @@ export default defineComponent({
 
       // deleteRecursive 함수를 호출하여 삭제 수행
       deleteRecursive(parentCollection)
-      saveData()
+      saveData(index)
     }
 
     const createNewRootCollection = () => {
@@ -136,12 +134,13 @@ export default defineComponent({
       }
     }
 
+    // const busStore = useEventBusStore()
+
     const selectAPI = (api) => {
       collectionStore.request = api
-      console.log('부모 api 호출: ', api)
-      console.log('스토어에 저장되나?', collectionStore.request)
+      // console.log('부모 api 호출: ', api)
+      // console.log('스토어에 저장되나?', collectionStore.request)
     }
-
     const documentName = ref<string[]>([])
     async function getDocumentName(index: number) {
       try {
@@ -162,46 +161,78 @@ export default defineComponent({
         await getDocumentName(i)
     })
 
-    const addRootRequest = (collection) => {
+    const addRootRequest = async (collection, index) => {
       const newApi = {
-        body: {},
+        body: '',
 
         createdTime: new Date().toISOString(),
 
-        formData: {},
-
-        headers: {},
+        headers: [],
 
         method: 'GET',
 
         modifiedTime: new Date().toISOString(),
 
-        queryParams: {},
+        queryParams: [],
 
         requestName: 'New Request',
 
         requestURL: '',
-        // workspacesId: workspaceStore.workspaceInfo?.key,
         id: '',
 
       }
 
-      if (collection.apiList === null) {
+      if (collection.apiList === null)
         collection.apiList = []
-        console.log('null배열 추가')
-      }
+        // console.log('null배열 추가')
 
       collection.apiList.push(newApi)
-      console.log('수정된 collection.apiList', collection.apiList)
-      saveData()
+      // console.log('수정된 collection.apiList', collection.apiList)
+      await saveData(index)
     }
 
-    const deleteRootRequest = (collection, api) => {
+    const deleteRootRequest = (collection, api, documnetIndex) => {
       const index = collection.apiList.indexOf(api)
       if (index !== -1) {
         collection.apiList.splice(index, 1)
-        saveData()
+        saveData(documnetIndex)
       }
+    }
+    const addCollectionDocument = async () => {
+      let newDocumentId = ''
+      try {
+        const response = await axios.post(`/api/v1/collection`)
+        console.log('axios.post  성공', response)
+
+        try {
+          const resLast = await axios.get(`/api/v1/collection/last`)
+          console.log('axios get 성공', resLast)
+          newDocumentId = resLast.data
+        }
+        catch (error) {
+          console.error(error)
+        }
+
+        try {
+          const newCollectionInfo = {
+            collectionKey: newDocumentId,
+            collectionName: 'New Document',
+          }
+          // console.log('컬렉션 인포 : ', JSON.stringify(newCollectionInfo))
+          const workspaceId = workspaceStore.workspaceInfo?.key
+          const res = await axios.post(`/api/v1/workspaces/${workspaceId}`, newCollectionInfo)
+          // console.log('워크스페이스에 추가 axios 성공', res)
+        }
+        catch (error) {
+          console.error(error)
+        }
+      }
+      catch (error) {
+        console.error(error)
+      }
+    }
+    const toggleCollapse = (collection) => {
+      collection.collapsed = !collection.collapsed
     }
 
     return {
@@ -218,6 +249,8 @@ export default defineComponent({
       documentName,
       addRootRequest,
       deleteRootRequest,
+      addCollectionDocument,
+      toggleCollapse,
     }
   },
 })
@@ -229,7 +262,7 @@ export default defineComponent({
 
     <div v-for="(documentId, index) in collectionList" :key="documentId.collectionId" class="collection-list">
       <h1>Collection List</h1>
-      <p>도큐먼트 : {{ documentName[index] }}</p>
+      <p>도큐먼트 : {{ documentName[index] }} </p>
       <ul>
         <li v-for="collection in documentId" :key="collection.collectionName">
           <span :style="{ marginLeft: '15px' }">
@@ -239,31 +272,47 @@ export default defineComponent({
             <input
               v-else
               v-model="collection.newName"
-              @blur="saveCollectionName(collection)"
-              @keyup.enter="saveCollectionName(collection)"
+              @blur="saveCollectionName(collection, index)"
+              @keyup.enter="saveCollectionName(collection, index)"
             >
 
             <button class="btn" @click="toggleEditing(collection)">{{ collection.editing ? '완료' : '수정' }}</button>
-          </span>
-          <button class="btn" @click="addChildCollection(collection)">
+          </span><div class="dropdown">
+            <div class="dropdown-btn">
+              +
+            </div>
+            <ul class="dropdown-list">
+              <li @click="addChildCollection(collection, index)">
+                add collection
+              </li>
+              <li @click="deleteCollection(documentId, collection, index)">
+                delete collection
+              </li>
+              <li @click="addRootRequest(collection, index)">
+                add request
+              </li>
+              <li>delete request</li>
+            </ul>
+          </div>
+          <!-- <button class="btn" @click="addChildCollection(collection, index)">
             루트에서 자식 추가
           </button>
-          <button class="btn" @click="deleteCollection(documentId, collection)">
+          <button class="btn" @click="deleteCollection(documentId, collection, index)">
             루트 삭제
-          </button><button class="btn" @click="addRootRequest(collection)">
+          </button><button class="btn" @click="addRootRequest(collection, index)">
             R리퀘추가
-          </button>
+          </button> -->
           <ul :style="{ marginLeft: '15px' }">
             <li v-for="api in collection.apiList" :key="api.requestName">
               <a @click="selectAPI(api)">
                 {{ api.requestName }}
               </a>
-              <button class="btn" @click="deleteRootRequest(collection, api)">
+              <button class="btn" @click="deleteRootRequest(collection, api, index)">
                 R리퀘삭제
               </button>
             </li>
           </ul>
-          <CollectionTree :collection="collection" :level="2" />
+          <CollectionTree :collection="collection" :level="2" :index="index" />
         </li>
       </ul>
       <button class="btn" @click="addRootCollection(index)">
@@ -273,7 +322,7 @@ export default defineComponent({
       <button class="btn" @click="saveData">
         저장
       </button>
-    </div><button class="er">
+    </div><button class="er" @click="addCollectionDocument()">
       document 추가
     </button>
   </div>
@@ -284,6 +333,7 @@ export default defineComponent({
   position: relative;
   overflow-x: auto;
   white-space: nowrap;
+  background-color: #F0F0F0;
 
 }
 .btn{
@@ -296,4 +346,44 @@ export default defineComponent({
   background-color: red;
   color: white;
 }
-  </style>
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-btn {
+  border: 1px solid #ddd;
+  background-color: #fff;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.dropdown-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.dropdown-list li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.dropdown-btn:hover + .dropdown-list,
+.dropdown-list:hover {
+  display: block;
+}
+
+.dropdown-list li:hover {
+  background-color: #f1f1f1;
+}
+</style>

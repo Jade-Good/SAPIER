@@ -2,6 +2,7 @@ package com.esfp.sapaier.domain.history.service;
 
 import com.esfp.sapaier.domain.collection.repository.entity.RequestEntity;
 import com.esfp.sapaier.domain.history.model.dto.DailyHistoryDto;
+import com.esfp.sapaier.domain.history.model.dto.RequestDto;
 import com.esfp.sapaier.domain.history.model.dto.ResponseDto;
 import com.esfp.sapaier.domain.history.model.dto.WorkspaceHistoryDto;
 import com.esfp.sapaier.domain.history.repository.HistoryRepository;
@@ -84,7 +85,7 @@ public class HistoryService {
 
         return result;
     }
-    public void saveHistory(RequestEntity request, ResponseDto response, String workSpaceId, String uuid){
+    public void saveHistory(RequestDto request, ResponseDto response, String workSpaceId, String uuid){
         HistoryEntity history = HistoryEntity.builder()
                 .request(request)
                 .response(response)

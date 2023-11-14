@@ -1,6 +1,7 @@
 package com.esfp.sapaier.domain.history.repository.entity;
 
 import com.esfp.sapaier.domain.collection.repository.entity.RequestEntity;
+import com.esfp.sapaier.domain.history.model.dto.RequestDto;
 import com.esfp.sapaier.domain.history.model.dto.ResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,7 +20,7 @@ public class HistoryEntity {
     @MongoId
     private String historyId;
 
-    private RequestEntity request;
+    private RequestDto request;
     private ResponseDto response;
 
     @CreatedDate
