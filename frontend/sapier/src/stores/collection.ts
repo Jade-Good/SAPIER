@@ -14,15 +14,23 @@ interface RequestInfo {
   requestURL: string
   method: string
   headers: Table[]
-  body: any
+  body: string
   queryParams: Table[]
   path: string[]
 }
 
 interface Response {
-  status: number
-  headers: any
-  data: any
+  statusCode: number
+  statusText: string
+
+  responseHeaders: any
+  responseBody: string
+
+  responseTime:number
+
+  errorMsg: string
+  errorStackTrace: string
+  
 }
 
 interface Table {
@@ -30,7 +38,7 @@ interface Table {
   key: string
   value: string
   description: string
-} 
+}
 
 export type { CollectionTree }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const useCollection = useCollectionStore()
 const requestCode = ref(0)
-const requestHeaders = ref({ })
+const requestHeaders = ref({})
 const requestBody = ref(JSON.stringify({}, null, 2))
 const textarea = ref<null | HTMLTextAreaElement>(null)
 
@@ -9,9 +9,9 @@ watch(() => useCollection.response, () => {
   if (useCollection.response) {
     // console.log('response : ', useCollection.response)
 
-    requestCode.value = useCollection.response.status
-    requestHeaders.value = useCollection.response.headers
-    requestBody.value = JSON.stringify(useCollection.response.data, null, 4)
+    requestCode.value = useCollection.response.statusCode
+    requestHeaders.value = useCollection.response.responseHeaders
+    requestBody.value = JSON.stringify(JSON.parse(useCollection.response.responseBody), null, 4)
   }
 })
 
@@ -71,7 +71,10 @@ onMounted(() => {
     </div>
     <div v-if="requestCode > 0" class="resHeaders">
       <div style="width: 40%;">
-        <p style="font-size: var(--font-H2-size); font-weight: var(--font-H2-weight); border-bottom: 1px solid var(--color-gray3);" mb-2 pb-2>
+        <p
+          style="font-size: var(--font-H2-size); font-weight: var(--font-H2-weight); border-bottom: 1px solid var(--color-gray3);"
+          mb-2 pb-2
+        >
           HEADERS
         </p>
         <div style="overflow: auto;  max-height: 100%;">
@@ -82,10 +85,8 @@ onMounted(() => {
             </colgroup>
             <tbody>
               <tr v-for="(value, key) in requestHeaders" :key="key">
-                <td>
-                  {{ value[0] }}
-                </td>
-                <td>{{ value[1] }}</td>
+                <td> {{ key }} </td>
+                <td>{{ value }}</td>
               </tr>
             </tbody>
           </table>
@@ -93,7 +94,10 @@ onMounted(() => {
       </div>
 
       <div style="width: 60%;">
-        <p style="font-size: var(--font-H2-size); font-weight: var(--font-H2-weight); border-bottom: 1px solid var(--color-gray3);" pb-2>
+        <p
+          style="font-size: var(--font-H2-size); font-weight: var(--font-H2-weight); border-bottom: 1px solid var(--color-gray3);"
+          pb-2
+        >
           BODY
         </p>
         <textarea ref="textarea" v-model="requestBody" class="bodyText" readonly />
@@ -108,11 +112,16 @@ td {
   user-select: text;
 }
 
-table, tr, td {
+table,
+tr,
+td {
   border: 1px solid black;
-  text-align: left; /* 텍스트를 왼쪽에 정렬합니다. */
-  vertical-align: top; /* 텍스트를 상단에 정렬합니다. */
-  word-wrap: break-word; /* 너무 긴 텍스트가 있는 경우 자동 줄바뀜 활성화 */
+  text-align: left;
+  /* 텍스트를 왼쪽에 정렬합니다. */
+  vertical-align: top;
+  /* 텍스트를 상단에 정렬합니다. */
+  word-wrap: break-word;
+  /* 너무 긴 텍스트가 있는 경우 자동 줄바뀜 활성화 */
 }
 
 textarea:focus {
@@ -129,9 +138,12 @@ textarea.bodyText {
 
 .resize-line {
   padding: 1px;
-  cursor: ew-resize; /* 세로 크기 조절 커서 모양 */
-  width: 5px; /* 가로 너비를 100%로 설정하여 전체 너비에서 크기 조절 가능 */
-  background-color:var(--color-gray2); /* 크기 조절 선의 배경색 설정 */
+  cursor: ew-resize;
+  /* 세로 크기 조절 커서 모양 */
+  width: 5px;
+  /* 가로 너비를 100%로 설정하여 전체 너비에서 크기 조절 가능 */
+  background-color: var(--color-gray2);
+  /* 크기 조절 선의 배경색 설정 */
 }
 
 .resHeaders {
@@ -142,8 +154,11 @@ textarea.bodyText {
   padding: 1.25rem 1.25rem 0 1.25rem;
 
 }
+
 .headersTable {
-  table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
-  width: 100%; /* 테이블 전체 너비 설정 */
+  table-layout: fixed;
+  /* 테이블 레이아웃을 고정으로 설정 */
+  width: 100%;
+  /* 테이블 전체 너비 설정 */
 }
 </style>

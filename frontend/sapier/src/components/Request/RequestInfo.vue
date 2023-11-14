@@ -276,47 +276,43 @@ async function sendAPI() {
     requestURL: requestURL.value,
     method: selectMethod.value,
     headers: {},
-    queryParams: {},
-    body: {},
-    formData: {},
+    body: '',
   }
 
   // console.log('sendData : ', sendData)
 
   try {
     const res = await axios.post(`/api/v1/collection/request`, sendData)
-    // console.log('API 전송 성공', res)
+    // console.log('API 전송 성공', res.data)
 
-    useCollection.response = res
+    useCollection.response = res.data
 
-    const history = {
-      request: {
-        requestName,
-        requestURL,
-        method: selectMethod,
-        headers: requestHeaders,
-        body: requestBody,
-        queryParams,
-        path: useCollection.request?.path,
-      },
-      response: useCollection.response,
-      uuid: userInfo.userInfo?.uuid,
-      workspaceId: workspaceList.WorkspaceList?.workspaceList[selectedWorkspaceIndex.selectedWorkspaceIndex ? selectedWorkspaceIndex.selectedWorkspaceIndex : 0],
-    }
-
-    try {
-      const res2 = await axios.post(`/api/v1/history/save`, history)
-
-      console.log('History 저장 성공 : ', res2)
-    }
-    catch (error) {
-      console.error('History 저장 실패', error)
-    }
+    saveHistory()
   }
   catch (error) {
     console.error('API 전송 실패:', error)
   }
 };
+
+async function saveHistory() {
+  const history = {
+    request: useCollection.request,
+    response: useCollection.response,
+    uuid: userInfo.userInfo?.uuid,
+    workspaceId: workspaceList.WorkspaceList[selectedWorkspaceIndex.selectedWorkspaceIndex].key,
+  }
+
+  console.log('history : ', history)
+
+  try {
+    const res = await axios.post(`/api/v1/history/save`, history)
+
+    console.log('History 저장 성공 : ', res)
+  }
+  catch (error) {
+    console.error('History 저장 실패', error)
+  }
+}
 </script>
 
 <template>
