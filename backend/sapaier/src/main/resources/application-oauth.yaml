@@ -6,8 +6,8 @@ spring:
           google:
             client-id: 737704620972-80lm2nk9rkgt4sei0dec4tj71addue9e.apps.googleusercontent.com
             client-secret: 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
-           redirect-uri: http://sapier.co.kr/api/login/oauth2/code/google
-            # redirect-uri: http://localhost:8080/api/login/oauth2/code/google
+            redirect-uri: http://sapier.co.kr/api/login/oauth2/code/google
+#            redirect-uri: http://localhost:8080/api/login/oauth2/code/google
             scope:
               - email
               - profile
