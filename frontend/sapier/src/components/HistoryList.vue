@@ -46,10 +46,12 @@ export default defineComponent({
         const axios = inject('$axios')
         const HistoryListStore = useHistoryListStore()
         const HistoryList = ref([]) //필요없을 시 제거
+        const UserStore = useUserStore()
         
         async function getHistoryList(){
             try{
-                const response = await axios.get(`/api/v1/history`)
+                const uuid = UserStore.uuid
+                const response = await axios.get(`/api/v1/history?$uuid={uuid}`)
                 HistoryListStore.historyList.value = response.data
                 // response.data.forEach(function(value){
                 //     console.log(value)
