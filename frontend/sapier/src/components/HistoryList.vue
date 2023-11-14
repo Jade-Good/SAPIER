@@ -1,6 +1,5 @@
 <script lang="ts">
 import type { Component } from 'vue'
-// import { ref } from 'vue'
 import { defineComponent, ref, onMounted } from 'vue';
 
 // const axios = inject('$axios')
