@@ -28,7 +28,7 @@ public class HistoryController {
             @RequestHeader(name="Authorization", required=false) String bearerToken,
             @CookieValue(name="accessToken", required = false) String accessToken
     ){
-        String uuid = userAuthService.getUserKeyFromUuid(accessToken, bearerToken);
+        String uuid = userAuthService.getUserUuid(accessToken, bearerToken);
         log.info("uuid : " + uuid);
         List<DailyHistoryDto> historyList = historyService.getAllDailyHistoryList(uuid);
         return new ResponseEntity<>(historyList, HttpStatus.OK);
