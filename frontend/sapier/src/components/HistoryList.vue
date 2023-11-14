@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { Component } from 'vue'
+// import type { Component } from 'vue'
 import { defineComponent, ref, onMounted } from 'vue';
 
 // const axios = inject('$axios')
@@ -41,11 +41,11 @@ import { defineComponent, ref, onMounted } from 'vue';
 
 export default defineComponent({
     setup(){
-        const route = useRouter()
+        // const route = useRouter()
         const axios = inject('$axios')
-        const HistoryListStore = useHistoryListStore()
+        // const HistoryListStore = useHistoryListStore()
         const HistoryList = ref([]) //필요없을 시 제거
-        const UserStore = useUserStore()
+        // const UserStore = useUserStore()
         
         async function getHistoryList(){
             try{
