@@ -51,7 +51,7 @@ export default defineComponent({
         async function getHistoryList(){
             try{
                 const uuid = UserStore.uuid
-                const response = await axios.get(`/api/v1/history?$uuid={uuid}`)
+                const response = await axios.get(`/api/v1/history?uuid=${uuid}`)
                 HistoryListStore.historyList.value = response.data
                 // response.data.forEach(function(value){
                 //     console.log(value)
