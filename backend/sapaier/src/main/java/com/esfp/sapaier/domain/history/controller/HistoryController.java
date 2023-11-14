@@ -2,6 +2,7 @@ package com.esfp.sapaier.domain.history.controller;
 
 import com.esfp.sapaier.domain.collection.repository.entity.RequestEntity;
 import com.esfp.sapaier.domain.history.model.dto.DailyHistoryDto;
+import com.esfp.sapaier.domain.history.model.dto.RequestDto;
 import com.esfp.sapaier.domain.history.model.dto.ResponseDto;
 import com.esfp.sapaier.domain.history.model.dto.request.HistoryRequestDto;
 import com.esfp.sapaier.domain.history.service.HistoryService;
@@ -32,7 +33,7 @@ public class HistoryController {
 
     @PostMapping("/save")
     public ResponseEntity<?> saveHistory(@RequestBody HistoryRequestDto historyRequestDto){
-        RequestEntity request = historyRequestDto.getRequest();
+        RequestDto request = historyRequestDto.getRequest();
         ResponseDto response = historyRequestDto.getResponse();
         String workspaceId = historyRequestDto.getWorkspaceId();
         String uuid = historyRequestDto.getUuid();
