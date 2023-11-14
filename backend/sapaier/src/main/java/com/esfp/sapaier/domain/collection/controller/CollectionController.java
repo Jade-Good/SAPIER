@@ -1,15 +1,12 @@
 package com.esfp.sapaier.domain.collection.controller;
 
 import com.esfp.sapaier.domain.collection.model.dto.request.CollectionListRequestDto;
-import com.esfp.sapaier.domain.collection.model.dto.request.CreateCollectionRequestDto;
 import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequestDto;
 import com.esfp.sapaier.domain.collection.model.dto.request.RequestRequestDTO;
 import com.esfp.sapaier.domain.collection.model.dto.response.CollectionResponseDto;
 import com.esfp.sapaier.domain.collection.service.CollectionService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -26,9 +23,8 @@ public class CollectionController {
 	private final CollectionService collectionService;
 
 	@PostMapping
-	public ResponseEntity<Object> registCollectionDocument(
-		@RequestBody CreateCollectionRequestDto createCollectionRequestDto) {
-		collectionService.createCollectionDocument(createCollectionRequestDto);
+	public ResponseEntity<Object> registCollectionDocument() {
+		collectionService.createCollectionDocument();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
@@ -43,11 +39,16 @@ public class CollectionController {
 		return new ResponseEntity<>(collectionService.rootCollectionName(collectionId), HttpStatus.OK);
 	}
 
-	@PatchMapping("/modify")
-	public ResponseEntity<Object> modifyCollection(
-		@RequestBody List<ModifyCollectionRequestDto> modifyCollectionRequestDto) {
-		collectionService.modifyCollection(modifyCollectionRequestDto);
+
+	@PatchMapping("/modify/{nowIndex}")
+	public ResponseEntity<Object> modifyCollection(@RequestBody List<ModifyCollectionRequestDto> modifyCollectionRequestDto, @PathVariable String nowIndex) {
+		collectionService.modifyCollection(modifyCollectionRequestDto,nowIndex);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/last")
+	public ResponseEntity<String> lastCreateDocument(){
+		return new ResponseEntity<>(collectionService.lastCreateDocument(),HttpStatus.OK);
 	}
 
 	@PostMapping("/request")
