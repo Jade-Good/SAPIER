@@ -54,13 +54,14 @@ export default defineComponent({
                 // console.log('uuid: ', uuid)
                 const response = await axios.get(`/api/v1/history`)
                 console.log(response.data)
-                HistoryListStore.historyList.value = response.data
-                console.log(HistoryListStore.historyList.value)
+                // HistoryListStore.historyList.value = response.data
+                // console.log(HistoryListStore.historyList.value)
+                HistoryList = response.data
                 // response.data.forEach(function(value){
                 //     console.log(value)
                 //     HistoryListStore.historyList.push(value)
                 // })
-                HistoryList = response.data
+                // HistoryList = response.data
                 console.log('axios.get 성공, 이름: ', response.data)
             } catch(err){
                 console.log('axios.get 실패', err)
