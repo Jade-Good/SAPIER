@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -32,10 +33,14 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class JwtTokenProvider {
 
-	public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 5L;
+	// public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 5L;
+	//배포 전 임시 ACCESS TIME 일주일로 연기
+	public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L;
 	public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L;
 
-	public static final int ACCESS_TOKEN_EXPIRE_TIME_COOKIE = 30 * 60;
+	public static final long ACCESS_TOKEN_EXPIRE_TIME_FOR_EXTENSION = 1000 * 60 * 60 * 24 * 365L;
+
+	public static final int ACCESS_TOKEN_EXPIRE_TIME_COOKIE = 365 * 24 * 60 * 60;
 	public static final int REFRESH_TOKEN_EXPIRE_TIME_COOKIE = 365 * 24 * 60 * 60;
 
 	private final String BEARER_TYPE = "Bearer";
@@ -58,7 +63,7 @@ public class JwtTokenProvider {
 			.setIssuedAt(new Date())
 			.claim("ROLE", role)
 			.signWith(key, SignatureAlgorithm.HS256)
-			.setExpiration(new Date(curTime + REFRESH_TOKEN_EXPIRE_TIME))
+			.setExpiration(new Date(curTime + ACCESS_TOKEN_EXPIRE_TIME))
 			.compact();
 
 		String refreshToken = Jwts
@@ -79,6 +84,27 @@ public class JwtTokenProvider {
 			.build();
 	}
 
+	public JwtToken createTokenFroExtension(String uuid, String role) {
+		Long curTime = new Date().getTime();
+
+		String accessToken = Jwts
+			.builder()
+			.setSubject(uuid)
+			.setIssuedAt(new Date())
+			.claim("ROLE", role)
+			.signWith(key, SignatureAlgorithm.HS256)
+			.setExpiration(new Date(curTime + ACCESS_TOKEN_EXPIRE_TIME_FOR_EXTENSION))
+			.compact();
+
+		return JwtToken
+			.builder()
+			.grantType(BEARER_TYPE)
+			.accessToken(accessToken)
+			.refreshToken(accessToken)
+			.expireTime(ACCESS_TOKEN_EXPIRE_TIME_FOR_EXTENSION)
+			.build();
+	}
+
 	public JwtToken refreshToken(String refreshToken) {
 
 		Claims claims = parseClaims(refreshToken);
@@ -90,6 +116,7 @@ public class JwtTokenProvider {
 	}
 
 	public Authentication getAuthentication(String accessToken) {
+
 		Claims claims = parseClaims(accessToken);
 
 		if (claims.get("ROLE") == null)
@@ -106,6 +133,15 @@ public class JwtTokenProvider {
 		UserDetails principal = new User(claims.getSubject(), "", authorities);
 
 		return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
+	}
+
+	public String getAccessTokenFromAuthorization(String authorization) {
+		StringTokenizer st = new StringTokenizer(authorization);
+		if (st.nextToken().equals("Bearer")) {
+			return st.nextToken();
+		} else {
+			throw new NoSuchElementException("헤더가 비어 있습니다");
+		}
 	}
 
 	public Claims parseClaims(String jwtToken) throws

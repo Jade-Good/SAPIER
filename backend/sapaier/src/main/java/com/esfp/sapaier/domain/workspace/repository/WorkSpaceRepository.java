@@ -3,7 +3,6 @@ package com.esfp.sapaier.domain.workspace.repository;
 import com.esfp.sapaier.domain.workspace.document.WorkSpace;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

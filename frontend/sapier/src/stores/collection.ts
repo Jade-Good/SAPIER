@@ -13,20 +13,24 @@ interface RequestInfo {
   requestName: string
   requestURL: string
   method: string
-  headers: any
+  headers: Table[]
   body: any
-  queryParams: any
-  formData: any
-  workspacesId: string
-  id: string
-  modifiedTime: string
+  queryParams: Table[]
+  path: string[]
 }
 
 interface Response {
   status: number
   headers: any
-  data: []
+  data: any
 }
+
+interface Table {
+  active: string
+  key: string
+  value: string
+  description: string
+} 
 
 export type { CollectionTree }
 
