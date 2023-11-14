@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const useCollection = useCollectionStore()
 const requestCode = ref(0)
-const requestHeaders = ref({ test1: '123', test2: 12321 })
+const requestHeaders = ref({ })
 const requestBody = ref(JSON.stringify({}, null, 2))
 const textarea = ref<null | HTMLTextAreaElement>(null)
 

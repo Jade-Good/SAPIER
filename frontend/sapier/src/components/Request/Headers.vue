@@ -1,15 +1,23 @@
 <script setup lang="ts">
 const useCollection = useCollectionStore()
+const isMounted = useMounted()
+
 const requestHeaders = inject('requestHeaders')
 const isHighLight = ref([] as boolean[])
 
+if (isMounted)
+  setHLArray()
+
 watch(() => useCollection.request, () => {
-  if (requestHeaders) {
-    requestHeaders.value.forEach(() => {
-      isHighLight.value.push(false)
-    })
-  }
+  setHLArray()
 })
+
+function setHLArray() {
+  isHighLight.value = []
+  requestHeaders.rows.forEach(() => {
+    isHighLight.value.push(false)
+  })
+}
 
 function rowHighLight(row: number) {
   isHighLight.value[row] = true
@@ -38,7 +46,7 @@ function clearHighLight(row: number) {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(head, index) in requestHeaders" :key="index" :class="{ tableHighLite: isHighLight[index] }">
+        <tr v-for="(head, index) in requestHeaders.rows" :key="index" :class="{ tableHighLite: isHighLight[index] }">
           <td>
             <span v-if="head.active">✅</span>
             <span v-else-if="head.active == null" />

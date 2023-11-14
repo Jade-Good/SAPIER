@@ -16,10 +16,6 @@ interface RequestInfo {
   headers: Table[]
   body: any
   queryParams: Table[]
-  formData: any
-  workspacesId: string
-  id: string
-  modifiedTime: string
   path: string[]
 }
 
@@ -30,7 +26,7 @@ interface Response {
 }
 
 interface Table {
-  active: boolean
+  active: string
   key: string
   value: string
   description: string

@@ -4,13 +4,8 @@ package com.esfp.sapaier.domain.workspace.document;
 import com.esfp.sapaier.domain.workspace.dto.CollectionListDto;
 import com.esfp.sapaier.domain.workspace.dto.UserPermissionDto;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.experimental.FieldDefaults;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -21,6 +16,8 @@ import java.util.List;
 @Data
 @Builder
 @Document(collection = "WorkSpace")
+@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 public class WorkSpace {
 
@@ -43,5 +40,13 @@ public class WorkSpace {
     private LocalDateTime modifiedTime;
 //    private Date modifiedTime;
 
+    @Builder
+    public WorkSpace(WorkSpace workSpace,List<CollectionListDto> collectionListDtoList) {
+        this.key = workSpace.getKey();
+        this.name = workSpace.getName();
+        this.memberList = workSpace.getMemberList();
+        this.modifiedTime = LocalDateTime.now();
+        this.collectionList = collectionListDtoList;
+    }
 
 }
