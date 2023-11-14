@@ -1,23 +1,18 @@
 package com.esfp.sapaier.domain.collection.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esfp.sapaier.domain.collection.exception.NoCollectionException;
 import com.esfp.sapaier.domain.collection.model.dto.request.CollectionListRequestDto;
-import com.esfp.sapaier.domain.collection.model.dto.request.CreateCollectionRequestDto;
 import com.esfp.sapaier.domain.collection.model.dto.request.ModifyCollectionRequestDto;
 import com.esfp.sapaier.domain.collection.model.dto.response.CollectionResponseDto;
 import com.esfp.sapaier.domain.collection.repository.CollectionRepository;
 import com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,11 +24,8 @@ public class CollectionService {
 	private static final String NO_COLLECTION_EXCEPTION = "해당하는 collection이 존재하지 않습니다.";
 
 	@Transactional
-	public void createCollectionDocument(CreateCollectionRequestDto createCollectionRequestDto) {
-		String collectionName = createCollectionRequestDto.getCollectionName();
-		if (Objects.equals(collectionName, " ") || collectionName == null || collectionName.equals("")) {
-			collectionName = "New Collection";
-		}
+	public void createCollectionDocument() {
+		String collectionName = "new Document";
 		List<CollectionEntity> collectionList = new ArrayList<>();
 
 		collectionRepository.save(new CollectionEntity(collectionName, collectionList));
@@ -46,22 +38,21 @@ public class CollectionService {
 		for (String collectionId : topCollectionIdList) {
 			CollectionEntity collection = collectionRepository.findById(collectionId)
 				.orElseThrow(() -> new NoCollectionException(NO_COLLECTION_EXCEPTION));
-
 			responseList.add(new CollectionResponseDto(collection));
 		}
 		return responseList;
 	}
 
 	@Transactional
-	public void modifyCollection(List<ModifyCollectionRequestDto> modifyCollectionRequestDto) {
+	public void modifyCollection(List<ModifyCollectionRequestDto> modifyCollectionRequestDto, String nowIndex) {
 		CollectionEntity collection = collectionRepository.findById(modifyCollectionRequestDto.get(0).getCollectionId())
 			.orElseThrow(() -> new NoCollectionException(NO_COLLECTION_EXCEPTION));
-
-		collectionRepository.save(modifyCollectionRequestDto.get(0).modifyToEntity(
-			modifyCollectionRequestDto.get(0).getCollectionId(),
-			modifyCollectionRequestDto.get(0).getCollectionName(),
-			modifyCollectionRequestDto.get(0).getApiList(),
-			modifyCollectionRequestDto.get(0).getCollectionList()
+			Integer num = Integer.parseInt(nowIndex);
+		collectionRepository.save(modifyCollectionRequestDto.get(num).modifyToEntity(
+			modifyCollectionRequestDto.get(num).getCollectionId(),
+			modifyCollectionRequestDto.get(num).getCollectionName(),
+			modifyCollectionRequestDto.get(num).getApiList(),
+			modifyCollectionRequestDto.get(num).getCollectionList()
 		));
 	}
 
@@ -69,5 +60,11 @@ public class CollectionService {
 		CollectionEntity collection = collectionRepository.findById(collectionId)
 				.orElseThrow(() -> new NoCollectionException(NO_COLLECTION_EXCEPTION));
 		return collection.getCollectionName();
+	}
+
+	public String lastCreateDocument(){
+		CollectionEntity collection = collectionRepository.findTop1ByOrderByCreatedTimeDesc()
+				.orElseThrow(()-> new NoCollectionException(NO_COLLECTION_EXCEPTION));
+		return collection.getCollectionId();
 	}
 }
