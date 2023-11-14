@@ -30,7 +30,7 @@ interface Table {
   key: string
   value: string
   description: string
-}
+} 
 
 export type { CollectionTree }
 
