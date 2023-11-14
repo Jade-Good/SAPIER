@@ -11,9 +11,11 @@ import java.util.HashMap;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ResponseDto { //Response 정보를 저장해놓는 Dto
-    private String status; //상태코드
-    private int responseTime; //응답시간
-    private HashMap<String, String> header;
+public class RequestDto {
+    private String requestName;
+    private String requestURL;
+    private String method;
+    private HashMap<String, String>[] headers;
+    private HashMap<String, String>[] queryParams;
     private String body;
 }
