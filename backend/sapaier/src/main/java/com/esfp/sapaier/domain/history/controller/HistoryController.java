@@ -8,12 +8,14 @@ import com.esfp.sapaier.domain.history.model.dto.request.HistoryRequestDto;
 import com.esfp.sapaier.domain.history.service.HistoryService;
 import com.esfp.sapaier.global.auth.service.UserAuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/history")
 @RestController
@@ -27,6 +29,7 @@ public class HistoryController {
             @CookieValue(name="accessToken", required = false) String accessToken
     ){
         String uuid = userAuthService.getUserKeyFromUuid(accessToken, bearerToken);
+        log.info("uuid : " + uuid);
         List<DailyHistoryDto> historyList = historyService.getAllDailyHistoryList(uuid);
         return new ResponseEntity<>(historyList, HttpStatus.OK);
     }
