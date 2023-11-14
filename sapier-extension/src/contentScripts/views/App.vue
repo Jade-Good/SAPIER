@@ -29,6 +29,13 @@ const [show, toggle] = useToggle(false)
 //   // eslint-disable-next-line no-console
 //   console.log(`사용자 데이터 저장됨${data.email}`)
 // })
+
+const isLoggedIn = ref(false)
+browser.storage.local.get('loggedIn').then((data) => {
+  // eslint-disable-next-line no-console
+  console.log(`로그인 검사 ${data.loggedIn}`)
+  isLoggedIn.value = data.loggedIn
+})
 </script>
 
 <template>
@@ -41,7 +48,8 @@ const [show, toggle] = useToggle(false)
       transition="opacity duration-300"
       :class="{ hidden: !show, block: show }"
     >
-      <SocialLoginContainer />
+      이곳은 워크스페이스 생성 페이지 입니다.
+      <!-- <SocialLoginContainer /> -->
     </div>
     <button
       class="flex w-10 h-10 rounded-full shadow cursor-pointer border-none"

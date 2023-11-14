@@ -25,12 +25,12 @@ onMounted(() => {
   fetchData()
 })
 
-// const isLoggedIn = ref(false)
-// browser.storage.local.get('loggedIn').then((data) => {
-//   // eslint-disable-next-line no-console
-//   console.log(`로그인 검사 ${data.loggedIn}`)
-//   isLoggedIn.value = data.loggedIn
-// })
+const isLoggedIn = ref(false)
+browser.storage.local.get('loggedIn').then((data) => {
+  // eslint-disable-next-line no-console
+  console.log(`로그인 검사 ${data.loggedIn}`)
+  isLoggedIn.value = data.loggedIn
+})
 </script>
 
 <template>
@@ -38,8 +38,10 @@ onMounted(() => {
     <Logo />
     <div>Popup</div>
     <SharedSubtitle />
-    <!-- <SocialLoginContainer v-if="!isLoggedIn" />
-    <UserInfo v-else /> -->
+    <SocialLoginContainer v-if="!isLoggedIn" />
+    <div v-else>
+      로그인 성공
+    </div>
     <button class="btn mt-2" @click="openOptionsPage">
       Open Options
     </button>

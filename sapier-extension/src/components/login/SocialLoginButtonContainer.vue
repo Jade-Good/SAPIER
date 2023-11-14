@@ -3,14 +3,16 @@ const extensionUrl = browser.runtime.getURL('dist/options/index.html')
 
 function googleLogin() {
   // const googleLoginUrl = `${import.meta.env.VITE_SERVER_URL}/api/oauth2/authorization/google?redirect_uri=${import.meta.env.VITE_FRONT_URL}/login/redirect`
-  const googleLoginUrl = `http://sapier.co.kr:8080/api/oauth2/authorization/google?redirect_uri=${extensionUrl}`
+  const googleLoginUrl = `http://sapier.co.kr/api/oauth2/authorization/google?redirect_uri=${extensionUrl}?forExtension=Y`
+  // const googleLoginUrl = 'http://sapier.co.kr/api/oauth2/authorization/google?redirect_uri=https://sapier.co.kr/login/redirect'
   browser.tabs.create({ url: googleLoginUrl })
   // window.location.href = googleLoginUrl
 }
 
 function githubLogin() {
   // const githubLoginUrl = `${import.meta.env.VITE_SERVER_URL}/api/oauth2/authorization/github?redirect_uri=${import.meta.env.VITE_FRONT_URL}/login/redirect`
-  const githubLoginUrl = `http://sapier.co.kr:8080/api/oauth2/authorization/github?redirect_uri=${extensionUrl}`
+  // const githubLoginUrl = `http://sapier.co.kr:8080/api/oauth2/authorization/github?redirect_uri=${extensionUrl}`
+  const githubLoginUrl = 'http://sapier.co.kr/api/oauth2/authorization/github?redirect_uri=https://sapier.co.kr/login/redirect'
   browser.tabs.create({ url: githubLoginUrl })
   // window.location.href = githubLoginUrl
 }
