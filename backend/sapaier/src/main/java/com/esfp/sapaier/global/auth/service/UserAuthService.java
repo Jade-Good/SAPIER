@@ -24,7 +24,7 @@ public class UserAuthService {
 		return getUserAuthInfo(userUuid).getUserKey();
 	}
 
-	private String getUserUuid(String accessToken, String bearerToken) {
+	public String getUserUuid(String accessToken, String bearerToken) {
 		if (accessToken != null) {
 			return jwtTokenProvider.parseClaims(accessToken).getSubject();
 		} else if (bearerToken != null) {
