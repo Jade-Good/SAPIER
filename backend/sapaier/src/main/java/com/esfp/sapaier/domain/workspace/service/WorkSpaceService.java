@@ -1,19 +1,16 @@
 package com.esfp.sapaier.domain.workspace.service;
 
 
-import com.esfp.sapaier.domain.user.model.dto.UserDto;
 import com.esfp.sapaier.domain.user.repository.UserRepository;
 import com.esfp.sapaier.domain.workspace.document.WorkSpace;
-import com.esfp.sapaier.domain.workspace.dto.AddMemberDto;
-import com.esfp.sapaier.domain.workspace.dto.EmailRequest;
-import com.esfp.sapaier.domain.workspace.dto.UserDataDto;
-import com.esfp.sapaier.domain.workspace.dto.UserPermissionDto;
+import com.esfp.sapaier.domain.workspace.dto.*;
 import com.esfp.sapaier.domain.workspace.exception.NoWorkspaceException;
 import com.esfp.sapaier.domain.workspace.repository.UserDataRepository;
 import com.esfp.sapaier.domain.workspace.repository.WorkSpaceRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -24,6 +21,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class WorkSpaceService {
@@ -172,6 +170,21 @@ public class WorkSpaceService {
     }
     public String generateHtmlBody(String addMemberAPI) {
         return "<html><body><h1>invite workspace</h1><p>인증 버튼: "+ "http://localhost:8080/api/v1/workspaces/members"+ addMemberAPI + "</p></body></html>";
+    }
+
+    public void addCollectionDocument(String workspaceId, CollectionListDto collectionListDto){
+        WorkSpace workSpace = workSpaceRepository.findById(workspaceId)
+                .orElseThrow(()-> new NoWorkspaceException(NO_WORKSPACE_EXCEPTION));
+
+        List<CollectionListDto> collectionListDtoList = workSpace.getCollectionList();
+//        log.info("찍어보기: {} ", collectionListDtoList);
+        if(collectionListDtoList == null) {
+            collectionListDtoList = new ArrayList<>();
+        }
+        collectionListDtoList.add(collectionListDto);
+//        log.info("디티오 리스트: {}" , collectionListDtoList);
+//        workSpace.update(workSpace,collectionListDtoList);
+        workSpaceRepository.save(new WorkSpace(workSpace,collectionListDtoList));
     }
 
 }
