@@ -47,13 +47,13 @@ export type { HistoryInfo }
 
 export const useHistoryStore = defineStore('history', ()=>{
     const history = ref < HistoryInfo | null > (null)
-    // const request = ref < RequestInfo | null >(null)
-    // const response = ref < Response >()
+    const request = ref < RequestInfo | null >(null)
+    const response = ref < Response >()
 
     return {
         history,
-        // request,
-        // response
+        request,
+        response
     }
 })
 
