@@ -1,6 +1,21 @@
 <script setup>
 // const collectionStore = useCollectionStore()
+const axios = inject('$axios')
+
 const historyStore = useHistoryStore()
+const HistoryListInfo = useHistoryListStore()
+const isMounted = useMounted()
+const route = useRouter()
+
+if(isMounted){
+    axios
+        .get(`/api/v1/history`)
+        .then((res) => {
+            HistoryListInfo.historyList = res.data
+        }).catch((error) =>{
+            console.error('히스토리 리스트 조회 실패 : ', error)
+        })
+}
 
 // export default {
 //     data(){
@@ -9,6 +24,7 @@ const historyStore = useHistoryStore()
 //         }
 //     }
 // }
+
 </script>
 
 <template>
