@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
-const historyStore = useHistoryStore()
-
+// const historyStore = useHistoryStore()
+const collectionStore = useCollectionStore()
 
 export default defineComponent({
     setup(){
@@ -51,11 +51,14 @@ export default defineComponent({
     },
     methods:{
         selectHistory(history){
-            historyStore.history = history
-            historyStore.request = history.request
-            historyStore.response = history.response
+            // historyStore.history = history
+            // historyStore.request = history.request
+            // historyStore.response = history.response
+            collectionStore.request = history.request
+            collectionStore.response = history.response
+
             console.log('선택한 history 호출: ', history)
-            console.log('스토어에 저장 확인: ', historyStore)
+            console.log('스토어에 저장 확인: ', collectionStore)
         }
     }
 })
