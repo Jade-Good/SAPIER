@@ -43,8 +43,8 @@ export default defineComponent({
     setup(){
         // const route = useRouter()
         const axios = inject('$axios')
-        // const HistoryListStore = useHistoryListStore()
-        const HistoryList = ref([]) //필요없을 시 제거
+        const HistoryListStore = useHistoryListStore()
+        const HistoryListRef = ref([]) //필요없을 시 제거
         // const UserStore = useUserStore()
         
         async function getHistoryList(){
@@ -53,9 +53,13 @@ export default defineComponent({
                 // console.log('uuid: ', uuid)
                 const response = await axios.get(`/api/v1/history`)
                 console.log(response.data)
-                // HistoryListStore.historyList.value = response.data
+                
+                console.log('historyListStore에 저장 시도')
+                HistoryListStore.HistoryList.historyList = response.data
+                console.log('historyListStore에 저장 성공')
+                console.log('HistoryListStore: ', HistoryListStore.HistoryList?.historyList)
                 // console.log(HistoryListStore.historyList.value)
-                HistoryList.value = response.data
+                HistoryListRef.value = response.data
                 // response.data.forEach(function(value){
                 //     console.log(value)
                 //     HistoryListStore.historyList.push(value)
@@ -70,7 +74,7 @@ export default defineComponent({
             getHistoryList()
         })
         return{
-            HistoryList,
+            HistoryListRef,
         }
 
     }
@@ -79,7 +83,7 @@ export default defineComponent({
 <template>
     <div class="historyList">
         <ul>
-            <li v-for="(dailyHistory, dIdx) in HistoryList" :key="dIdx">
+            <li v-for="(dailyHistory, dIdx) in HistoryListRef" :key="dIdx">
                 <div>{{ dailyHistory.date }}</div>
                 <ul v-for="(histories, wIdx) in dailyHistory.workspaceHistories" :key="wIdx">
                     <!-- <div>{{ histories.workspaceKey }}</div> -->
