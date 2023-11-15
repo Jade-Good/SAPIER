@@ -47,6 +47,16 @@ if (isMounted) {
 }
 
 watch(() => WorkspaceOneInfo.workspaceInfo, () => {
+  axios
+    .get(`/api/v1/workspaces`)
+    .then((res) => {
+      // console.log(res)
+      WorkspaceListInfo.WorkspaceList = res.data
+    })
+    .catch((error) => {
+      console.error(error)
+    },
+    )
   route.push('/workspaces/workspace')
 })
 </script>

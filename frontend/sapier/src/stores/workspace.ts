@@ -3,6 +3,11 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import type { CollectionTree } from './collection'
 import type { UserInfo } from './user'
 
+interface pinnedList {
+  id: string
+  name: string
+}
+
 interface WorkspaceInfo {
   key: string
   name: string
@@ -11,6 +16,8 @@ interface WorkspaceInfo {
   modifiedTime: string
   collectionId: string[]
   color: string
+  pinnedList: pinnedList[]
+  admin: string
 }
 
 export type { WorkspaceInfo }
