@@ -55,9 +55,9 @@ export default defineComponent({
                 console.log(response.data)
                 
                 console.log('historyListStore에 저장 시도')
-                HistoryListStore.HistoryList.historyList = response.data
+                HistoryListStore.historyList = response.data
                 console.log('historyListStore에 저장 성공')
-                console.log('HistoryListStore: ', HistoryListStore.HistoryList?.historyList)
+                console.log('HistoryListStore: ', HistoryListStore.historyList)
                 // console.log(HistoryListStore.historyList.value)
                 HistoryListRef.value = response.data
                 // response.data.forEach(function(value){
