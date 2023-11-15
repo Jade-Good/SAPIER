@@ -75,7 +75,8 @@ public class CollectionService {
 			modifyCollectionRequestDto.get(num).getCollectionId(),
 			modifyCollectionRequestDto.get(num).getCollectionName(),
 			modifyCollectionRequestDto.get(num).getApiList(),
-			modifyCollectionRequestDto.get(num).getCollectionList()
+			modifyCollectionRequestDto.get(num).getCollectionList(),
+				modifyCollectionRequestDto.get(num).getCollapsed()
 		));
 	}
 

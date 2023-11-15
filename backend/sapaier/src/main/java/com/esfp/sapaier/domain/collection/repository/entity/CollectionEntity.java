@@ -24,6 +24,7 @@ public class CollectionEntity {
 
 	private List<RequestEntity> apiList;
 	private List<CollectionEntity> collectionList;
+	private Boolean collapsed;
 
 	@CreatedDate
 	private Instant createdTime;
