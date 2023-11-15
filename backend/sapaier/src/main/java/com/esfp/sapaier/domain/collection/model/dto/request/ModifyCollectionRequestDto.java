@@ -16,13 +16,15 @@ public class ModifyCollectionRequestDto {
     private List<RequestEntity> apiList;
     private List<CollectionEntity> collectionList;
     private String modifiedTime;
+    private Boolean collapsed;
 
-    public CollectionEntity modifyToEntity(String collectionId, String collectionName, List<RequestEntity> apiList, List<CollectionEntity> collectionList) {
+    public CollectionEntity modifyToEntity(String collectionId, String collectionName, List<RequestEntity> apiList, List<CollectionEntity> collectionList, Boolean collapsed) {
         return CollectionEntity.builder()
                 .collectionId(collectionId)
                 .collectionName(collectionName)
                 .apiList(apiList)
                 .collectionList(collectionList)
+                .collapsed(collapsed)
                 .modifiedTime(LocalDateTime.now())
                 .build();
     }
