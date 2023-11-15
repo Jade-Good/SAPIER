@@ -16,12 +16,17 @@ interface UserInfo {
 
 export type { UserInfo }
 
-export const useUserStore = defineStore('user', () => {
-  const userInfo = ref < UserInfo | null > (null)
+export const useUserStore = defineStore(
+  'user', 
+  {
+    state : () => {
+      const userInfo = ref < UserInfo | null > (null)
 
-  return {
-    userInfo,
-  }
+      return {
+        userInfo,
+      };
+    },
+    persist : true,
 })
 
 if (import.meta.hot)

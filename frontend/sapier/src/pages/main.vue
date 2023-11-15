@@ -57,7 +57,7 @@ watch(() => WorkspaceOneInfo.workspaceInfo, () => {
       console.error(error)
     },
     )
-  route.push('/workspaces/workspace')
+  route.push('/workspace')
 })
 </script>
 

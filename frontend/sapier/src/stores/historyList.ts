@@ -7,13 +7,19 @@ interface HistoryList{
 
 export type { HistoryList }
 
-export const useHistoryListStore = defineStore('historyList', ()=>{
-    const HistoryList = ref < HistoryList | null > (null)
+export const useHistoryListStore = defineStore(
+    'historyList', 
+    {
+        state : ()=>{
+            const HistoryList = ref < HistoryList | null > (null)
 
-    return {
-        HistoryList,
+            return {
+                HistoryList,
+            };
+        },
+        persist : true,
     }
-})
+)
 
 if(import.meta.hot)
     import.meta.hot.accept(acceptHMRUpdate(useHistoryListStore as any, import.meta.hot))
