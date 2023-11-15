@@ -173,7 +173,7 @@ function setMethodColor(method: string) {
 
     color: `var(--color-${method})`,
     fontSize: 'var(--font-H2-size)',
-    backgroundColor: method === selectMethod.value ? 'var(--color-gray1-hover)' : 'none',
+    backgroundColor: method === selectMethod.value ? 'var(--color-gray1-active)' : 'none',
 
   }
 };
@@ -271,15 +271,16 @@ function setResponseStyle() {
   }
 };
 
+// Request 전송
 async function sendAPI() {
   const sendData = {
-    requestURL: requestURL.value,
+    requestURL: convertParamsToURL(),
     method: selectMethod.value,
-    headers: {},
+    headers: getActiveHeaders(),
     body: '',
   }
 
-  // console.log('sendData : ', sendData)
+  console.log('sendData : ', sendData)
 
   try {
     const res = await axios.post(`/api/v1/collection/request`, sendData)
@@ -294,6 +295,34 @@ async function sendAPI() {
   }
 };
 
+function convertParamsToURL() {
+  let url = requestURL.value
+
+  if (queryParams.rows.length > 0)
+    url += '?'
+
+  queryParams.rows.forEach((row) => {
+    if (row.active === 'true')
+      url += `${row.key}=${row.value}&`
+  })
+
+  url = url.substring(0, url.length - 1)
+
+  return url
+}
+
+function getActiveHeaders() {
+  const headers = {}
+
+  requestHeaders.rows.forEach((row) => {
+    if (row.active === 'true')
+      headers[row.key] = row.value
+  })
+
+  return headers
+}
+
+// Reuqest history 저장
 async function saveHistory() {
   const history = {
     request: useCollection.request,
@@ -302,12 +331,12 @@ async function saveHistory() {
     workspaceId: workspaceList.WorkspaceList[selectedWorkspaceIndex.selectedWorkspaceIndex].key,
   }
 
-  console.log('history : ', history)
+  // console.log('history : ', history)
 
   try {
     const res = await axios.post(`/api/v1/history/save`, history)
 
-    console.log('History 저장 성공 : ', res)
+    // console.log('History 저장 성공 : ', res)
   }
   catch (error) {
     console.error('History 저장 실패', error)
@@ -442,9 +471,11 @@ input:focus {
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
 
 }
-
 .methodList div:hover {
   background-color: var(--color-gray1);
+}
+.methodList div:active {
+  background-color: var(--color-gray1-hover);
 }
 
 .sendBtn {
@@ -470,6 +501,10 @@ input:focus {
 
 .sendBtn:hover {
   background-color: var(--color-blue1-hover);
+}
+
+.sendBtn:active {
+  background-color: var(--color-blue1-active);
 }
 
 .grayBtn {
