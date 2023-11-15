@@ -27,7 +27,7 @@ onMounted(() => {
 
 const isLoggedIn = ref<any>(null)
 
-browser.storage.sync.get('loggedIn').then((data) => {
+browser.storage.local.get('loggedIn').then((data) => {
   // eslint-disable-next-line no-console
   console.log(`로그인 검사 data.loggedIn ${data.loggedIn}`)
   isLoggedIn.value = data.loggedIn
