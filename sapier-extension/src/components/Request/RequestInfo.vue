@@ -1,11 +1,6 @@
 <script setup lang="ts">
 const axios = inject('$axios')
-const useCollection = useCollectionStore()
-const userInfo = useUserStore()
-const selectedWorkspaceIndex = useWorkspaceStore(0)
-const workspaceList = useWorkspaceListStore()
-
-const isMounted = useMounted()
+const useCollection = ref<any>(null)
 
 const selectMethod = ref('GET')
 const copySelectMethod = ref('')
@@ -37,6 +32,11 @@ const isSaveEnable = computed(() => {
        || copyQueryParams.value !== JSON.stringify(queryParams.rows)
 })
 
+browser.storage.local.get(['collection']).then((data) => {
+  useCollection.value = data.collection
+  console.log('스토어에 w저장 :', data.collection)
+})
+
 provide('queryParams', queryParams)
 provide('requestHeaders', requestHeaders)
 provide('requestBody', requestBody)
@@ -58,7 +58,7 @@ const isResizing = ref(false) // 크기 조절 중 여부
 const startY = ref(0) // 크기 조절 시작 지점
 const startHeight = ref(0) // 크기 조절 시작 시 Request 엘리먼트의 높이
 
-if (isMounted) {
+onMounted(() => {
   setValues()
 
   // 메서드 리스트 이벤트 등록
@@ -73,11 +73,11 @@ if (isMounted) {
 
   window.addEventListener('mousemove', handleResizing)
   window.addEventListener('mouseup', stopResizing)
-};
-
-watch(() => useCollection.request, () => {
-  setValues()
 })
+
+// watch(() => useCollection.value.request, () => {
+//   setValues()
+// })
 
 onUnmounted(() => {
   document.removeEventListener('click', handleDocumentClick)
@@ -87,23 +87,23 @@ onUnmounted(() => {
 
 // ---------------- 데이터 바인딩과 수정/저장 ----------------
 function setValues() {
-  if (!useCollection.request)
+  if (!useCollection.value.request)
     return
 
   // console.log('api : ', useCollection.request)
 
-  selectMethod.value = useCollection.request.method
-  requestURL.value = useCollection.request.requestURL
-  requestName.value = useCollection.request.requestName
-  requestBody.value = useCollection.request.body
+  selectMethod.value = useCollection.value.request.method
+  requestURL.value = useCollection.value.request.requestURL
+  requestName.value = useCollection.value.request.requestName
+  requestBody.value = useCollection.value.request.body
 
-  if (useCollection.request.headers[0])
-    requestHeaders.rows = copyRows(useCollection.request.headers)
+  if (useCollection.value.request.headers[0])
+    requestHeaders.rows = copyRows(useCollection.value.request.headers)
   else
     requestHeaders.rows = [{ active: '', key: '', value: '', description: '' }]
 
-  if (useCollection.request.queryParams[0])
-    queryParams.rows = copyRows(useCollection.request.queryParams)
+  if (useCollection.value.request.queryParams[0])
+    queryParams.rows = copyRows(useCollection.value.request.queryParams)
   else
     queryParams.rows = [{ active: '', key: '', value: '', description: '' }]
 
@@ -128,15 +128,15 @@ function copyRows(objs: any) {
 }
 
 function requestSave() {
-  if (!useCollection.request || !isSaveEnable.value)
+  if (!useCollection.value.request || !isSaveEnable.value)
     return
 
-  useCollection.request.method = selectMethod.value
-  useCollection.request.requestURL = requestURL.value
-  useCollection.request.requestName = requestName.value
-  useCollection.request.body = requestBody.value
-  useCollection.request.headers = requestHeaders.rows
-  useCollection.request.queryParams = queryParams.rows
+  useCollection.value.request.method = selectMethod.value
+  useCollection.value.request.requestURL = requestURL.value
+  useCollection.value.request.requestName = requestName.value
+  useCollection.value.request.body = requestBody.value
+  useCollection.value.request.headers = requestHeaders.rows
+  useCollection.value.request.queryParams = queryParams.rows
   setValues()
 }
 
@@ -162,7 +162,7 @@ function setMethodBtnStyle() {
 
     cursor: 'pointer',
   }
-};
+}
 
 function setMethodColor(method: string) {
   return {
@@ -176,17 +176,17 @@ function setMethodColor(method: string) {
     backgroundColor: method === selectMethod.value ? 'var(--color-gray1-hover)' : 'none',
 
   }
-};
+}
 
 function changeMethod(method: string) {
   setMethodColor(method)
   selectMethod.value = method
   toggleMethodList()
-};
+}
 
 function toggleMethodList() {
   isMethodList.value = !isMethodList.value
-};
+}
 
 function handleDocumentClick(event: MouseEvent) {
   // 클릭 이벤트에서 메서드 목록을 열려 있을 때만 닫도록 처리
@@ -195,7 +195,7 @@ function handleDocumentClick(event: MouseEvent) {
 
   if (isMethodList.value && !methodBtn?.contains(event.target as Element))
     isMethodList.value = false
-};
+}
 
 // -----------------Request 창 크기 조절--------------------
 function setRequestStyle() {
@@ -218,7 +218,7 @@ function setRequestStyle() {
     border: '1px solid red',
 
   }
-};
+}
 
 function startResizing(event: MouseEvent) {
   isResizing.value = true
@@ -230,7 +230,7 @@ function startResizing(event: MouseEvent) {
   if (ss)
     startHeight.value = Number.parseInt(ss.toString())
   // console.log('startHeight.value : ', startHeight.value)
-};
+}
 
 function handleResizing(event: MouseEvent) {
   if (isResizing.value) {
@@ -256,11 +256,11 @@ function handleResizing(event: MouseEvent) {
 
     event.preventDefault()
   }
-};
+}
 
 function stopResizing() {
   isResizing.value = false
-};
+}
 // --------------------------------------------------------
 function setResponseStyle() {
   return {
@@ -269,7 +269,7 @@ function setResponseStyle() {
     // paddingBottom: '3rem',
 
   }
-};
+}
 
 async function sendAPI() {
   const sendData = {
@@ -282,35 +282,13 @@ async function sendAPI() {
   // console.log('sendData : ', sendData)
 
   try {
-    const res = await axios.post(`/api/v1/collection/request`, sendData)
+    const res = await axios.post('/api/v1/collection/request', sendData)
     // console.log('API 전송 성공', res.data)
 
-    useCollection.response = res.data
-
-    saveHistory()
+    useCollection.value.response = res.data
   }
   catch (error) {
     console.error('API 전송 실패:', error)
-  }
-};
-
-async function saveHistory() {
-  const history = {
-    request: useCollection.request,
-    response: useCollection.response,
-    uuid: userInfo.userInfo?.uuid,
-    workspaceId: workspaceList.WorkspaceList[selectedWorkspaceIndex.selectedWorkspaceIndex].key,
-  }
-
-  console.log('history : ', history)
-
-  try {
-    const res = await axios.post(`/api/v1/history/save`, history)
-
-    console.log('History 저장 성공 : ', res)
-  }
-  catch (error) {
-    console.error('History 저장 실패', error)
   }
 }
 </script>

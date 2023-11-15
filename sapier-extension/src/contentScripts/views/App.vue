@@ -10,6 +10,20 @@ browser.storage.local.get(['loggedIn']).then((data) => {
   console.log(`로그인 검사 ${data.loggedIn}`)
   isLoggedIn.value = data.loggedIn
 })
+
+browser.storage.onChanged.addListener(requestChange)
+const selectCollection = ref(false)
+function requestChange(changes, area) {
+  const changedItems = Object.keys(changes)
+  for (const item of changedItems) {
+    if (item === 'collection') {
+      selectCollection.value = true
+      console.log(`${item} has changed:`)
+      console.log('Old value: ', changes[item].oldValue)
+      console.log('New value: ', changes[item].newValue)
+    }
+  }
+}
 </script>
 
 <template>
@@ -25,7 +39,8 @@ browser.storage.local.get(['loggedIn']).then((data) => {
       <div v-if="isLoggedIn" flex class="mid">
         <WorkspaceList w-20 />
         <Category w-60 />
-        <WorkspaceInfo h-full w-full />
+        <RequestInfo v-if="selectCollection" h-full w-full />
+        <WorkspaceInfo v-else h-full w-full />
       </div>
       <div v-else>
         로그인을 해주세요.
