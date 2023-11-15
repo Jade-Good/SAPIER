@@ -199,39 +199,39 @@ export default defineComponent({
         saveData(documnetIndex)
       }
     }
-    const addCollectionDocument = async () => {
-      let newDocumentId = ''
-      try {
-        const response = await axios.post(`/api/v1/collection`)
-        console.log('axios.post  성공', response)
+    // const addCollectionDocument = async () => {
+    //   let newDocumentId = ''
+    //   try {
+    //     const response = await axios.post(`/api/v1/collection`)
+    //     console.log('axios.post  성공', response)
 
-        try {
-          const resLast = await axios.get(`/api/v1/collection/last`)
-          console.log('axios get 성공', resLast)
-          newDocumentId = resLast.data
-        }
-        catch (error) {
-          console.error(error)
-        }
+    //     try {
+    //       const resLast = await axios.get(`/api/v1/collection/last`)
+    //       console.log('axios get 성공', resLast)
+    //       newDocumentId = resLast.data
+    //     }
+    //     catch (error) {
+    //       console.error(error)
+    //     }
 
-        try {
-          const newCollectionInfo = {
-            collectionKey: newDocumentId,
-            collectionName: 'New Document',
-          }
-          // console.log('컬렉션 인포 : ', JSON.stringify(newCollectionInfo))
-          const workspaceId = workspaceStore.workspaceInfo?.key
-          const res = await axios.post(`/api/v1/workspaces/${workspaceId}`, newCollectionInfo)
-          // console.log('워크스페이스에 추가 axios 성공', res)
-        }
-        catch (error) {
-          console.error(error)
-        }
-      }
-      catch (error) {
-        console.error(error)
-      }
-    }
+    //     try {
+    //       const newCollectionInfo = {
+    //         collectionKey: newDocumentId,
+    //         collectionName: 'New Document',
+    //       }
+    //       // console.log('컬렉션 인포 : ', JSON.stringify(newCollectionInfo))
+    //       const workspaceId = workspaceStore.workspaceInfo?.key
+    //       const res = await axios.post(`/api/v1/workspaces/${workspaceId}`, newCollectionInfo)
+    //       // console.log('워크스페이스에 추가 axios 성공', res)
+    //     }
+    //     catch (error) {
+    //       console.error(error)
+    //     }
+    //   }
+    //   catch (error) {
+    //     console.error(error)
+    //   }
+    // }
     const toggleCollapse = (collection) => {
       collection.collapsed = !collection.collapsed
       // console.log('토글 함수 호출', collection.collapsed)
@@ -251,7 +251,7 @@ export default defineComponent({
       documentName,
       addRootRequest,
       deleteRootRequest,
-      addCollectionDocument,
+      // addCollectionDocument,
       toggleCollapse,
     }
   },
@@ -266,6 +266,8 @@ export default defineComponent({
       <!-- <h1>Collection List</h1> -->
 
       <div class="documentNameDiv" @click="toggleCollapse(documentId)">
+        <img v-if="documentId.collapsed" src="./close.svg" class="folderOpenImg">
+        <img v-else src="./open.svg" class="folderOpenImg">
         <img src="./folder.svg" class="docFolderImg"> <div class="leftSortDocument">
           {{ documentName[index] }}
         </div>
@@ -276,6 +278,8 @@ export default defineComponent({
           <div class="setRow">
             <span :style="{ marginLeft: '6px' }" class="collname">
               <div class="boxSize" @click="toggleCollapse(collection)">
+                <img v-if="collection.collapsed" src="./close.svg" class="folderOpenImg">
+                <img v-else src="./open.svg" class="folderOpenImg">
                 <img src="./folder.svg" class="folderImg">
                 <span v-if="!collection.editing" class="rootCollName">{{ collection.collectionName }}</span>
 
@@ -376,9 +380,10 @@ export default defineComponent({
       <!-- <button class="btn" @click="saveData">
         저장
       </button> -->
-    </div><button class="er" @click="addCollectionDocument()">
+    </div>
+    <!-- <button class="er" @click="addCollectionDocument()">
       document 추가
-    </button>
+    </button> -->
   </div>
 </template>
 
