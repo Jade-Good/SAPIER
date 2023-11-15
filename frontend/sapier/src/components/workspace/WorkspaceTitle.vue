@@ -50,6 +50,11 @@ async function addCollectionDocument() {
       const workspaceId = workspaceStore.workspaceInfo?.key
       const res = await axios.post(`/api/v1/workspaces/collection/${workspaceId}`, newCollectionInfo)
       // console.log('워크스페이스에 추가 axios 성공', res)
+
+      if (workspaceStore.workspaceInfo?.collectionList === null)
+        workspaceStore.workspaceInfo.collectionList = []
+
+      workspaceStore.workspaceInfo?.collectionList.push(newCollectionInfo)
     }
     catch (error) {
       console.error(error)
