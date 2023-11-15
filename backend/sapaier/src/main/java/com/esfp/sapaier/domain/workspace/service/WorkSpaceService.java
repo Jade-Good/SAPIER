@@ -1,6 +1,7 @@
 package com.esfp.sapaier.domain.workspace.service;
 
 
+import com.esfp.sapaier.domain.user.model.dto.UserDto;
 import com.esfp.sapaier.domain.user.repository.UserRepository;
 import com.esfp.sapaier.domain.workspace.document.WorkSpace;
 import com.esfp.sapaier.domain.workspace.dto.*;
@@ -10,7 +11,6 @@ import com.esfp.sapaier.domain.workspace.repository.WorkSpaceRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
-@Slf4j
 @Service
 @AllArgsConstructor
 public class WorkSpaceService {
@@ -36,8 +35,10 @@ public class WorkSpaceService {
         return workSpaceRepository.findWorkSpaceList(uuid);
     }
 
-    public void addWorkSpace(WorkSpace workSpace) {
-        workSpaceRepository.save(workSpace);
+    public WorkSpace addWorkSpace(WorkSpace workSpace) {
+
+       WorkSpace workSpaceData =  workSpaceRepository.save(workSpace);
+       return  workSpaceData;
     }
 
     public void updateWorkSpace(WorkSpace workSpace) {
@@ -158,7 +159,7 @@ public class WorkSpaceService {
 
     public void sendEmail(EmailRequest emailRequest) throws MessagingException {
 //        UserDto userDto = userRepository.find
-        String htmlBody = generateHtmlBody(emailRequest.getTo());
+        String htmlBody = generateHtmlBody(emailRequest.getWorkspaceIdx());
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
@@ -168,8 +169,9 @@ public class WorkSpaceService {
 
         emailSender.send(message);
     }
-    public String generateHtmlBody(String addMemberAPI) {
-        return "<html><body><h1>invite workspace</h1><p>인증 버튼: "+ "http://localhost:8080/api/v1/workspaces/members"+ addMemberAPI + "</p></body></html>";
+    public String generateHtmlBody(String workspaceidx) {
+        return "<html><body><h1>invite workspace</h1><p>인증 버튼:</p> <a href=\"http://localhost:3333/workspaces/invite?key=" + workspaceidx + "\" target=\"_blank\">초대 링크</a></body></html>";
+
     }
 
     public void addCollectionDocument(String workspaceId, CollectionListDto collectionListDto){
@@ -188,3 +190,4 @@ public class WorkSpaceService {
     }
 
 }
+
