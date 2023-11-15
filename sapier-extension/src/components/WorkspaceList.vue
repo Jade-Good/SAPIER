@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
 import { ref } from 'vue'
-import WorkspaceInfo from './WorkspaceInfo.vue'
+// import WorkspaceInfo from '../components/workspace/WorkSpaceInfo.vue'
+// import MainInfo from '../components/main/MainInfo.vue'
 
-const currentComponent = ref<Component | null>(WorkspaceInfo)// 초기값은 MainInfo 컴포넌트로 설정
-const WorkspaceOneInfo = ref<any>(null) // workspaceInfoOne 데이터를 저장할 ref
+// const currentComponent = ref<Component | null>(MainInfo)// 초기값은 MainInfo 컴포넌트로 설정
+// const WorkspaceOneInfo = ref<any>(null) // workspaceInfoOne 데이터를 저장할 ref
 
 function truncateText(text: string, maxLength: number) {
   if (text.length > maxLength)
@@ -14,10 +14,11 @@ function truncateText(text: string, maxLength: number) {
     return text
 }
 
-function showInfoComponent(workspaceInfoOne: any, index: any) {
-  currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
-  WorkspaceOneInfo.value = workspaceInfoOne
-  // WorkspaceOneInfo.value.selectedWorkspaceIndex = index
+function showInfoComponent(workspaceInfoOne: any, workspaceInfoOneIdx: any) {
+  browser.storage.local.set({ workspace: workspaceInfoOne })
+  browser.storage.local.set({ workspaceIndex: workspaceInfoOneIdx })
+  browser.storage.local.get(['workspace']).then(data => console.log(`워크스페이스 : ${data.workspace.name}`))
+  browser.storage.local.get(['workspaceIndex']).then(data => console.log(`워크스페이스 인덱스 : ${data.workspaceIndex}`))
 }
 
 const workspaceListInfo = ref<any>(null)
@@ -51,6 +52,7 @@ async function getWorkspaceList() {
         .then((data) => {
           // 데이터 할당
           workspaceListInfo.value = data
+          browser.storage.local.set({ workspaceList: workspaceListInfo })
         })
         .catch(error => console.error('Error:', error))
     })
@@ -65,13 +67,6 @@ onMounted(getWorkspaceList)
 
 <template>
   <div w-18 border-r-2 class="list">
-    <!-- <div>
-      <ul>
-        <li v-for="workspace in workspaceListInfo" :key="workspace.id">
-          {{ workspace.name }}
-        </li>
-      </ul>
-    </div> -->
     <div v-for="(workspace, index) in workspaceListInfo" :key="workspace.id" class="box" :style="{ backgroundColor: workspace.color }">
       <div id="workSpaceListData" class="workspaceId" @click="showInfoComponent(workspace, index)">
         {{ truncateText(workspace.name, 4) }}

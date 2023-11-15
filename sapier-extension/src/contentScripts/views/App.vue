@@ -4,32 +4,6 @@ import 'uno.css'
 
 const [show, toggle] = useToggle(false)
 
-// 웹 페이지의 localStorage에서 데이터 읽기
-// const userDataString = localStorage.getItem('sapier-user')
-
-// if (userDataString) {
-//   const userData = JSON.parse(userDataString) // 문자열을 객체로 변환
-//   browser.storage.local.set({ sapierUserData: userData }).then(() => {
-//     // eslint-disable-next-line no-console
-//     console.log(`사용자 데이터 저장됨: ${userData.email}`)
-//   })
-// }
-// else {
-//   // eslint-disable-next-line no-console
-//   console.log('sapier-user 데이터가 localStorage에 없음')
-// }
-
-// // background.js로 데이터 전송
-// browser.runtime.sendMessage({ type: 'saveUserData', data: userData }).then(() => {
-//   // eslint-disable-next-line no-console
-//   console.log('background.js로 유저데이터 전송')
-// })
-
-// browser.storage.local.set({ sapierUserData: message.data }).then((data) => {
-//   // eslint-disable-next-line no-console
-//   console.log(`사용자 데이터 저장됨${data.email}`)
-// })
-
 const isLoggedIn = ref(false)
 browser.storage.sync.get(['loggedIn']).then((data) => {
   // eslint-disable-next-line no-console
@@ -48,11 +22,14 @@ browser.storage.sync.get(['loggedIn']).then((data) => {
       transition="opacity duration-300"
       :class="{ hidden: !show, block: show }"
     >
-      <workspace-list v-if="isLoggedIn" />
+      <div v-if="isLoggedIn" flex class="mid">
+        <WorkspaceList w-20 />
+        <Category w-60 />
+        <WorkSpaceInfo h-full w-full />
+      </div>
       <div v-else>
         로그인을 해주세요.
       </div>
-      <!-- <SocialLoginContainer /> -->
     </div>
     <button
       class="flex w-10 h-10 rounded-full shadow cursor-pointer border-none"
@@ -65,6 +42,9 @@ browser.storage.sync.get(['loggedIn']).then((data) => {
 </template>
 
 <style scoped>
+.mid {
+  height: calc(100% - 70px);
+}
 #sapier {
     position: fixed;
     width: 900px;
