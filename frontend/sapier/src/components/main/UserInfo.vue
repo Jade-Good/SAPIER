@@ -10,7 +10,7 @@
 
 <style scoped>
 .user_info{
-    width: 20%;
+    width: 25rem;
     background-color: #F0F0F0;
 }
 </style>

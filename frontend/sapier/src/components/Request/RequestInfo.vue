@@ -213,10 +213,6 @@ function setRequestStyle() {
     paddingBottom: '3rem',
 
     overflow: 'auto',
-
-    /* Style */
-    border: '1px solid red',
-
   }
 };
 
@@ -431,7 +427,7 @@ async function saveHistory() {
       <Settings v-if="requestTap === 'Settings'" />
     </div>
     <div class="resize-line" @mousedown="startResizing" @mousemove="handleResizing" @mouseup="stopResizing" />
-    <Response name="Response" w-full border border-blue :style="setResponseStyle()" />
+    <Response name="Response" w-full :style="setResponseStyle()" />
   </div>
 </template>
 

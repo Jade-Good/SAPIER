@@ -64,8 +64,8 @@ watch(() => WorkspaceOneInfo.workspaceInfo, () => {
 <template>
   <TheNav />
   <div flex class="mid">
-    <WorkspaceList w-20 />
-    <UserInfo w-60 />
+    <WorkspaceList />
+    <UserInfo />
     <MainInfo w-full />
   </div>
   <RouterView />

@@ -76,7 +76,7 @@ export default defineComponent({
         // console.log('JSON: ', dataToSave)
 
         const res = await axios.patch(`/api/v1/collection/modify/${nowIndex}`, modifyData)
-        console.log('데이터 저장 성공', res)
+        // console.log('데이터 저장 성공', res)
       }
       catch (error) {
         console.error('데이터 저장 실패:', error)
@@ -290,24 +290,6 @@ export default defineComponent({
                   @blur="saveCollectionName(collection, index)"
                   @keyup.enter="saveCollectionName(collection, index)"
                 ></div>
-              <!-- <div class="dropdown">
-                <div class="dropdown-btn">
-                  <img src="./etc.svg" class="dropdown-btn">
-                </div>
-                <ul class="dropdown-list">
-                  <li @click="addChildCollection(collection, index)">
-                    add collection
-                  </li>
-                  <li @click="deleteCollection(documentId, collection, index)">
-                    delete collection
-                  </li>
-                  <li @click="addRootRequest(collection, index)">
-                    add request
-                  </li>
-                  <li>delete request</li>
-                </ul>
-              </div> -->
-              <!-- <button class="btn" @click="toggleEditing(collection)">{{ collection.editing ? '완료' : '수정' }}</button> -->
             </span>
 
             <div class="dropdown">
@@ -389,6 +371,7 @@ export default defineComponent({
 
 <style scoped>
 .category{
+  width: 25rem;
   position: relative;
   overflow-x: auto;
   white-space: nowrap;
@@ -450,7 +433,7 @@ export default defineComponent({
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  border-radius: 15px;
+  border-radius: 0.3rem;
 
 }
 
@@ -466,7 +449,7 @@ export default defineComponent({
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  border-radius: 15px;
+  border-radius: 0.3rem;
 
 }
 
