@@ -1,4 +1,6 @@
 <script>
+const collectionStore = useCollectionStore()
+
 export default {
     data(){
         return{
@@ -13,7 +15,8 @@ export default {
     <div flex class="mid">
         <HistoryList w-80 />
         <!-- HistoryInfo 추후 수정 -->
-        <HistoryInfo h-full w-full />
+        <!-- <HistoryInfo h-full w-full /> -->
+        <RequestInfo v-if="collectionStore.request" h-full w-full />
     </div>
 </template>
 
