@@ -31,7 +31,7 @@ const [show, toggle] = useToggle(false)
 // })
 
 const isLoggedIn = ref(false)
-browser.storage.local.get('loggedIn').then((data) => {
+browser.storage.sync.get(['loggedIn']).then((data) => {
   // eslint-disable-next-line no-console
   console.log(`로그인 검사 ${data.loggedIn}`)
   isLoggedIn.value = data.loggedIn
@@ -48,7 +48,10 @@ browser.storage.local.get('loggedIn').then((data) => {
       transition="opacity duration-300"
       :class="{ hidden: !show, block: show }"
     >
-      이곳은 워크스페이스 생성 페이지 입니다.
+      <workspace-list v-if="isLoggedIn" />
+      <div v-else>
+        로그인을 해주세요.
+      </div>
       <!-- <SocialLoginContainer /> -->
     </div>
     <button
@@ -67,8 +70,8 @@ browser.storage.local.get('loggedIn').then((data) => {
     width: 900px;
     height: 647px;
     left: 20%;
-    top: 5%;
-    z-index: 9;
+    top: 15%;
+    z-index: 9999999 !important;
     background-color: #f1f1f1;
     border: 1px solid #d3d3d3;
     text-align: center;
