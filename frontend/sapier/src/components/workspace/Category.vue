@@ -199,39 +199,39 @@ export default defineComponent({
         saveData(documnetIndex)
       }
     }
-    const addCollectionDocument = async () => {
-      let newDocumentId = ''
-      try {
-        const response = await axios.post(`/api/v1/collection`)
-        console.log('axios.post  성공', response)
+    // const addCollectionDocument = async () => {
+    //   let newDocumentId = ''
+    //   try {
+    //     const response = await axios.post(`/api/v1/collection`)
+    //     console.log('axios.post  성공', response)
 
-        try {
-          const resLast = await axios.get(`/api/v1/collection/last`)
-          console.log('axios get 성공', resLast)
-          newDocumentId = resLast.data
-        }
-        catch (error) {
-          console.error(error)
-        }
+    //     try {
+    //       const resLast = await axios.get(`/api/v1/collection/last`)
+    //       console.log('axios get 성공', resLast)
+    //       newDocumentId = resLast.data
+    //     }
+    //     catch (error) {
+    //       console.error(error)
+    //     }
 
-        try {
-          const newCollectionInfo = {
-            collectionKey: newDocumentId,
-            collectionName: 'New Document',
-          }
-          // console.log('컬렉션 인포 : ', JSON.stringify(newCollectionInfo))
-          const workspaceId = workspaceStore.workspaceInfo?.key
-          const res = await axios.post(`/api/v1/workspaces/${workspaceId}`, newCollectionInfo)
-          // console.log('워크스페이스에 추가 axios 성공', res)
-        }
-        catch (error) {
-          console.error(error)
-        }
-      }
-      catch (error) {
-        console.error(error)
-      }
-    }
+    //     try {
+    //       const newCollectionInfo = {
+    //         collectionKey: newDocumentId,
+    //         collectionName: 'New Document',
+    //       }
+    //       // console.log('컬렉션 인포 : ', JSON.stringify(newCollectionInfo))
+    //       const workspaceId = workspaceStore.workspaceInfo?.key
+    //       const res = await axios.post(`/api/v1/workspaces/${workspaceId}`, newCollectionInfo)
+    //       // console.log('워크스페이스에 추가 axios 성공', res)
+    //     }
+    //     catch (error) {
+    //       console.error(error)
+    //     }
+    //   }
+    //   catch (error) {
+    //     console.error(error)
+    //   }
+    // }
     const toggleCollapse = (collection) => {
       collection.collapsed = !collection.collapsed
       // console.log('토글 함수 호출', collection.collapsed)
