@@ -1,38 +1,3 @@
-<!-- <script>
-import OverviewComponent from './OverviewComponent.vue'
-import SettingComponent from './SettingComponent.vue'
-
-export default {
-  components: {
-    OverviewComponent,
-    SettingComponent,
-  },
-
-  props: {
-    workspaceone: Object, // workspaceInfo를 props로 선언
-  },
-
-  data() {
-    return {
-      currentComponent: OverviewComponent,
-    }
-  },
-
-  mounted() {
-    // props로 받은 데이터를 콘솔에 출력
-    console.log('Received props data:', this.workspaceone)
-  },
-  methods: {
-    showOverviewComponent() {
-      this.currentComponent = OverviewComponent
-    },
-    showSettingComponent() {
-      this.currentComponent = SettingComponent
-    },
-  },
-
-}
-</script> -->
 <script setup>
 import { ref } from 'vue'
 import OverviewComponent from './OverviewComponent.vue'
@@ -41,11 +6,23 @@ import SettingComponent from './SettingComponent.vue'
 // const { workspaceone } = defineProps(['workspaceone'])
 const collectionStore = useCollectionStore()
 const currentComponent = ref(OverviewComponent)
-const WorkspaceOneInfo = useWorkspaceStore()
+const WorkspaceOne = useWorkspaceStore()
 const workspaceTap = ref('overview')
+let memberListSize = 1
+// const isMounted = useMounted()
 
-console.log(collectionStore.request)
-console.log('workspaceinfo Request data')
+// console.log(collectionStore.request)
+// console.log('workspaceinfo Request data')
+
+// console.log('membersize')
+// console.log(memberListSize)
+
+// if (isMounted)
+//   memberListSize = WorkspaceOneInfo.workspaceInfo.memberList.length
+
+watchEffect(() => {
+  memberListSize = WorkspaceOne.workspaceInfo?.memberList.length
+})
 </script>
 
 <template>
@@ -55,10 +32,12 @@ console.log('workspaceinfo Request data')
     </div> -->
     <div class="workspaceHead">
       <div class="image-container">
-        <img src="/person.png">
+        <!-- <img src="/person.png"> -->
+        <img v-if="memberListSize >= 2" src="./group copy.svg">
+        <img v-else src="./person copy.svg">
       </div>
       <div class="workspace-name">
-        {{ WorkspaceOneInfo.workspaceInfo ? WorkspaceOneInfo.workspaceInfo.name : '' }}
+        {{ WorkspaceOne.workspaceInfo ? WorkspaceOne.workspaceInfo.name : '' }}
       </div>
     </div>
     <div class="overviewSettingHead">

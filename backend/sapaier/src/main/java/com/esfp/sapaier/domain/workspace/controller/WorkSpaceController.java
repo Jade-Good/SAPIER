@@ -8,6 +8,7 @@ import com.esfp.sapaier.domain.workspace.dto.AddMemberDto;
 import com.esfp.sapaier.domain.workspace.dto.CollectionListDto;
 import com.esfp.sapaier.domain.workspace.dto.UserPermissionDto;
 import com.esfp.sapaier.domain.workspace.service.WorkSpaceService;
+import com.esfp.sapaier.global.auth.service.UserAuthService;
 import com.esfp.sapaier.global.auth.util.JwtTokenProvider;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -23,28 +24,33 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class WorkSpaceController {
     private final WorkSpaceService workSpaceService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final UserAuthService userAuthService;
 
 
     //workspace 목록 조회
     @GetMapping("api/v1/workspaces")
-    public List<WorkSpace> WorkSpaceList(@CookieValue String accessToken){//@RequestBody String uuId
-        String userUuid = jwtTokenProvider.parseClaims(accessToken).getSubject();
+    public List<WorkSpace> WorkSpaceList(
+            @RequestHeader(name = "Authorization",required = false) String bearerToken,
+            @CookieValue(name = "accessToken",required = false) String accessToken){//@RequestBody String uuId
+        String userUuid = userAuthService.getUserUuid(accessToken,bearerToken);
         return workSpaceService.WorkSpaceList(userUuid);
     }
 
 
     //워크스페이스 생성
     @PostMapping("api/v1/workspaces")
-    public void addWorkSpace(@RequestBody WorkSpace workSpace, @CookieValue String accessToken){
-        String userUuid = jwtTokenProvider.parseClaims(accessToken).getSubject();
+    public WorkSpace addWorkSpace(@RequestBody WorkSpace workSpace, @RequestHeader(name = "Authorization",required = false) String bearerToken,
+                             @CookieValue(name = "accessToken",required = false) String accessToken){//@RequestBody String uuId
+        String userUuid = userAuthService.getUserUuid(accessToken,bearerToken);
         List<UserPermissionDto> list = new ArrayList<>();
         UserPermissionDto userPermissionDto = new UserPermissionDto();
         userPermissionDto.setUserPermission("admin");
         userPermissionDto.setUuId(userUuid);
         list.add(userPermissionDto);
         workSpace.setMemberList(list);
-        workSpaceService.addWorkSpace(workSpace);
+        workSpace.setAdmin(userUuid);
+
+        return workSpaceService.addWorkSpace(workSpace);
     }
 
     //워크스페이스 정보 조회
@@ -79,19 +85,22 @@ public class WorkSpaceController {
 
 
     //워크스페이스 팀원 추가
-    @PostMapping("api/v1/workspaces/members")
-    public void addMember(@RequestBody AddMemberDto addMemberDto){//@RequestHeader("Authorization") String authorizationToken,
-//        String accessToken = jwtTokenProvider.resolveToken(authorizationToken);
-//        String userUuid = jwtTokenProvider.parseClaims(accessToken).getSubject();
-        workSpaceService.addMember(addMemberDto.getWorkspaceIdx(), addMemberDto.getMemberUuid(), addMemberDto.getPermission());
+    @PostMapping("api/v1/workspaces/{key}")
+    public void addMember(@PathVariable String key, @RequestHeader(name = "Authorization",required = false) String bearerToken,
+                          @CookieValue(name = "accessToken",required = false) String accessToken){//@RequestBody String uuId
+        String userUuid = userAuthService.getUserUuid(accessToken,bearerToken);
+
+        workSpaceService.addMember(key, userUuid, "viewer");
     }
+
 
 
     //워크스페이스 팀원 삭제
     @DeleteMapping("api/v1/workspaces/members/{workspaceIdx}")
-    public void deleteMember(@PathVariable String workspaceIdx,@CookieValue String accessToken){
-        String memberUUID = jwtTokenProvider.parseClaims(accessToken).getSubject();
-        workSpaceService.deleteMember(workspaceIdx, memberUUID);
+    public void deleteMember(@PathVariable String workspaceIdx,@RequestHeader(name = "Authorization",required = false) String bearerToken,
+                             @CookieValue(name = "accessToken",required = false) String accessToken){//@RequestBody String uuId
+        String userUuid = userAuthService.getUserUuid(accessToken,bearerToken);
+        workSpaceService.deleteMember(workspaceIdx, userUuid);
     }
 
     //워크스페이스 팀원 권한 변경

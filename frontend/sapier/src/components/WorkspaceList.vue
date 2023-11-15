@@ -11,6 +11,7 @@ const WorkspaceListInfo = useWorkspaceListStore()
 const WorkspaceOneInfo = useWorkspaceStore()
 const User = useUserStore()
 const collectionStore = useCollectionStore()
+const route = useRouter()
 
 const isMounted = useMounted()
 const currentComponent = ref<Component | null>(MainInfo)// 초기값은 MainInfo 컴포넌트로 설정
@@ -38,6 +39,9 @@ const workspaceinfo = ref<any>(null) // workspaceInfoOne 데이터를 저장할 
 // }
 
 function truncateText(text: string, maxLength: number) {
+  if (!text)
+    return '' // 또는 다른 기본값을 반환할 수 있습니다.
+
   if (text.length > maxLength)
     return `${text.slice(0, maxLength)}`
 
@@ -52,7 +56,7 @@ function showInfoComponent(workspaceInfoOne: any, index) {
   // console.log(workspaceinfo)
   WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
   WorkspaceOneInfo.selectedWorkspaceIndex = index
-
+  collectionStore.request = null
   // WorkspaceOneInfo.$patch(workspaceInfoOne)
 //
   // console.log(WorkspaceOneInfo)
@@ -74,10 +78,23 @@ async function addWorkSpace() {
     }
 
     // axios를 사용하여 서버에 POST 요청을 보냅니다.
-    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/workspaces`, Userdata)
+    const response = await axios.post(`/api/v1/workspaces`, Userdata)
 
     // 요청이 성공하면 WorkspaceList에 새로운 데이터를 추가합니다.
-    this.WorkspaceListInfo.WorkspaceList.push(Userdata)
+    WorkspaceListInfo.WorkspaceList.push(response)
+    const currentRoute = route.currentRoute.value.path
+
+    // 조건에 따라 다른 동작 수행
+    if (currentRoute === '/main') {
+      // 현재 라우트 위치가 /main인 경우
+      route.go(0)
+    }
+    else {
+      // 현재 라우트 위치가 /main이 아닌 경우
+      // window.location.reload()
+      // route.go(0)
+      route.push('/main')
+    }
   }
   catch (error) {
     console.error('Error adding workspace:', error)
@@ -134,6 +151,8 @@ async function addWorkSpace() {
 .workspaceId{
   text-align: center; /* 텍스트 가운데 정렬 */
     line-height: 50px; /* 텍스트를 수직 중앙으로 정렬 */
+  font-size: 14px;
+
 }
 
 .cross {
