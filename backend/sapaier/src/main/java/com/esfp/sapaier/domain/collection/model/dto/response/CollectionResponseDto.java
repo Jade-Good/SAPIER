@@ -17,6 +17,7 @@ public class CollectionResponseDto {
     private List<RequestEntity> apiList;
     private List<CollectionEntity> collectionList;
     private LocalDateTime modifiedTime;
+    private Boolean collapsed;
 
     public CollectionResponseDto(CollectionEntity collection) {
         this.collectionId = collection.getCollectionId();
@@ -24,6 +25,7 @@ public class CollectionResponseDto {
         this.apiList = collection.getApiList();
         this.collectionList = collection.getCollectionList();
         this.modifiedTime = collection.getModifiedTime();
+        this.collapsed = collection.getCollapsed();
     }
 
 }
