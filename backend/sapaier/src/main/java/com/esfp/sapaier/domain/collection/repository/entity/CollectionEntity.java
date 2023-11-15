@@ -36,6 +36,7 @@ public class CollectionEntity {
 		this.collectionName = collectionName;
 		this.collectionList = collectionList;
 		this.createdTime = Instant.now();
+		this.collapsed = false;
 	}
 
 	@Override
