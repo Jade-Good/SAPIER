@@ -465,6 +465,8 @@ input:focus {
 
   padding: 0.5rem;
 
+  z-index: 3;
+
   /* Style */
   border-radius: 5px;
   background-color: white;
@@ -549,6 +551,9 @@ input:focus {
 
 .grayBtn:hover {
   background-color: var(--color-gray1-hover);
+}
+.grayBtn:active {
+  background-color: var(--color-gray1-active);
 }
 
 .resize-line {
