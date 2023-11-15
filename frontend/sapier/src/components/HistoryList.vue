@@ -85,10 +85,10 @@ export default defineComponent({
                     <!-- <div>{{ histories.workspaceKey }}</div> -->
                     <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
                         <div>{{ histories.workspaceKey }}</div>
-                        <div>{{ history.request.requestName }}</div>
                         <div>{{ history.request.method }}</div>
+                        <div>{{ history.request.requestName }}</div>
                         <div>{{ history.response.statusCode }}</div>
-                        <div>{{ history.response.responseTime }}</div>
+                        <div>{{ history.response.responseTime }}ms</div>
                     </li>
                 </ul>
                 <!-- <div>{{ history.request.requestName }}</div>
@@ -109,6 +109,7 @@ export default defineComponent({
     flex-direction: column;
 }
 .history{
-    border-color: #000000;
+    border: 1px solid #000000;
+    /* border-color: #000000; */
 }
 </style>
