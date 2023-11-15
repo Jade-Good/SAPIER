@@ -12,7 +12,7 @@ if (import.meta.hot) {
 browser.runtime.onInstalled.addListener((): void => {
   // eslint-disable-next-line no-console
   console.log('Extension installed')
-  browser.storage.local.set({ loggedIn: false })
+  browser.storage.sync.set({ loggedIn: false })
 })
 
 let previousTabId = 0
@@ -54,17 +54,28 @@ onMessage('get-current-tab', async () => {
   }
 })
 
+function getAccessToken(url: string | URL | undefined) {
+  const urlObj = new URL(url)
+  return urlObj.searchParams.get('accessToken')
+}
+
 // 11/12 feat: OnUpdated.addListener
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   // console.log(browser.runtime.getURL(''))
   // 리디렉션된 URL을 확인
   // https://sapier.co.kr/login/redirect
-  if (changeInfo.url && changeInfo.url.includes(browser.runtime.getURL(''))) {
+  if (changeInfo.url && changeInfo.url.includes(browser.runtime.getURL('/dist/options/index.html?forExtension=Y&accessToken='))) {
     // 필요한 로직 수행, 예를 들어 로그인 상태를 저장
-    browser.storage.local.set({ loggedIn: true })
+    browser.storage.sync.set({ loggedIn: true })
 
     // eslint-disable-next-line no-console
-    console.log('로그인 성공')
+    console.log('onUpdated: 로그인 성공')
+
+    const accessToken = getAccessToken(tab.url)
+
+    browser.storage.local.set({ token: accessToken })
+    // eslint-disable-next-line no-console
+    console.log(`토큰: ${accessToken}`)
 
     // 쿠키 저장
     // const baseUrl = browser.runtime.getURL('/dist/login/index.html')
@@ -100,31 +111,31 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     //     console.error('유저 정보 요청 실패:', error)
     //   })
 
-    // fetch('http://localhost:8080/api/v1/user', {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Accept': 'application/json',
-    //   },
-    //   credentials: 'same-origin',
-    // })
-    //   .then((response) => {
-    //     console.error(response)
-    //     if (!response.ok)
-    //       throw new Error('네트워크 응답이 정상적이지 않습니다.')
-    //     return response.text()
-    //   })
-    //   .then((text) => {
-    //     try {
-    //       return JSON.parse(text)
-    //     }
-    //     catch (error) {
-    //       console.error('JSON 파싱 오류:', error)
-    //       // 파싱 오류 처리
-    //     }
-    //   })
-    //   .then(data => console.log(data))
-    //   .catch(error => console.error('Error:', error))
+    fetch('https://sapier.co.kr/api/v1/users', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    })
+      .then((response) => {
+        console.log(response)
+        if (!response.ok)
+          throw new Error('네트워크 응답이 정상적이지 않습니다.')
+        return response.text()
+      })
+      .then((text) => {
+        try {
+          return JSON.parse(text)
+        }
+        catch (error) {
+          console.error('JSON 파싱 오류:', error)
+          // 파싱 오류 처리
+        }
+      })
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error))
   }
 })
 
