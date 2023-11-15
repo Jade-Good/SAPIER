@@ -14,10 +14,15 @@ const WorkspaceOneInfo = useWorkspaceStore()
 const memberInfo = useMemberStore()
 const isMounted = useMounted()
 const showDropdown = ref(false)
-
+const route = useRouter();
 // console.log(workspaceone.name)
 
 if (isMounted) {
+
+  if(WorkspaceOneInfo.workspaceInfo == null || WorkspaceOneInfo.workspaceInfo === undefined){
+    route.push("/main")
+  }
+  else{
   // document.addEventListener('click', handleOutsideClick)
   axios
     .get(`/api/v1/workspaces/members/${WorkspaceOneInfo.workspaceInfo.key}`)
@@ -53,6 +58,7 @@ if (isMounted) {
   //   ...c,
   //   disabled: selectedDataArray.some(data => data.id === c.collectionKey),
   // }))
+}
 }
 
 // onUnmounted(() => {
@@ -173,6 +179,7 @@ function removeCollection(collectionId) {
 }
 
 function isCollectionDisabled(collection) {
+
   if (WorkspaceOneInfo.workspaceInfo.pinnedList) {
     return WorkspaceOneInfo.workspaceInfo.pinnedList.some(
       pinnedCollection => pinnedCollection.collectionName === collection.collectionName,

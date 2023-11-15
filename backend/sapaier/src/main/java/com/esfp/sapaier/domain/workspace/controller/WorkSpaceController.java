@@ -117,7 +117,7 @@ public class WorkSpaceController {
     }
 
 
-    @PostMapping("/api/v1/workspaces/{workspaceId}")
+    @PostMapping("/api/v1/workspaces/collection/{workspaceId}")
     ResponseEntity<Object> addCollectionDocument(@PathVariable String workspaceId, @RequestBody CollectionListDto collectionListDto){
         workSpaceService.addCollectionDocument(workspaceId,collectionListDto);
         return new ResponseEntity<>(HttpStatus.OK);

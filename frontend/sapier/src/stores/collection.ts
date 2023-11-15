@@ -43,17 +43,22 @@ interface Table {
 
 export type { CollectionTree }
 
-export const useCollectionStore = defineStore('collection', () => {
-  const collection = ref<CollectionTree | null>(null)
-  const request = ref<RequestInfo | null>(null)
-  const response = ref<Response>()
+export const useCollectionStore = defineStore(
+  'collection', {
+    state : () => {
+      const collection = ref<CollectionTree | null>(null)
+      const request = ref<RequestInfo | null>(null)
+      const response = ref<Response>()
 
-  return {
-    collection,
-    request,
-    response,
+      return {
+        collection,
+        request,
+        response,
+      };
+    },
+    persist: true,
   }
-})
+)
 
 if (import.meta.hot)
   import.meta.hot.accept(acceptHMRUpdate(useCollectionStore as any, import.meta.hot))

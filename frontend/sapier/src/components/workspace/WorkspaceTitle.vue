@@ -11,7 +11,6 @@ let memberListSize = 1
 
 watchEffect(() => {
   selectedWorkspaceIndex.value = workspaceStore.selectedWorkspaceIndex !== null ? workspaceStore.selectedWorkspaceIndex : 0
-
   // console.log('인덱스 출력: ', selectedWorkspaceIndex.value)
   // console.log('워크스페이스 인덱스: ', workspaceStore.selectedWorkspaceIndex)
   if (workspaceStore.workspaceInfo) {
@@ -23,8 +22,8 @@ watchEffect(() => {
   }
 
   memberListSize = workspaceStore.workspaceInfo?.memberList.length
-  console.log('길이', memberListSize)
-  console.log('스토어 확인', workspaceStore.workspaceInfo?.memberList)
+  // console.log('길이', memberListSize)
+  // console.log('스토어 확인', workspaceStore.workspaceInfo?.memberList)
 })
 
 async function addCollectionDocument() {
@@ -49,8 +48,13 @@ async function addCollectionDocument() {
       }
       // console.log('컬렉션 인포 : ', JSON.stringify(newCollectionInfo))
       const workspaceId = workspaceStore.workspaceInfo?.key
-      const res = await axios.post(`/api/v1/workspaces/${workspaceId}`, newCollectionInfo)
+      const res = await axios.post(`/api/v1/workspaces/collection/${workspaceId}`, newCollectionInfo)
       // console.log('워크스페이스에 추가 axios 성공', res)
+
+      if (workspaceStore.workspaceInfo?.collectionList === null)
+        workspaceStore.workspaceInfo.collectionList = []
+
+      workspaceStore.workspaceInfo?.collectionList.push(newCollectionInfo)
     }
     catch (error) {
       console.error(error)
