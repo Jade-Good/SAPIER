@@ -22,47 +22,52 @@ function showInfoComponent(workspaceInfoOne: any, workspaceInfoOneIdx: any) {
 }
 
 const workspaceListInfo = ref<any>(null)
-
-async function getWorkspaceList() {
-  try {
-    await browser.storage.local.get(['token']).then(async (value) => {
-      await fetch('https://sapier.co.kr/api/v1/workspaces', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${value.token}`,
-        },
-      })
-        .then((response) => {
-          console.log(response)
-          if (!response.ok)
-            throw new Error('네트워크 응답이 정상적이지 않습니다.')
-          return response.text()
-        })
-        .then((text) => {
-          try {
-            return JSON.parse(text)
-          }
-          catch (error) {
-            console.error('JSON 파싱 오류:', error)
-            // 파싱 오류 처리
-          }
-        })
-        .then((data) => {
-          // 데이터 할당
-          workspaceListInfo.value = data
-          browser.storage.local.set({ workspaceList: workspaceListInfo })
-        })
-        .catch(error => console.error('Error:', error))
-    })
-  }
-  catch (error) {
-    console.error('Error getWorkspaceList:', error)
-  }
-}
-
-onMounted(getWorkspaceList)
+browser.storage.local.get(['workspaceList']).then((data) => {
+  workspaceListInfo.value = data.workspaceList
+  console.log(`workspaceList : ${data.workspaceList}`)
+})
+// async function getWorkspaceList() {
+//   try {
+//     await browser.storage.local.get(['token']).then(async (value) => {
+//       await fetch('https://sapier.co.kr/api/v1/workspaces', {
+//         method: 'GET',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           'Accept': 'application/json',
+//           'Authorization': `Bearer ${value.token}`,
+//         },
+//       })
+//         .then((response) => {
+//           console.log(response)
+//           if (!response.ok)
+//             throw new Error('네트워크 응답이 정상적이지 않습니다.')
+//           return response.text()
+//         })
+//         .then((text) => {
+//           try {
+//             return JSON.parse(text)
+//           }
+//           catch (error) {
+//             console.error('JSON 파싱 오류:', error)
+//             // 파싱 오류 처리
+//           }
+//         })
+//         .then((data) => {
+//           // 데이터 할당
+//           workspaceListInfo.value = data
+//           console.log('데이터 할당 성공', workspaceListInfo.value[0].name)
+//           console.log(data)
+//           browser.storage.local.set({ workspaceList: workspaceListInfo })
+//         })
+//         .catch(error => console.error('Error:', error))
+//     })
+//   }
+//   catch (error) {
+//     console.error('Error getWorkspaceList:', error)
+//   }
+// }
+// getWorkspaceList()
+// onMounted(getWorkspaceList)
 </script>
 
 <template>

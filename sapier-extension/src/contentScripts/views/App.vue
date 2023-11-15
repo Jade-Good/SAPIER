@@ -5,7 +5,7 @@ import 'uno.css'
 const [show, toggle] = useToggle(false)
 
 const isLoggedIn = ref(false)
-browser.storage.sync.get(['loggedIn']).then((data) => {
+browser.storage.local.get(['loggedIn']).then((data) => {
   // eslint-disable-next-line no-console
   console.log(`로그인 검사 ${data.loggedIn}`)
   isLoggedIn.value = data.loggedIn
@@ -25,7 +25,7 @@ browser.storage.sync.get(['loggedIn']).then((data) => {
       <div v-if="isLoggedIn" flex class="mid">
         <WorkspaceList w-20 />
         <Category w-60 />
-        <WorkSpaceInfo h-full w-full />
+        <WorkspaceInfo h-full w-full />
       </div>
       <div v-else>
         로그인을 해주세요.

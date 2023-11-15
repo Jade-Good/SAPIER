@@ -25,8 +25,7 @@ export default defineComponent({
 
     watchEffect(() => {
       idList.length = 0
-      console.log('시작전에 검사1: ', workspaceStore.value)
-      // console.log('시작전에 검사2: ', workspaceStore.value.collectionList)
+      console.log('시작전에 검사: ', workspaceStore.value)
 
       if (idList !== null && workspaceStore.value && workspaceStore.value.collectionList) {
         console.log('일단도착: ', workspaceStore.value.collectionList)
@@ -46,21 +45,39 @@ export default defineComponent({
       }
 
       collectionList.value.length = 0
-      if (idList.length > 0) {
+      if (idList.length > 0 && accessToken.value) {
         fetch('https://sapier.co.kr/api/v1/collection/list', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            'Authorization': `Bearer ${accessToken.value}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(collectionId),
         })
           .then((response) => {
-            collectionStore.value = response.data
-            console.log(`response:${response.data}`)
-            console.log(`collectionStore:${collectionStore.value}`)
-            for (let i = 0; i < response.data.length; i++)
-              collectionList.value.push(response.data[i].collectionList)
+            if (!response.ok)
+              throw new Error('네트워크 응답이 정상적이지 않습니다.')
+            return response.text()
+          })
+          .then((text) => {
+            try {
+              return JSON.parse(text)
+            }
+            catch (error) {
+              console.error('JSON 파싱 오류:', error)
+              // 파싱 오류 처리
+            }
+          })
+          .then((data) => {
+            if (data) {
+              collectionStore.value = data
+              console.log('response:', data)
+              console.log('collectionStore: ', collectionStore.value)
+              for (let i = 0; i < data.length; i++) {
+                collectionList.value.push(data[i].collectionList)
+                console.log('collectionList:', data[i].collectionList)
+              }
+            }
           })
           .catch((error) => {
             console.error('Error:', error)
