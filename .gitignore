@@ -123,3 +123,6 @@ fabric.properties
 **/.gradle/
 
 **/.idea/
+frontend/sapier/src/components.d.ts
+frontend/sapier/.env.development.local
+frontend/sapier/src/auto-imports.d.ts
