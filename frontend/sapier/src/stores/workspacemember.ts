@@ -6,14 +6,17 @@ interface memberInfo {
   email: string
   profileImageUrl: string
 }
+interface memberInfoList {
+  memberList: memberInfo[]
+}
 
-export type { memberInfo }
+export type { memberInfoList }
 
-export const useMemberStore = defineStore('member', () => {
-  const memberInfo = ref < memberInfo | null > (null)
+export const useMemberStore = defineStore('memberList', () => {
+  const memberInfoList = ref < memberInfoList | null > (null)
 
   return {
-    memberInfo,
+    memberInfoList,
   }
 })
 

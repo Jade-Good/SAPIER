@@ -27,6 +27,7 @@ public class WorkSpace {
     private String name;
 
     private String color="#0F4C81";
+    private List<CollectionListDto> pinnedList;
     @NotNull
     private List<CollectionListDto> collectionList;
     @NotNull
@@ -38,6 +39,8 @@ public class WorkSpace {
     @NotNull
     @LastModifiedDate
     private LocalDateTime modifiedTime;
+    @NotNull
+    private String Admin;
 //    private Date modifiedTime;
 
     @Builder
