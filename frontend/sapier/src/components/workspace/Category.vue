@@ -25,7 +25,7 @@ export default defineComponent({
         collectionId: idList,
       }
 
-      console.log('collectionId : ', JSON.stringify(collectionId))
+      // console.log('collectionId : ', JSON.stringify(collectionId))
 
       collectionList.value.length = 0
       if (idList.length > 0) {
@@ -52,7 +52,7 @@ export default defineComponent({
     const addRootCollection = (documentIdx) => {
       const newRootCollection = createNewRootCollection()
       collectionList.value[documentIdx].push(newRootCollection)
-      console.log('')
+      // console.log('Root collection 호출', newRootCollection)
       saveData(documentIdx)
     }
 
@@ -131,6 +131,7 @@ export default defineComponent({
         apiList: [],
         collectionList: [],
         modifiedTime: new Date().toISOString(),
+        collapsed: false,
       }
     }
 
@@ -233,6 +234,7 @@ export default defineComponent({
     }
     const toggleCollapse = (collection) => {
       collection.collapsed = !collection.collapsed
+      // console.log('토글 함수 호출', collection.collapsed)
     }
 
     return {
@@ -261,39 +263,70 @@ export default defineComponent({
     <WorkspaceTitle />
 
     <div v-for="(documentId, index) in collectionList" :key="documentId.collectionId" class="collection-list">
-      <h1>Collection List</h1>
-      <p>도큐먼트 : {{ documentName[index] }} </p>
-      <ul>
+      <!-- <h1>Collection List</h1> -->
+
+      <div class="documentNameDiv" @click="toggleCollapse(documentId)">
+        <img src="./folder.svg" class="docFolderImg"> <div class="leftSortDocument">
+          {{ documentName[index] }}
+        </div>
+        <img src="./add.svg" class="addImg" @click="addRootCollection(index)">
+      </div>
+      <ul v-show="!documentId.collapsed">
         <li v-for="collection in documentId" :key="collection.collectionName">
-          <span :style="{ marginLeft: '15px' }">
+          <div class="setRow">
+            <span :style="{ marginLeft: '6px' }" class="collname">
+              <div class="boxSize" @click="toggleCollapse(collection)">
+                <img src="./folder.svg" class="folderImg">
+                <span v-if="!collection.editing" class="rootCollName">{{ collection.collectionName }}</span>
 
-            <span v-if="!collection.editing">{{ collection.collectionName }}</span>
+                <input
+                  v-else
+                  v-model="collection.newName"
+                  class="nameChange"
+                  @blur="saveCollectionName(collection, index)"
+                  @keyup.enter="saveCollectionName(collection, index)"
+                ></div>
+              <!-- <div class="dropdown">
+                <div class="dropdown-btn">
+                  <img src="./etc.svg" class="dropdown-btn">
+                </div>
+                <ul class="dropdown-list">
+                  <li @click="addChildCollection(collection, index)">
+                    add collection
+                  </li>
+                  <li @click="deleteCollection(documentId, collection, index)">
+                    delete collection
+                  </li>
+                  <li @click="addRootRequest(collection, index)">
+                    add request
+                  </li>
+                  <li>delete request</li>
+                </ul>
+              </div> -->
+              <!-- <button class="btn" @click="toggleEditing(collection)">{{ collection.editing ? '완료' : '수정' }}</button> -->
+            </span>
 
-            <input
-              v-else
-              v-model="collection.newName"
-              @blur="saveCollectionName(collection, index)"
-              @keyup.enter="saveCollectionName(collection, index)"
-            >
-
-            <button class="btn" @click="toggleEditing(collection)">{{ collection.editing ? '완료' : '수정' }}</button>
-          </span><div class="dropdown">
-            <div class="dropdown-btn">
-              +
+            <div class="dropdown">
+              <!-- <div class="dropdown-btn"> -->
+              <img src="./etc.svg" class="dropdown-btn"> <!-- 뒤 -->
+              <!-- </div> -->
+              <ul class="dropdown-list">
+                <li @click="addChildCollection(collection, index)">
+                  add collection
+                </li>
+                <li @click="deleteCollection(documentId, collection, index)">
+                  delete collection
+                </li>
+                <li @click="addRootRequest(collection, index)">
+                  add request
+                </li>
+                <li @click="toggleEditing(collection)">
+                  modify name
+                </li>
+              </ul>
             </div>
-            <ul class="dropdown-list">
-              <li @click="addChildCollection(collection, index)">
-                add collection
-              </li>
-              <li @click="deleteCollection(documentId, collection, index)">
-                delete collection
-              </li>
-              <li @click="addRootRequest(collection, index)">
-                add request
-              </li>
-              <li>delete request</li>
-            </ul>
           </div>
+
           <!-- <button class="btn" @click="addChildCollection(collection, index)">
             루트에서 자식 추가
           </button>
@@ -302,26 +335,47 @@ export default defineComponent({
           </button><button class="btn" @click="addRootRequest(collection, index)">
             R리퀘추가
           </button> -->
-          <ul :style="{ marginLeft: '15px' }">
-            <li v-for="api in collection.apiList" :key="api.requestName">
-              <a @click="selectAPI(api)">
-                {{ api.requestName }}
-              </a>
-              <button class="btn" @click="deleteRootRequest(collection, api, index)">
+          <ul v-show="!collection.collapsed" :style="{ marginLeft: '6px' }">
+            <li v-for="api in collection.apiList" :key="api.requestName" class="divBlock">
+              <div class="requestBox">
+                <div class="methodContainer">
+                  <img v-if="api.method === 'GET'" src="./get.svg" class="method-icon">
+                  <img v-else-if="api.method === 'POST'" src="./post.svg" class="method-icon">
+                  <img v-else-if="api.method === 'DELETE'" src="./delete-image.svg" class="method-icon">
+                  <img v-else-if="api.method === 'PATCH'" src="./patch.svg" class="method-icon">
+                  <img v-else-if="api.method === 'PUT'" src="./put.svg" class="method-icon">
+                  <img v-else-if="api.method === 'OPTION'" src="./option.svg" class="method-icon">
+                  <img v-else-if="api.method === 'HEAD'" src="./head.svg" class="method-icon">
+                </div>
+                <a class="delReqName" @click="selectAPI(api)">
+                  {{ api.requestName }}
+                </a><div class="dropdown">
+                  <div class="setRow">
+                    <img src="./etc.svg" class="dropdown-btn-del">
+                    <ul class="dropdown-list-del">
+                      <li @click="deleteRootRequest(collection, api, index)">
+                        delete request
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <!-- <button class="btn" @click="deleteRootRequest(collection, api, index)">
                 R리퀘삭제
-              </button>
+              </button> -->
             </li>
+
+            <CollectionTree :collection="collection" :level="2" :index="index" />
           </ul>
-          <CollectionTree :collection="collection" :level="2" :index="index" />
         </li>
       </ul>
-      <button class="btn" @click="addRootCollection(index)">
+      <!-- <button class="btn" @click="addRootCollection(index)">
         루트폴더 추가
-      </button>
+      </button> -->
       <br>
-      <button class="btn" @click="saveData">
+      <!-- <button class="btn" @click="saveData">
         저장
-      </button>
+      </button> -->
     </div><button class="er" @click="addCollectionDocument()">
       document 추가
     </button>
@@ -340,6 +394,8 @@ export default defineComponent({
   border: 1px solid black;
   background-color: white;
   color: black;
+  width: 35px;
+  height: 35px;
 }
 .er{
   border: 1px solid black;
@@ -350,20 +406,38 @@ export default defineComponent({
 .dropdown {
   position: relative;
   display: inline-block;
+  background-color: transparent;
 }
 
-.dropdown-btn {
-  border: 1px solid #ddd;
+.dropdown-btn-del {
+  position: relative;
+  display: inline-block;
+  background-color: transparent;
+}
+.setRow .dropdown-btn .dropdown-btn-del{
   background-color: #fff;
   padding: 8px 12px;
   cursor: pointer;
+  background-color: transparent;
+
 }
 
+.setRow {
+  /* position: relative; */
+  /* height: 100vh; */
+  position: relative;
+  /* height: 100vh; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
 .dropdown-list {
   display: none;
   position: absolute;
   top: 100%;
-  left: 0;
+  left: -680%;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -371,19 +445,158 @@ export default defineComponent({
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1;
+  border-radius: 15px;
+
+}
+
+.dropdown-list-del  {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -600%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 15px;
+
+}
+
+.dropdown-btn, .dropdown-btn-del{
+  width: 20px;
+  height: 20px;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  padding-right: 10px;
+}
+
+div.setRow , span.collname{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nameChange {
+  width: 90%;
+
 }
 
 .dropdown-list li {
   padding: 8px 12px;
   cursor: pointer;
+  color: var(--color-gray4);
 }
 
+.dropdown-list-del li {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--color-gray4);
+}
+/*
+.dropdown-btn img {
+  background-color: var(--color-gray4)
+} */
+
 .dropdown-btn:hover + .dropdown-list,
+.dropdown-btn-del:hover + .dropdown-list-del,
 .dropdown-list:hover {
   display: block;
 }
+.dropdown-btn-del + .dropdown-list-del:hover{
+  display: block;
+}
 
+li {
+  color: var(--color-gray4);
+  font-size: var(--font-H6-size);
+  font-weight: var(--font-H5-weight);
+
+}
 .dropdown-list li:hover {
   background-color: #f1f1f1;
+}
+
+.dropdown-list-del li:hover {
+  background-color: #f1f1f1;
+}
+
+.documentNameDiv {
+  color: var(--color-gray4);
+}
+
+.nameChange{
+  width: 40 px;
+}
+
+.boxSize{
+  display: flex;
+  align-items: center; /* 수직 가운데 정렬 */
+  /* justify-content: space-between */
+}
+.delReqName {
+  white-space: nowrap;       /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  overflow: hidden;          /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis;   /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
+  max-width: 80%;          /* 최대 너비 설정 (원하는 값으로 조정) */
+  margin-right: auto;
+}
+
+.rootCollName{
+  white-space: nowrap;       /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  overflow: hidden;          /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis;   /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
+  max-width: 100%;
+
+}
+.requestBox {
+  display: flex;
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: space-between;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.folderImg{
+  padding-right: 5px;
+}
+
+.methodContainer {
+  display: flex
+}
+
+.method-icon {
+  margin-right: 5px;
+}
+
+.addImg {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+  align-items: center;
+}
+
+.docFolderImg{
+  margin-left: 3px;
+  margin-right: 5px;
+}
+.documentNameDiv{
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 수평 가운데 정렬 */
+  margin-bottom: 7px;
+}
+.leftSortDocument {
+  white-space: nowrap;       /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  overflow: hidden;          /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis;   /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
+  max-width: 100%;          /* 최대 너비 설정 (원하는 값으로 조정) */
+  margin-right: auto;
+}
+.addImg:hover {
+  transform: scale(1.5); /* hover시 1.2배 확대 */
+  /* 다른 스타일 변경이 필요하면 여기에 추가하세요. */
 }
 </style>
