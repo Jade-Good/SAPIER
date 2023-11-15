@@ -1,8 +1,8 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
-import type { history } from './history'
+import type { HistoryInfo } from './history'
 
 interface HistoryList{
-    historyList: history[]
+    historyList: HistoryInfo[]
 }
 
 export type { HistoryList }
