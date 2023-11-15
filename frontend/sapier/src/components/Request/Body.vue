@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import VueJsoneditor from 'vue3-ts-jsoneditor'
+
 const requestBody = inject('requestBody')
 </script>
 
 <template>
   <div class="p-3" h-full flex flex-col>
-    <div flex flex-gap-2>
+    <!-- <div flex flex-gap-2>
       <div class="formStyleBtn">
         raw
         <div i-carbon-chevron-down h-full w-5 />
@@ -13,23 +15,30 @@ const requestBody = inject('requestBody')
         JSON
         <div i-carbon-chevron-down h-full w-5 />
       </div>
-    </div>
-    <div class="bodyTextBox" mt-2 h-full w-full>
-      <br>
-      {{ requestBody }}
-    </div>
+    </div> -->
+    <VueJsoneditor
+      v-model:json="requestBody" h-full
+      w-full
+      height="300"
+      mode="text"
+      :query-languages-ids="queryLanguages"
+      @error="onError"
+      @focus="onFocus"
+      @blur="onBlur"
+    />
+
     <div />
   </div>
 </template>
 
 <style scoped>
+/*
 .bodyTextBox {
   border: 1px solid var(--color-gray3);
   white-space: pre;
 }
 
 .formStyleBtn {
-  /* layout */
   display: flex;
   justify-content: space-between;
   gap: 0.8rem;
@@ -38,7 +47,6 @@ const requestBody = inject('requestBody')
 
   line-height: 1.8rem;
 
-  /* Style */
   border-radius: 5px;
 
   color: var(--color-gray4);
@@ -48,7 +56,6 @@ const requestBody = inject('requestBody')
   font-weight: var(--font-H6-weight);
 }
 .textTypeBtn {
-  /* layout */
   display: flex;
   justify-content: space-between;
   gap: 0.8rem;
@@ -57,7 +64,6 @@ const requestBody = inject('requestBody')
 
   line-height: 1.8rem;
 
-  /* Style */
   border-radius: 5px;
 
   color: var(--color-blue2);
@@ -65,4 +71,5 @@ const requestBody = inject('requestBody')
   font-size: var(--font-H6-size);
   font-weight: var(--font-H6-weight);
 }
+*/
 </style>
