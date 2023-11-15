@@ -1,13 +1,13 @@
-<script>
+<script setup>
 const collectionStore = useCollectionStore()
 
-export default {
-    data(){
-        return{
+// export default {
+//     data(){
+//         return{
             
-        }
-    }
-}
+//         }
+//     }
+// }
 </script>
 
 <template>
