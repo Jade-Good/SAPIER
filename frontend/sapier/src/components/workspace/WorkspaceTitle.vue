@@ -49,11 +49,16 @@ watchEffect(() => {
     margin-top: 15%;
     margin-bottom: 10%;
     height: 30px;
+max-width: 100%;
   }
 
   .titleName {
 font-size: var(--font-H2-size);
 font-weight: var(--font-H5-weight);
+white-space: nowrap;       /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  overflow: hidden;          /* 넘치는 텍스트를 숨김 */
+  text-overflow: clip;   /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
+  max-width: 75%;
   }
 
   .people {
@@ -70,16 +75,18 @@ font-weight: var(--font-H5-weight);
     margin-left: 5%;
     border-radius: 10px;
     height: 30px;
+    width: 90%;
     background-repeat: no-repeat;
     background-image: url('./search.png');
-    background-position: 10px 6px
+    background-position: 10px 6px;
+    margin-bottom: 25px;
 
   }
   input:focus { outline:none; width: 75%;}
 
   .searchBox::placeholder{
     font-size: var(--font-H6-size);
-    font-weight: var(--font-H5-weight);
+    font-weight: var(--font-H6-weight);
     color: var(--color-gray4);
     text-align: center;
 
