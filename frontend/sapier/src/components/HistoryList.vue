@@ -59,6 +59,8 @@ export default defineComponent({
 
             console.log('선택한 history 호출: ', history)
             console.log('스토어에 저장 확인: ', collectionStore)
+            console.log('request: ', collectionStore.request)
+            console.log('response: ', collectionStore.response)
         }
     }
 })
