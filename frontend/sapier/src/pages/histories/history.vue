@@ -34,6 +34,7 @@ if(isMounted){
         <!-- HistoryInfo 추후 수정 -->
         <!-- <HistoryInfo h-full w-full /> -->
         <RequestInfo v-if="historyStore.request" h-full w-full />
+        <HistoryInfo v-else h-full w-full />
     </div>
 </template>
 
