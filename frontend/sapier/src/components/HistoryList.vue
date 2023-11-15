@@ -77,22 +77,38 @@ export default defineComponent({
 })
 </script>
 <template>
-    <ul>
-        <li v-for="(dailyHistory, dIdx) in HistoryList" :key="dIdx">
-            <div>{{ dailyHistory.date }}</div>
-            <ul v-for="(histories, wIdx) in dailyHistory.workspaceHistories" :key="wIdx">
-                <!-- <div>{{ histories.workspaceKey }}</div> -->
-                <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
-                    <div>{{ histories.workspaceKey }}</div>
-                    <div>{{ history.request.requestName }}</div>
-                    <div>{{ history.response.statusCode }}</div>
-                    <div>{{ history.response.responseTime }}</div>
-                </li>
-            </ul>
-            <!-- <div>{{ history.request.requestName }}</div>
-            <div>{{ history.request.method }}</div>
-            <div>{{ history.response.status }}</div>
-            <div>{{ history.response.responseTime }}</div> -->
-        </li>
-    </ul>
+    <div class="historyList">
+        <ul>
+            <li v-for="(dailyHistory, dIdx) in HistoryList" :key="dIdx">
+                <div>{{ dailyHistory.date }}</div>
+                <ul v-for="(histories, wIdx) in dailyHistory.workspaceHistories" :key="wIdx">
+                    <!-- <div>{{ histories.workspaceKey }}</div> -->
+                    <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
+                        <div>{{ histories.workspaceKey }}</div>
+                        <div>{{ history.request.requestName }}</div>
+                        <div>{{ history.request.method }}</div>
+                        <div>{{ history.response.statusCode }}</div>
+                        <div>{{ history.response.responseTime }}</div>
+                    </li>
+                </ul>
+                <!-- <div>{{ history.request.requestName }}</div>
+                <div>{{ history.request.method }}</div>
+                <div>{{ history.response.status }}</div>
+                <div>{{ history.response.responseTime }}</div> -->
+            </li>
+        </ul>
+    </div>
 </template>
+
+<style>
+.historyList{
+    background: #C9C9C9;
+    border-color: #B6B6B6;
+    display: flex; /* 부모 요소를 플렉스 컨테이너로 설정 */
+    align-items: center;
+    flex-direction: column;
+}
+.history{
+    border-color: #000000;
+}
+</style>
