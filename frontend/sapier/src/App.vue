@@ -45,13 +45,15 @@ useHead({
   --font-H6-weight: 700;
 
   --color-blue1: #0F4C81; /* Classic Blue */
-  --color-blue1-hover: #0b3f6c; /* Classic Blue Hover*/
+  --color-blue1-hover: #0c4577; /* Classic Blue Hover*/
+  --color-blue1-active: #0a375f; /* Classic Blue Active*/
   --color-blue2: #658DC6; /* PrOvence */
   --color-blue3: #B5C7D3; /* Baby Blue */
 
   /* --color-white: White; White */
   --color-gray1: #F0F0F0; /* White Gray */
-  --color-gray1-hover: #dedede; /* White Gray */
+  --color-gray1-hover: #dedede; /* White Gray Hover*/
+  --color-gray1-active: #cfcfcf; /* White Gray Active*/
   --color-gray2: #C9C9C9; /* Lite Gray */
   --color-gray3: #B6B6B6; /* Gray */
   --color-gray4: #838383; /* Dark Gray */

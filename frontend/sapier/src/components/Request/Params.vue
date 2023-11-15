@@ -4,24 +4,50 @@ const isMounted = useMounted()
 
 const queryParams = inject('queryParams')
 const isHighLight = ref([] as boolean[])
+const isDeleteBtn = ref([] as boolean[])
 
-if (isMounted) {
-  queryParams.rows.forEach(() => {
-    isHighLight.value.push(false)
-  })
-}
+if (isMounted)
+  setHLArray()
 
 watch(() => useCollection.request, () => {
+  setHLArray()
+})
+
+function setHLArray() {
+  isHighLight.value = []
+  isDeleteBtn.value = []
+
   queryParams.rows.forEach(() => {
     isHighLight.value.push(false)
   })
-})
+  queryParams.rows.forEach(() => {
+    isDeleteBtn.value.push(false)
+  })
+}
 
 function rowHighLight(row: number) {
   isHighLight.value[row] = true
 }
 function clearHighLight(row: number) {
   isHighLight.value[row] = false
+}
+
+function inputTextColor(active: string) {
+  return {
+    color: active === 'true' ? 'var(--color-black)' : 'var(--color-gray3)',
+  }
+}
+
+function inputStart(index: number) {
+  if (!queryParams.rows[index].active) {
+    queryParams.rows[index].active = 'true'
+    queryParams.rows.push({ active: '', key: '', value: '', description: '' })
+  }
+}
+
+function deleteRow(index: number) {
+  queryParams.rows.splice(index, 1)
+  setHLArray()
 }
 </script>
 
@@ -44,20 +70,23 @@ function clearHighLight(row: number) {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(param, index) in queryParams.rows" :key="index" :class="{ tableHighLite: isHighLight[index] }">
+        <tr v-for="(param, index) in queryParams.rows" :key="index" :class="{ tableHighLite: isHighLight[index] }" @mouseenter="() => { isDeleteBtn[index] = true }" @mouseleave="() => { isDeleteBtn[index] = false }">
           <td>
-            <span v-if="param.active === 'true'">✅</span>
-            <span v-else-if="param.active === 'false'">⬜</span>
+            <span v-if="param.active === 'true'" style="cursor: pointer" @click="() => { param.active = 'false' }">✅</span>
+            <span v-else-if="param.active === 'false'" style="cursor: pointer" @click="() => { param.active = 'true' }">⬜</span>
             <span v-else />
           </td>
           <td>
-            <input v-model="param.key" placeholder="Key" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)">
+            <input v-model="param.key" placeholder="Key" h-full w-full :style="inputTextColor(param.active)" @focus="rowHighLight(index)" @blur="clearHighLight(index)" @input="inputStart(index)">
           </td>
           <td>
-            <input v-model="param.value" placeholder="Value" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)">
+            <input v-model="param.value" placeholder="Value" h-full w-full :style="inputTextColor(param.active)" @focus="rowHighLight(index)" @blur="clearHighLight(index)" @input="inputStart(index)">
           </td>
           <td>
-            <input v-model="param .description" placeholder="Description" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)">
+            <input v-model="param .description" placeholder="Description" h-full w-full :style="inputTextColor(param.active)" @focus="rowHighLight(index)" @blur="clearHighLight(index)" @input="inputStart(index)">
+            <div v-if="isDeleteBtn[index] && param.active !== ''" class="deleteBtn" @click="deleteRow(index)">
+              <div i-carbon-trash-can style="width: 1.5rem; height: 1.5rem; transform: translate(-50%,-50%);" />
+            </div>
           </td>
         </tr>
       </tbody>
@@ -71,6 +100,7 @@ th,
 td {
   border: 1px solid var(--color-gray3);
   border-collapse: collapse;
+  position: relative
 }
 
 th {
@@ -93,6 +123,10 @@ input:focus {
   outline: 1px solid var(--color-gray2);
   background-color: white;
   border-radius: 5px;
+}
+
+input::placeholder {
+  color : var(--color-gray3)
 }
 
 td:first-child {
@@ -121,5 +155,28 @@ td:first-child {
 
 .desc {
   width: 45%;
+}
+
+.deleteBtn {
+  position: absolute;
+  right: 0.5rem;
+  top:50%;
+  transform:translateY(-50%);
+
+  width: 1.5rem;
+  height: 1.5rem;
+  padding:  1rem;
+
+  border-radius: 0.2rem;
+
+  cursor: pointer;
+}
+
+.deleteBtn:hover {
+  background-color: var(--color-gray1);
+}
+
+.deleteBtn:active {
+  background-color: var(--color-gray1-hover);
 }
 </style>
