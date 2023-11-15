@@ -7,6 +7,7 @@ interface CollectionTree {
   collectionList: CollectionTree[]
   modifiedTime: string
   request: RequestInfo
+  collapsed: boolean
 }
 
 interface RequestInfo {
