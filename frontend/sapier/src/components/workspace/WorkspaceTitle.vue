@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+
+const axios = inject('$axios')
+
 const workspaceListStore = useWorkspaceListStore()
 const workspaceStore = useWorkspaceStore()
 const selectedWorkspaceIndex = ref<number>(-1)
@@ -23,7 +27,39 @@ watchEffect(() => {
   console.log('스토어 확인', workspaceStore.workspaceInfo?.memberList)
 })
 
-// const imageSource = memberListSize >= 2 ? './group.svg' : './person.svg'
+async function addCollectionDocument() {
+  let newDocumentId = ''
+  try {
+    const response = await axios.post(`/api/v1/collection`)
+    console.log('axios.post  성공', response)
+
+    try {
+      const resLast = await axios.get(`/api/v1/collection/last`)
+      console.log('axios get 성공', resLast)
+      newDocumentId = resLast.data
+    }
+    catch (error) {
+      console.error(error)
+    }
+
+    try {
+      const newCollectionInfo = {
+        collectionKey: newDocumentId,
+        collectionName: 'New Document',
+      }
+      // console.log('컬렉션 인포 : ', JSON.stringify(newCollectionInfo))
+      const workspaceId = workspaceStore.workspaceInfo?.key
+      const res = await axios.post(`/api/v1/workspaces/${workspaceId}`, newCollectionInfo)
+      // console.log('워크스페이스에 추가 axios 성공', res)
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
+  catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <template>
@@ -34,7 +70,7 @@ watchEffect(() => {
     <div class="titleName">
       {{ selectedWorkspaceName }}
     </div>
-    <img src="./Group 70.png" class="plus">
+    <img src="./Group 70.png" class="plus" @click="addCollectionDocument()">
   </div>
   <!-- <p>검색바 자리</p> -->
 

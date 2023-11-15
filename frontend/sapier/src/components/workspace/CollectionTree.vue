@@ -126,6 +126,8 @@ function createNewCollection() {
       <div class="setRow">
         <span :style="{ marginLeft: `${level * 6}px` }" class="collname">
           <div class="boxSize" @click="toggleCollapse(childCollection)">
+            <img v-if="childCollection.collapsed" src="./close.svg" class="folderOpenImg">
+            <img v-else src="./open.svg" class="folderOpenImg">
             <img src="./folder.svg" class="folderImg">
             <span v-if="!childCollection.editing" class="rootCollName">{{ childCollection.collectionName }}</span>
             <input
