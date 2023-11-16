@@ -67,7 +67,7 @@ export default defineComponent({
             try{
                 const response = await axios.get(`/api/v1/workspaces/${workspaceKey}/name`)
                 console.log(response.data)
-                return response.data
+                return response.data.value
             }
             catch(err){
                 console.log('axios 실패 : ', err)
