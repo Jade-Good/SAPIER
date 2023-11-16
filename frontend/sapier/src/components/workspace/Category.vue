@@ -5,6 +5,7 @@ const collectionList = ref([])
 const workspaceStore = useWorkspaceStore()
 const documentName = ref<string[]>([])
 const documentCollapsed = ref<boolean[]>([])
+const documentEdit = ref<boolean[]>([])
 // const workspaceListStore = useWorkspaceListStore()
 const idList: string[] = []
 
@@ -12,12 +13,14 @@ watchEffect(() => {
   idList.length = 0
   const workspaceIdx = workspaceStore.selectedWorkspaceIndex
   documentCollapsed.value = []
+  documentEdit.value = []
 
   if (idList !== null && workspaceStore.workspaceInfo
     && workspaceStore.workspaceInfo.collectionList) {
     for (let i = 0; i < workspaceStore.workspaceInfo.collectionList.length; i++) {
       idList.push(workspaceStore.workspaceInfo.collectionList[i].collectionKey)
       documentCollapsed.value.push(false)
+      documentEdit.value.push(false)
     }
   }
   else { idList.length = 0 }
@@ -86,15 +89,15 @@ async function saveData(documentIndex: number) {
 }
 provide('saveData', saveData)
 
-function toggleEditing(collection) {
-  collection.editing = !collection.editing
+function toggleEditing(documentIdx: number) {
+  documentEdit.value[documentIdx] = !documentEdit.value[documentIdx]
 }
 
-async function saveCollectionName(collection, index) {
-  collection.collectionName = collection.newName
-  toggleEditing(collection)
-  await saveData(index)
-  collection.editing = false
+async function saveCollectionName(documentIdx: number) {
+  collectionList.value[documentIdx].collectionName = documentName.value[documentIdx]
+  toggleEditing(documentIdx)
+  saveData(documentIdx)
+  documentEdit.value[documentIdx] = false
 }
 
 function deleteDocument(index: number) {
@@ -118,15 +121,6 @@ function getPath(index: number, collectionName: string) {
   return `${documentName.value[index]} / ${collectionName} / `
 }
 
-function selectAPI(api: any, index: any) {
-  collectionStore.request = api
-  collectionStore.selectDocument = index
-  collectionStore.request.path = path
-
-  // console.log('부모 api 호출: ', api)
-  // console.log('스토어에 저장되나?', collectionStore.request)
-}
-
 async function getDocumentName(index: number) {
   try {
     const collectionId = idList[index]
@@ -146,76 +140,6 @@ onMounted(async () => {
     await getDocumentName(i)
 })
 
-function addRootRequest(documnetIndex: number) {
-  const newApi = {
-    body: '',
-
-    createdTime: new Date().toISOString(),
-
-    headers: [],
-
-    method: 'GET',
-
-    modifiedTime: new Date().toISOString(),
-
-    queryParams: [],
-
-    requestName: 'New Request',
-
-    requestURL: '',
-    id: '',
-
-  }
-
-  if (collectionList.value[documnetIndex].apiList === null)
-    collectionList.value[documnetIndex].apiList = []
-  // console.log('null배열 추가')
-
-  collection.apiList.push(newApi)
-  // console.log('수정된 collection.apiList', collection.apiList)
-  saveData(documnetIndex)
-}
-
-function deleteRootRequest(collection, api, documnetIndex) {
-  const index = collection.apiList.indexOf(api)
-  if (index !== -1) {
-    collection.apiList.splice(index, 1)
-    saveData(documnetIndex)
-  }
-}
-// const addCollectionDocument = async () => {
-//   let newDocumentId = ''
-//   try {
-//     const response = await axios.post(`/api/v1/collection`)
-//     console.log('axios.post  성공', response)
-
-//     try {
-//       const resLast = await axios.get(`/api/v1/collection/last`)
-//       console.log('axios get 성공', resLast)
-//       newDocumentId = resLast.data
-//     }
-//     catch (error) {
-//       console.error(error)
-//     }
-
-//     try {
-//       const newCollectionInfo = {
-//         collectionKey: newDocumentId,
-//         collectionName: 'New Document',
-//       }
-//       // console.log('컬렉션 인포 : ', JSON.stringify(newCollectionInfo))
-//       const workspaceId = workspaceStore.workspaceInfo?.key
-//       const res = await axios.post(`/api/v1/workspaces/${workspaceId}`, newCollectionInfo)
-//       // console.log('워크스페이스에 추가 axios 성공', res)
-//     }
-//     catch (error) {
-//       console.error(error)
-//     }
-//   }
-//   catch (error) {
-//     console.error(error)
-//   }
-// }
 function toggleCollapse(index: number) {
   documentCollapsed.value[index] = !documentCollapsed.value[index]
   // console.log('토글 함수 호출', documentCollapsed.value[index])
@@ -226,38 +150,36 @@ function toggleCollapse(index: number) {
   <div class="category">
     <WorkspaceTitle />
 
-    <div v-for="(document, index) in collectionList" :key="index" class="collection-list">
-      <div class="documentNameDiv" @click="toggleCollapse(index)">
-        <img v-if="documentCollapsed[index]" src="./close.svg" class="folderOpenImg">
+    <div v-for="(document, documentIdx) in collectionList" :key="documentIdx" class="collection-list">
+      <div class="documentNameDiv" @click="toggleCollapse(documentIdx)">
+        <img v-if="documentCollapsed[documentIdx]" src="./close.svg" class="folderOpenImg">
         <img v-else src="./open.svg" class="folderOpenImg">
         <img src="./folder.svg" class="docFolderImg">
-        <div class="leftSortDocument">
-          {{ documentName[index] }}
-        </div>
-        <!-- <img src="./add.svg" class="addImg" @click.stop="addRootCollection(index)"> -->
+
+        <span v-if="!documentEdit[documentIdx]" class="leftSortDocument">{{ documentName[documentIdx] }}</span>
+        <input v-else v-model="documentName[documentIdx]" class="nameChange" @blur="saveCollectionName(documentIdx)"
+          @keyup.enter="saveCollectionName(documentIdx)" />
+
         <div class="dropdown">
           <div i-carbon-button-centered class="dropdown-btn" mr-2 />
           <ul class="dropdown-list">
-            <li @click.stop="addRootCollection(index)">
+            <li @click.stop="addRootCollection(documentIdx)">
               Add Collection
             </li>
-            <li @click.stop="deleteDocument(index)">
+            <li @click.stop="deleteDocument(documentIdx)">
               Delete Document
             </li>
-            <li @click.stop="addRootRequest(index)">
-              Add Request
-            </li>
-            <li @click.stop="toggleEditing()">
-              Modify Document Name
+            <li @click.stop="toggleEditing(documentIdx)">
+              Modify Document
             </li>
           </ul>
         </div>
       </div>
 
-      <div v-show="!documentCollapsed[index]">
-        <div v-for="(collection, idx) in document" :key="idx">
-          <CollectionTree :collection="collection" :level="1" :index="index"
-            :path="getPath(index, collection.collectionName)" />
+      <div v-show="!documentCollapsed[documentIdx]">
+        <div v-for="(collection, index) in document" :key="index">
+          <CollectionTree :parentCollectionList="document" :level="1" :index="index" :documentIdx="documentIdx"
+            :path="getPath(documentIdx, collection.collectionName)" />
         </div>
       </div>
       <br>
@@ -526,4 +448,5 @@ li {
   transform: scale(1.5);
   /* hover시 1.2배 확대 */
   /* 다른 스타일 변경이 필요하면 여기에 추가하세요. */
-}</style>
+}
+</style>
