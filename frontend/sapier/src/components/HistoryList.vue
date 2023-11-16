@@ -98,11 +98,11 @@ export default defineComponent({
                 <ul v-for="(histories, wIdx) in dailyHistory.workspaceHistories" :key="wIdx">
                     <!-- <div>{{ histories.workspaceKey }}</div> -->
                     <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
-                        <div @click="selectHistory(history)">
-                            <div>{{ histories.workspaceKey }}</div>
-                            <div>{{ getWorkspaceName(histories.workspaceKey) }}</div>
-                            <div>{{ history.request.method }}</div>
-                            <div class="methodContainer">
+                        <div class="flexbox" @click="selectHistory(history)">
+                            <div class="first-box">{{ /*histories.workspaceKey*/ }}[hi]</div>
+                            <!-- <div>{{ getWorkspaceName(histories.workspaceKey) }}</div> -->
+                            <!-- <div>{{ history.request.method }}</div> -->
+                            <div class="second-box methodContainer">
                                 <img v-if="history.request.method === 'GET'" src="./workspace/get.svg" class="method-icon">
                                 <img v-else-if="history.request.method === 'POST'" src="./workspace/post.svg" class="method-icon">
                                 <img v-else-if="history.request.method === 'DELETE'" src="./workspace/delete-image.svg" class="method-icon">
@@ -111,9 +111,9 @@ export default defineComponent({
                                 <img v-else-if="history.request.method === 'OPTION'" src="./workspace/option.svg" class="method-icon">
                                 <img v-else-if="history.request.method === 'HEAD'" src="./workspace/head.svg" class="method-icon">
                             </div>
-                            <div>{{ history.request.requestName }}</div>
-                            <div>{{ history.response.statusCode }}</div>
-                            <div>{{ history.response.responseTime }}ms</div>
+                            <div class="second-box">{{ history.response.statusCode }}</div>
+                            <div class="last-box">{{ history.request.requestName }}</div>
+                            <div class="last-box">{{ history.response.responseTime }}ms</div>
                         </div>
                     </li>
                 </ul>
@@ -143,6 +143,21 @@ export default defineComponent({
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;
     /* border-color: #000000; */
+}
+.flexbox{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.second-box{
+    display: flex;
+    /* justify-content: flex-start; */
+    align-items: flex-start;
+}
+.last-box{
+    display: flex;
+    /* justify-content: flex-start; */
+    align-items: flex-start;
 }
 
 </style>
