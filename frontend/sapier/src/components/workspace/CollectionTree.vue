@@ -59,10 +59,11 @@ export default {
         this.collection.collectionList.splice(collectionIndex, 1) // 현재 컬렉션 삭제
       this.saveChanges(index)
     },
-    selectAPI(api) {
+    selectAPI(api: any, index: any) {
       collectionStore.request = api
-      console.log('자식 api 호출: ', api)
-      console.log('스토어에 저장되나?', collectionStore.request)
+      collectionStore.selectDocument = index
+      // console.log('부모 api 호출: ', api)
+      // console.log('스토어에 저장되나?', collectionStore.request)
     },
     addChildRequest(childCollection, index) {
       const newApi = {
@@ -85,13 +86,12 @@ export default {
 
       }
 
-      if (childCollection.apiList === null) {
+      if (childCollection.apiList === null)
         childCollection.apiList = []
-        console.log('null배열 추가')
-      }
+        // console.log('null배열 추가')
 
       childCollection.apiList.push(newApi)
-      console.log('수정된 collection.apiList', childCollection.apiList)
+      // console.log('수정된 collection.apiList', childCollection.apiList)
       this.saveChanges(index)
     },
     deleteChildRequest(childCollection, api, documentIndex) {
@@ -124,7 +124,7 @@ function createNewCollection() {
   <ul>
     <li v-for="childCollection in collection.collectionList" :key="childCollection.collectionId">
       <div class="setRow">
-        <span :style="{ marginLeft: `${level * 6}px` }" class="collname">
+        <span :style="{ paddingLeft: `${level * 6}px` }" class="collname">
           <div class="boxSize" @click="toggleCollapse(childCollection)">
             <img v-if="childCollection.collapsed" src="./close.svg" class="folderOpenImg">
             <img v-else src="./open.svg" class="folderOpenImg">
@@ -170,9 +170,9 @@ function createNewCollection() {
         C리퀘추가
       </button> -->
       <ul v-show="!childCollection.collapsed">
-        <ul v-if="childCollection.apiList && childCollection.apiList.length > 0" :style="{ marginLeft: `${level * 6}px` }">
+        <ul v-if="childCollection.apiList && childCollection.apiList.length > 0" :style="{ paddingLeft: `${level * 6}px` }">
           <li v-for="api in childCollection.apiList" :key="api.requestName" class="divBlock">
-            <div class="requestBox">
+            <div class="requestBox" @click="selectAPI(api, index)">
               <div class="methodContainer">
                 <img v-if="api.method === 'GET'" src="./get.svg" class="method-icon">
                 <img v-else-if="api.method === 'POST'" src="./post.svg" class="method-icon">
@@ -182,7 +182,7 @@ function createNewCollection() {
                 <img v-else-if="api.method === 'OPTION'" src="./option.svg" class="method-icon">
                 <img v-else-if="api.method === 'HEAD'" src="./head.svg" class="method-icon">
               </div>
-              <a class="delReqName" @click="selectAPI(api)">{{ api.requestName }}</a>
+              <a class="delReqName">{{ api.requestName }}</a>
               <div class="dropdown">
                 <div class="setRow">
                   <img src="./etc.svg" class="dropdown-btn-del">
@@ -248,6 +248,11 @@ function createNewCollection() {
   margin-bottom: 7px;
   margin-top: 5px;
 }
+
+.setRow:hover {
+  background-color: var(--color-gray1-hover);
+}
+
 .dropdown-list {
   display: none;
   position: absolute;
@@ -368,8 +373,14 @@ li {
 .requestBox {
   display: flex;
   align-items: center; /* 수직 가운데 정렬 */
-  justify-content: space-between
+  justify-content: space-between;
+  padding-left: 1rem;
 }
+
+.requestBox:hover {
+  background-color: var(--color-gray1-hover);
+}
+
 .folderImg{
   padding-right: 5px;
 }
