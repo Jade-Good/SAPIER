@@ -1,11 +1,5 @@
 <script setup lang="ts">
-const axios = inject('$axios')
-const useCollection = useCollectionStore()
-const userInfo = useUserStore()
-const selectedWorkspaceIndex = useWorkspaceStore(0)
-const workspaceList = useWorkspaceListStore()
-
-const isMounted = useMounted()
+const useRequest = ref<any>(null)
 
 const selectMethod = ref('GET')
 const copySelectMethod = ref('')
@@ -37,6 +31,27 @@ const isSaveEnable = computed(() => {
        || copyQueryParams.value !== JSON.stringify(queryParams.rows)
 })
 
+function getRequest() {
+  browser.storage.local.get(['request']).then((data) => {
+    useRequest.value = data.request
+    console.log('request 스토어에 저장 :', data.request)
+  })
+}
+getRequest()
+
+browser.storage.onChanged.addListener(requestChange)
+function requestChange(changes, area) {
+  const changedItems = Object.keys(changes)
+  for (const item of changedItems) {
+    if (item === 'request') {
+      getRequest()
+      console.log(`${item} has changed:`)
+      console.log('Old value: ', changes[item].oldValue)
+      console.log('New value: ', changes[item].newValue)
+    }
+  }
+}
+
 provide('queryParams', queryParams)
 provide('requestHeaders', requestHeaders)
 provide('requestBody', requestBody)
@@ -58,7 +73,7 @@ const isResizing = ref(false) // 크기 조절 중 여부
 const startY = ref(0) // 크기 조절 시작 지점
 const startHeight = ref(0) // 크기 조절 시작 시 Request 엘리먼트의 높이
 
-if (isMounted) {
+onMounted(() => {
   setValues()
 
   // 메서드 리스트 이벤트 등록
@@ -73,9 +88,10 @@ if (isMounted) {
 
   window.addEventListener('mousemove', handleResizing)
   window.addEventListener('mouseup', stopResizing)
-};
+})
 
-watch(() => useCollection.request, () => {
+watch(() => useRequest.value, () => {
+  console.log('ㅁㅁㅁㅁㅁㅁㅁㅁ')
   setValues()
 })
 
@@ -87,25 +103,29 @@ onUnmounted(() => {
 
 // ---------------- 데이터 바인딩과 수정/저장 ----------------
 function setValues() {
-  if (!useCollection.request)
+  console.log('setValues api is 0', useRequest.value)
+  if (!useRequest.value)
     return
 
-  // console.log('api : ', useCollection.request)
+  console.log('setValues api : ', useRequest.value)
 
-  selectMethod.value = useCollection.request.method
-  requestURL.value = useCollection.request.requestURL
-  requestName.value = useCollection.request.requestName
-  requestBody.value = useCollection.request.body
+  selectMethod.value = useRequest.value.method
+  requestURL.value = useRequest.value.requestURL
+  requestName.value = useRequest.value.requestName
+  requestBody.value = useRequest.value.body
 
-  if (useCollection.request.headers[0])
-    requestHeaders.rows = copyRows(useCollection.request.headers)
-  else
-    requestHeaders.rows = [{ active: '', key: '', value: '', description: '' }]
+  if (useRequest.value.headers[0]) {
+    console.log('헤더 설정 : ', useRequest.value.headers)
+    requestHeaders.rows = copyRows(useRequest.value.headers)
+  }
 
-  if (useCollection.request.queryParams[0])
-    queryParams.rows = copyRows(useCollection.request.queryParams)
-  else
-    queryParams.rows = [{ active: '', key: '', value: '', description: '' }]
+  else { requestHeaders.rows = [{ active: '', key: '', value: '', description: '' }] }
+
+  if (useRequest.value.queryParams[0]) {
+    console.log('파라미터 설정 : ', useRequest.value.queryParams)
+    queryParams.rows = copyRows(useRequest.value.queryParams)
+  }
+  else { queryParams.rows = [{ active: '', key: '', value: '', description: '' }] }
 
   copySelectMethod.value = selectMethod.value
   copyRequestURL.value = requestURL.value
@@ -118,25 +138,30 @@ function setValues() {
 function copyRows(objs: any) {
   const result = []
 
-  objs.forEach ((obj) => {
-    if (obj.active !== '')
-      result.push({ active: obj.active, key: obj.key, value: obj.value, description: obj.description })
-  })
+  let i = 0
+  while (objs[`${i}`] !== undefined) {
+    const param = objs[`${i}`]
+    if (param !== '')
+      result.push({ active: param.active, key: param.key, value: param.value, description: param.description })
+    i = i + 1
+  }
+
+  // 대상이 배열인지 확인
 
   result.push({ active: '', key: '', value: '', description: '' })
   return result
 }
 
 function requestSave() {
-  if (!useCollection.request || !isSaveEnable.value)
+  if (!useRequest.value || !isSaveEnable.value)
     return
 
-  useCollection.request.method = selectMethod.value
-  useCollection.request.requestURL = requestURL.value
-  useCollection.request.requestName = requestName.value
-  useCollection.request.body = requestBody.value
-  useCollection.request.headers = requestHeaders.rows
-  useCollection.request.queryParams = queryParams.rows
+  useRequest.value.method = selectMethod.value
+  useRequest.value.requestURL = requestURL.value
+  useRequest.value.requestName = requestName.value
+  useRequest.value.body = requestBody.value
+  useRequest.value.headers = requestHeaders.rows
+  useRequest.value.queryParams = queryParams.rows
   setValues()
 }
 
@@ -162,7 +187,7 @@ function setMethodBtnStyle() {
 
     cursor: 'pointer',
   }
-};
+}
 
 function setMethodColor(method: string) {
   return {
@@ -176,17 +201,17 @@ function setMethodColor(method: string) {
     backgroundColor: method === selectMethod.value ? 'var(--color-gray1-hover)' : 'none',
 
   }
-};
+}
 
 function changeMethod(method: string) {
   setMethodColor(method)
   selectMethod.value = method
   toggleMethodList()
-};
+}
 
 function toggleMethodList() {
   isMethodList.value = !isMethodList.value
-};
+}
 
 function handleDocumentClick(event: MouseEvent) {
   // 클릭 이벤트에서 메서드 목록을 열려 있을 때만 닫도록 처리
@@ -195,7 +220,7 @@ function handleDocumentClick(event: MouseEvent) {
 
   if (isMethodList.value && !methodBtn?.contains(event.target as Element))
     isMethodList.value = false
-};
+}
 
 // -----------------Request 창 크기 조절--------------------
 function setRequestStyle() {
@@ -218,7 +243,7 @@ function setRequestStyle() {
     border: '1px solid red',
 
   }
-};
+}
 
 function startResizing(event: MouseEvent) {
   isResizing.value = true
@@ -230,7 +255,7 @@ function startResizing(event: MouseEvent) {
   if (ss)
     startHeight.value = Number.parseInt(ss.toString())
   // console.log('startHeight.value : ', startHeight.value)
-};
+}
 
 function handleResizing(event: MouseEvent) {
   if (isResizing.value) {
@@ -256,11 +281,11 @@ function handleResizing(event: MouseEvent) {
 
     event.preventDefault()
   }
-};
+}
 
 function stopResizing() {
   isResizing.value = false
-};
+}
 // --------------------------------------------------------
 function setResponseStyle() {
   return {
@@ -269,7 +294,7 @@ function setResponseStyle() {
     // paddingBottom: '3rem',
 
   }
-};
+}
 
 async function sendAPI() {
   const sendData = {
@@ -282,35 +307,43 @@ async function sendAPI() {
   // console.log('sendData : ', sendData)
 
   try {
-    const res = await axios.post(`/api/v1/collection/request`, sendData)
     // console.log('API 전송 성공', res.data)
-
-    useCollection.response = res.data
-
-    saveHistory()
+    browser.storage.local.get(['token']).then(async (value) => {
+      await fetch('https://sapier.co.kr/api/v1/collection/request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${value.token}`,
+        },
+        body: JSON.stringify(sendData),
+      })
+        .then((response) => {
+          // console.log(response)
+          if (!response.ok)
+            throw new Error('네트워크 응답이 정상적이지 않습니다.')
+          return response.text()
+        })
+        .then((text) => {
+          try {
+            return JSON.parse(text)
+          }
+          catch (error) {
+            console.error('JSON 파싱 오류:', error)
+            // 파싱 오류 처리
+          }
+        })
+        .then((data) => {
+          // 데이터 할당
+          browser.storage.local.set({ response: data })
+          console.log('response 할당 성공', data)
+          return data
+        })
+        .catch(error => console.error('Error:', error))
+    })
   }
   catch (error) {
     console.error('API 전송 실패:', error)
-  }
-};
-
-async function saveHistory() {
-  const history = {
-    request: useCollection.request,
-    response: useCollection.response,
-    uuid: userInfo.userInfo?.uuid,
-    workspaceId: workspaceList.WorkspaceList[selectedWorkspaceIndex.selectedWorkspaceIndex].key,
-  }
-
-  console.log('history : ', history)
-
-  try {
-    const res = await axios.post(`/api/v1/history/save`, history)
-
-    console.log('History 저장 성공 : ', res)
-  }
-  catch (error) {
-    console.error('History 저장 실패', error)
   }
 }
 </script>
@@ -318,7 +351,7 @@ async function saveHistory() {
 <template>
   <div h-full flex flex-col border>
     <div name="Request" :style="setRequestStyle()">
-      <div flex flex-justify-between pb-3 pl-3>
+      <!-- <div flex flex-justify-between pb-3 pl-3>
         <div flex flex-gap-1 line-height-9>
           <p color-gray>
             Server
@@ -344,7 +377,7 @@ async function saveHistory() {
             Copy
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div flex-justify-betwee h-14 flex>
         <div w-full flex flex-gap-4 border border-rounded p-2 style="border-color: var(--color-gray4);">

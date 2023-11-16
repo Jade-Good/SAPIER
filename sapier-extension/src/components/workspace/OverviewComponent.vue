@@ -278,37 +278,11 @@ browser.storage.local.get(['workspace']).then((data) => {
   justify-content: center; /* 세로 중앙 정렬 (다른 요소와 함께 사용할 때 유용) */
 
 }
-.imgBorder{
-  text-align: center; /* 가로 중앙 정렬 */
-  display: flex;
-  align-items: center; /* 세로 중앙 정렬 */
-  justify-content: center; /* 세로 중앙 정렬 (다른 요소와 함께 사용할 때 유용) */
-  width: 25px;
-  height: 25px;
-  border-radius: 3px;
-
-  &:hover {
-    background-color: #C9C9C9;
-    /* 다른 스타일들을 추가할 수 있습니다. */
-  }
-
-}
 
 .pin_add_image{
   width: auto; /* 이미지의 원본 크기를 유지 */
 }
-.collectionName{
-  width:10rem;
-  text-align: left; /* 가로 중앙 정렬 */
-  display: flex;
-  align-items: center; /* 세로 중앙 정렬 */
-  border-radius: 3px;
 
-  &:hover {
-    background-color: #C9C9C9;
-    /* 다른 스타일들을 추가할 수 있습니다. */
-  }
-}
 .collectionNameDetail{
   margin-left: 0.2rem;
 

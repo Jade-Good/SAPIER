@@ -10,6 +10,20 @@ browser.storage.local.get(['loggedIn']).then((data) => {
   console.log(`로그인 검사 ${data.loggedIn}`)
   isLoggedIn.value = data.loggedIn
 })
+
+const selectCollection = ref(false)
+browser.storage.onChanged.addListener(requestChange)
+function requestChange(changes, area) {
+  const changedItems = Object.keys(changes)
+  for (const item of changedItems) {
+    if (item === 'request') {
+      selectCollection.value = true
+      console.log(`${item} has changed:`)
+      console.log('Old value: ', changes[item].oldValue)
+      console.log('New value: ', changes[item].newValue)
+    }
+  }
+}
 </script>
 
 <template>
@@ -25,7 +39,8 @@ browser.storage.local.get(['loggedIn']).then((data) => {
       <div v-if="isLoggedIn" flex class="mid">
         <WorkspaceList w-20 />
         <Category w-60 />
-        <WorkspaceInfo h-full w-full />
+        <RequestInfo v-if="selectCollection" h-full w-full />
+        <WorkSpaceInfo v-else h-full w-full />
       </div>
       <div v-else>
         로그인을 해주세요.
@@ -43,30 +58,23 @@ browser.storage.local.get(['loggedIn']).then((data) => {
 
 <style scoped>
 .mid {
-  height: calc(100% - 70px);
+  height: calc(100% - 10px);
 }
 #sapier {
     position: fixed;
-    width: 900px;
+    width: 1200px;
     height: 647px;
     left: 20%;
     top: 15%;
     z-index: 9999999 !important;
-    background-color: #f1f1f1;
-    border: 1px solid #d3d3d3;
+    background-color: #ffffff;
+    border: 1px solid rgb(182, 182, 182);
     text-align: center;
+    box-shadow: rgba(24, 24, 27, 0.75) 10px 15px 10px -5px;
+    border-radius: 5px;
   }
   #sapier-main {
-    position: absolute;
-    width: 900px;
-    height: 647px;
-    background-color: whitesmoke;
-    text-align: center;
-    color: rgb(24, 24, 27);
-    box-shadow: rgba(24, 24, 27, 0.75) 10px 15px 10px -5px;
-    cursor: default;
-    font-size: 13px;
-    border-radius: 5px;
+
   }
   #sapier-header {
     display: fixed;

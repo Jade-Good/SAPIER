@@ -71,13 +71,18 @@ export default defineComponent({
           .then((data) => {
             if (data) {
               collectionStore.value = data
-              console.log('response:', data)
-              console.log('collectionStore: ', collectionStore.value)
+              console.log('collectionStore1:', data)
+              console.log('collectionStore2: ', collectionStore.value)
+              browser.storage.local.set({ collection: data })
               for (let i = 0; i < data.length; i++) {
                 collectionList.value.push(data[i].collectionList)
                 console.log('collectionList:', data[i].collectionList)
               }
             }
+          })
+          .then(() => {
+            for (let i = 0; i < idList.length; i++)
+              getDocumentName(i)
           })
           .catch((error) => {
             console.error('Error:', error)
@@ -88,7 +93,11 @@ export default defineComponent({
     })
 
     const selectAPI = (api) => {
-      collectionStore.value.request = api
+      browser.storage.local.set({ request: api })
+      console.log('자식 api 호출: ', api)
+      browser.storage.local.get(['request']).then((data) => {
+        console.log('request스토어에 저장 :', data.request)
+      })
     }
 
     const documentName = ref<string[]>([])
@@ -97,16 +106,23 @@ export default defineComponent({
       try {
         const collectionId = idList[index]
 
-        const response = await fetch(`https://sapier.co.kr/api/v1/collection/${collectionId}`, {
+        await fetch(`https://sapier.co.kr/api/v1/collection/${collectionId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
+            'Authorization': `Bearer ${accessToken.value}`,
           },
         })
-        documentName.value[index] = response.data
-        console.log('axios.get 성공, 이름:', response.data)
+          .then((response) => {
+            if (!response.ok)
+              throw new Error('네트워크 응답이 정상적이지 않습니다.')
+            return response.text()
+          })
+          .then((text) => {
+            documentName.value[index] = text
+            console.log('axios.get 성공, 이름:', text)
+          })
       }
       catch (error) {
         console.error('axios.get 실패', error)
@@ -116,8 +132,11 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      for (let i = 0; i < idList.length; i++)
+      console.log('idList getDocumentName 하는중', idList.length)
+      for (let i = 0; i < idList.length; i++) {
         await getDocumentName(i)
+        console.log('getDocumentName 하는중', idList.length)
+      }
     })
 
     const toggleCollapse = (collection) => {
@@ -150,7 +169,7 @@ export default defineComponent({
           {{ documentName[index] }}
         </div>
       </div>
-      <ul v-show="!documentId.collapsed">
+      <ul v-show="!documentId.collapsed" my2>
         <li v-for="collection in documentId" :key="collection.collectionName">
           <div class="setRow">
             <span :style="{ marginLeft: '6px' }" class="collname">
@@ -158,10 +177,16 @@ export default defineComponent({
                 <img v-if="collection.collapsed" src="/assets/workspace/close.svg" class="folderOpenImg">
                 <img v-else src="/assets/workspace/open.svg" class="folderOpenImg">
                 <img src="/assets/workspace/folder.svg" class="folderImg">
+                <span v-if="!collection.editing" class="rootCollName">{{ collection.collectionName }}</span>
+                <input
+                  v-else
+                  v-model="collection.newName"
+                  class="nameChange"
+                >
               </div>
             </span>
           </div>
-          <ul v-show="!collection.collapsed" :style="{ marginLeft: '6px' }">
+          <ul v-show="!collection.collapsed" :style="{ marginLeft: '25px' }">
             <li v-for="api in collection.apiList" :key="api.requestName" class="divBlock">
               <div class="requestBox">
                 <div class="methodContainer">
@@ -173,9 +198,12 @@ export default defineComponent({
                   <img v-else-if="api.method === 'OPTION'" src="/assets/workspace/option.svg" class="method-icon">
                   <img v-else-if="api.method === 'HEAD'" src="/assets/workspace/head.svg" class="method-icon">
                 </div>
+                <a class="delReqName" @click="selectAPI(api)">
+                  {{ api.requestName }}
+                </a>
               </div>
             </li>
-            <!-- <CollectionTree :collection="collection" :level="2" :index="index" /> -->
+            <CollectionTree :collection="collection" :level="2" :index="index" />
           </ul>
         </li>
       </ul>
@@ -185,12 +213,41 @@ export default defineComponent({
 </template>
 
 <style scoped>
+ul{
+  padding-left: 0px;
+  list-style-type:none
+}
 .category{
+  width: 25rem;
   position: relative;
   overflow-x: auto;
   white-space: nowrap;
   background-color: #F0F0F0;
 
+}
+.btn{
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+  width: 35px;
+  height: 35px;
+}
+.er{
+  border: 1px solid black;
+  background-color: red;
+  color: white;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  background-color: transparent;
+}
+
+.dropdown-btn-del {
+  position: relative;
+  display: inline-block;
+  background-color: transparent;
 }
 .setRow .dropdown-btn .dropdown-btn-del{
   background-color: #fff;
@@ -211,10 +268,81 @@ export default defineComponent({
   margin-bottom: 5px;
   margin-top: 5px;
 }
+.dropdown-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -680%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 0.3rem;
+
+}
+
+.dropdown-list-del  {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -600%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 0.3rem;
+
+}
+
+.dropdown-btn, .dropdown-btn-del{
+  width: 20px;
+  height: 20px;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  padding-right: 10px;
+}
+
 div.setRow , span.collname{
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.nameChange {
+  width: 90%;
+
+}
+
+.dropdown-list li {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--color-gray4);
+}
+
+.dropdown-list-del li {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--color-gray4);
+}
+/*
+.dropdown-btn img {
+  background-color: var(--color-gray4)
+} */
+
+.dropdown-btn:hover + .dropdown-list,
+.dropdown-btn-del:hover + .dropdown-list-del,
+.dropdown-list:hover {
+  display: block;
+}
+.dropdown-btn-del + .dropdown-list-del:hover{
+  display: block;
 }
 
 li {
@@ -223,9 +351,20 @@ li {
   font-weight: var(--font-H5-weight);
 
 }
+.dropdown-list li:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown-list-del li:hover {
+  background-color: #f1f1f1;
+}
 
 .documentNameDiv {
   color: var(--color-gray4);
+}
+
+.nameChange{
+  width: 40 px;
 }
 
 .boxSize{
@@ -233,7 +372,21 @@ li {
   align-items: center; /* 수직 가운데 정렬 */
   /* justify-content: space-between */
 }
+.delReqName {
+  white-space: nowrap;       /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  overflow: hidden;          /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis;   /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
+  max-width: 80%;          /* 최대 너비 설정 (원하는 값으로 조정) */
+  margin-right: auto;
+}
 
+.rootCollName{
+  white-space: nowrap;       /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  overflow: hidden;          /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis;   /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
+  max-width: 100%;
+
+}
 .requestBox {
   display: flex;
   align-items: center; /* 수직 가운데 정렬 */
@@ -252,6 +405,14 @@ li {
 .method-icon {
   margin-right: 5px;
 }
+
+.addImg {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+  align-items: center;
+}
+
 .docFolderImg{
   margin-left: 3px;
   margin-right: 5px;
@@ -268,5 +429,9 @@ li {
   text-overflow: ellipsis;   /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
   max-width: 100%;          /* 최대 너비 설정 (원하는 값으로 조정) */
   margin-right: auto;
+}
+.addImg:hover {
+  transform: scale(1.5); /* hover시 1.2배 확대 */
+  /* 다른 스타일 변경이 필요하면 여기에 추가하세요. */
 }
 </style>

@@ -1,17 +1,37 @@
 <script setup lang="ts">
-const useCollection = useCollectionStore()
+const useResponse = ref<any>(null)
 const requestCode = ref(0)
 const requestHeaders = ref({})
 const requestBody = ref(JSON.stringify({}, null, 2))
 const textarea = ref<null | HTMLTextAreaElement>(null)
 
-watch(() => useCollection.response, () => {
-  if (useCollection.response) {
+function getResponse() {
+  browser.storage.local.get(['response']).then((data) => {
+    useResponse.value = data.response
+    console.log('response 스토어에 저장 :', data.response)
+  })
+}
+
+browser.storage.onChanged.addListener(responseChange)
+function responseChange(changes, area) {
+  const changedItems = Object.keys(changes)
+  for (const item of changedItems) {
+    if (item === 'response') {
+      getResponse()
+      console.log(`${item} has changed:`)
+      console.log('Old value: ', changes[item].oldValue)
+      console.log('New value: ', changes[item].newValue)
+    }
+  }
+}
+
+watch(() => useResponse.value, () => {
+  if (useResponse.value) {
     // console.log('response : ', useCollection.response)
 
-    requestCode.value = useCollection.response.statusCode
-    requestHeaders.value = useCollection.response.responseHeaders
-    requestBody.value = JSON.stringify(JSON.parse(useCollection.response.responseBody), null, 4)
+    requestCode.value = useResponse.value.statusCode
+    requestHeaders.value = useResponse.value.responseHeaders
+    requestBody.value = JSON.stringify(JSON.parse(useResponse.value.responseBody), null, 4)
   }
 })
 

@@ -1,19 +1,35 @@
 <script setup lang="ts">
-const useCollection = useCollectionStore()
-const isMounted = useMounted()
-
+const useRequest = ref<any>(null)
 const requestHeaders = inject('requestHeaders')
 const isHighLight = ref([] as boolean[])
 
-if (isMounted)
-  setHLArray()
+// browser.storage.onChanged.addListener(requestChange)
+// function requestChange(changes, area) {
+//   const changedItems = Object.keys(changes)
+//   for (const item of changedItems) {
+//     if (item === 'reqeust') {
+//       useRequest.value = item
+//       console.log(`${item} has changed:`)
+//       console.log('Old value: ', changes[item].oldValue)
+//       console.log('New value: ', changes[item].newValue)
+//     }
+//   }
+// }
 
-watch(() => useCollection.request, () => {
+browser.storage.local.get(['request']).then((data) => {
+  useRequest.value = data.request
+  console.log('request 스토어에 저장 :', data.request)
+})
+
+onMounted(setHLArray)
+
+watch(() => useRequest.value, () => {
   setHLArray()
 })
 
 function setHLArray() {
   isHighLight.value = []
+  console.log('1111111')
   requestHeaders.rows.forEach(() => {
     isHighLight.value.push(false)
   })
