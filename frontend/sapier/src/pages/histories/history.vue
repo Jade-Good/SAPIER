@@ -31,7 +31,7 @@ if(isMounted){
 <template>
     <TheNav />
     <div flex class="mid">
-        <HistoryList w-100 />
+        <HistoryList w-90 />
         <!-- HistoryInfo 추후 수정 -->
         <!-- <HistoryInfo h-full w-full /> -->
         <RequestInfo v-if="collectionStore.request" h-full w-full />
