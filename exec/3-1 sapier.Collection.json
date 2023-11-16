@@ -1,0 +1,3041 @@
+[{
+  "_id": {
+    "$oid": "6540797e9473367d6c69d8f9"
+  },
+  "path": "/",
+  "createdTime": {
+    "$date": "2023-10-31T03:50:22.918Z"
+  },
+  "modifiedTime": {
+    "$date": "2023-10-31T03:50:22.918Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity",
+  "collectionName": null,
+  "apiLIst": "{\"임시로 수정해봄\":\"123\"}"
+},
+{
+  "_id": {
+    "$oid": "65407aed02545306fbf71529"
+  },
+  "path": "/",
+  "createdTime": {
+    "$date": "2023-10-31T03:56:29.313Z"
+  },
+  "modifiedTime": {
+    "$date": "2023-10-31T03:56:29.313Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity",
+  "collectionName": null
+},
+{
+  "_id": {
+    "$oid": "65407b8b4c428a0876910054"
+  },
+  "path": "/",
+  "createdTime": {
+    "$date": "2023-10-31T03:59:07.500Z"
+  },
+  "modifiedTime": {
+    "$date": "2023-10-31T03:59:07.500Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity",
+  "collectionName": null
+},
+{
+  "_id": {
+    "$oid": "654095c20ab95b15b12847a2"
+  },
+  "name": "New Folder",
+  "createdTime": {
+    "$date": "2023-10-31T05:50:58.496Z"
+  },
+  "modifiedTime": {
+    "$date": "2023-10-31T05:50:58.496Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6540a0c09ee4497aa8057fd7",
+  "apiList": [
+    {
+      "requestName": "요청1"
+    },
+    {
+      "requestName": "요청2"
+    },
+    {
+      "requestName": "요청3"
+    }
+  ],
+  "_class": "com.esfp.sapaier.domain.request.repository.Entity.Collection",
+  "collectionName": "request1"
+},
+{
+  "_id": {
+    "$oid": "6540a1bec006744bc472d737"
+  },
+  "apiList": [
+    {
+      "requestName": "요청1"
+    },
+    {
+      "requestName": "요청2"
+    },
+    {
+      "requestName": "요청3"
+    }
+  ],
+  "_class": "com.esfp.sapaier.domain.request.repository.Entity.Collection"
+},
+{
+  "_id": "6540a20bbb3223016790737f",
+  "apiList": [
+    {
+      "requestName": "요청1"
+    },
+    {
+      "requestName": "요청2"
+    },
+    {
+      "requestName": "요청3"
+    }
+  ],
+  "_class": "com.esfp.sapaier.domain.request.repository.Entity.Collection"
+},
+{
+  "_id": "6540a229bb32230167907380",
+  "apiList": [
+    {
+      "requestName": "요청1"
+    },
+    {
+      "requestName": "요청2"
+    },
+    {
+      "requestName": "요청3"
+    }
+  ],
+  "_class": "com.esfp.sapaier.domain.request.repository.Entity.Collection"
+},
+{
+  "_id": {
+    "$oid": "6540b3749bef4d5dff3d7566"
+  },
+  "apiList": [
+    {
+      "requestName": "요청1"
+    },
+    {
+      "requestName": "요청2"
+    },
+    {
+      "requestName": "요청3"
+    }
+  ],
+  "collectionList": [
+    {},
+    {}
+  ],
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": {
+    "$oid": "6540b42ffaaf2f449b41a838"
+  },
+  "apiList": [
+    {
+      "requestName": "요청1"
+    },
+    {
+      "requestName": "요청2"
+    },
+    {
+      "requestName": "요청3"
+    }
+  ],
+  "collectionList": [
+    {},
+    {
+      "collectionList": [
+        {}
+      ]
+    }
+  ],
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": {
+    "$oid": "6540b56f3b518a72678f74c6"
+  },
+  "apiList": [
+    {
+      "requestName": "요청1"
+    },
+    {
+      "requestName": "요청2"
+    },
+    {
+      "requestName": "요청3"
+    }
+  ],
+  "collectionList": [
+    {},
+    {
+      "collectionList": []
+    }
+  ],
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6540e57875812f72d1ffa19c",
+  "collectionName": "도큐먼트 ",
+  "apiList": [],
+  "collectionList": [
+    {
+      "collectionName": "??",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "PATCH",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "path": "도큐먼트  / 컬렉션1t /",
+          "createdTime": {
+            "$date": "2023-11-14T00:58:28.573Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-14T00:58:28.573Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "path": "도큐먼트  / 컬렉션 /",
+          "createdTime": {
+            "$date": "2023-11-16T05:06:43.905Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T20:06:43.905Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "path": "도큐먼트  / 컬렉션1t /",
+          "createdTime": {
+            "$date": "2023-11-16T07:05:42.684Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T22:05:42.684Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T13:13:41.817Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T13:13:41.818Z"
+          }
+        }
+      ],
+      "collectionList": [
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [
+            {
+              "_id": "",
+              "requestName": "New Request",
+              "requestURL": "",
+              "method": "GET",
+              "headers": [],
+              "queryParams": [],
+              "body": "",
+              "path": "도큐먼트  / 컬렉션 /  New Root Collection /",
+              "createdTime": {
+                "$date": "2023-11-16T05:07:48.359Z"
+              },
+              "modifiedTime": {
+                "$date": "2023-11-15T20:07:48.359Z"
+              }
+            }
+          ],
+          "collectionList": [
+            {
+              "collectionName": "New Child Collection ",
+              "apiList": [
+                {
+                  "_id": "",
+                  "requestName": "New Request",
+                  "requestURL": "",
+                  "method": "GET",
+                  "headers": [],
+                  "queryParams": [],
+                  "body": "",
+                  "path": "도큐먼트  / 컬렉션 /  New Root Collection /  New Child Collection  /",
+                  "createdTime": {
+                    "$date": "2023-11-16T05:08:12.449Z"
+                  },
+                  "modifiedTime": {
+                    "$date": "2023-11-15T20:08:12.449Z"
+                  }
+                }
+              ],
+              "collectionList": [],
+              "collapsed": false,
+              "modifiedTime": {
+                "$date": "2023-11-15T20:08:05.856Z"
+              }
+            }
+          ],
+          "collapsed": true,
+          "modifiedTime": {
+            "$date": "2023-11-13T07:12:36.790Z"
+          }
+        },
+        {
+          "collectionName": "New Child Collection ",
+          "apiList": [
+            {
+              "_id": "",
+              "requestName": "New Request",
+              "requestURL": "http://",
+              "method": "GET",
+              "headers": [],
+              "queryParams": [],
+              "body": "",
+              "path": "도큐먼트  / 컬렉션 /  New Child Collection  /",
+              "createdTime": {
+                "$date": "2023-11-16T13:07:06.675Z"
+              },
+              "modifiedTime": {
+                "$date": "2023-11-16T04:07:06.675Z"
+              }
+            }
+          ],
+          "collectionList": [
+            {
+              "collectionName": "New Child Collection ",
+              "apiList": [
+                {
+                  "_id": "",
+                  "requestName": "New Request",
+                  "requestURL": "http://",
+                  "method": "GET",
+                  "headers": [],
+                  "queryParams": [],
+                  "body": "",
+                  "createdTime": {
+                    "$date": "2023-11-16T13:08:19.823Z"
+                  },
+                  "modifiedTime": {
+                    "$date": "2023-11-16T04:08:19.823Z"
+                  }
+                }
+              ],
+              "collectionList": [],
+              "collapsed": false,
+              "modifiedTime": {
+                "$date": "2023-11-16T04:08:13.121Z"
+              }
+            }
+          ],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-16T03:16:41.367Z"
+          }
+        },
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-16T04:35:23.127Z"
+          }
+        },
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-16T04:35:30.171Z"
+          }
+        }
+      ],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-09T20:15:13.635Z"
+      }
+    },
+    {
+      "collectionName": "테스트",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "테스트 리퀘스트",
+          "requestURL": "https://jsonplaceholder.typicode.com/users",
+          "method": "GET",
+          "headers": [
+            {
+              "active": "true",
+              "description": "리퀘스트 실행 소요시간",
+              "value": "true",
+              "key": "x-sapier-request-time"
+            },
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "true",
+              "description": "desc1",
+              "value": "value1",
+              "key": "key1"
+            },
+            {
+              "active": "false",
+              "description": "dsec2",
+              "value": "true",
+              "key": "key2"
+            },
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "{\"잘\":\"파싱해봐 제발\",\"이거는\":\"왜되느넌데\",\"이제\":1234}",
+          "path": "도큐먼트  / 테스트 / ",
+          "createdTime": {
+            "$date": "2023-11-12T13:51:18.995Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-12T13:51:18.995Z"
+          }
+        }
+      ],
+      "collectionList": [
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [],
+          "collectionList": [
+            {
+              "collectionName": "New Child Collection ",
+              "apiList": [],
+              "collectionList": [
+                {
+                  "collectionName": "New Child Collection ",
+                  "apiList": [
+                    {
+                      "_id": "",
+                      "requestName": "New Request",
+                      "requestURL": "",
+                      "method": "GET",
+                      "headers": [],
+                      "queryParams": [],
+                      "body": "",
+                      "createdTime": {
+                        "$date": "2023-11-14T16:58:46.428Z"
+                      },
+                      "modifiedTime": {
+                        "$date": "2023-11-14T16:58:46.428Z"
+                      }
+                    }
+                  ],
+                  "collectionList": [
+                    {
+                      "collectionName": "짧은이름?",
+                      "apiList": [
+                        {
+                          "_id": "",
+                          "requestName": "New Request",
+                          "requestURL": "",
+                          "method": "DELETE",
+                          "headers": [],
+                          "queryParams": [],
+                          "body": "",
+                          "createdTime": {
+                            "$date": "2023-11-13T20:33:13.430Z"
+                          },
+                          "modifiedTime": {
+                            "$date": "2023-11-13T20:33:13.430Z"
+                          }
+                        },
+                        {
+                          "_id": "",
+                          "requestName": "New Request",
+                          "requestURL": "",
+                          "method": "GET",
+                          "headers": [],
+                          "queryParams": [],
+                          "body": "",
+                          "createdTime": {
+                            "$date": "2023-11-14T16:58:37.898Z"
+                          },
+                          "modifiedTime": {
+                            "$date": "2023-11-14T16:58:37.898Z"
+                          }
+                        }
+                      ],
+                      "collectionList": [],
+                      "collapsed": true,
+                      "modifiedTime": {
+                        "$date": "2023-11-13T11:31:27.194Z"
+                      }
+                    }
+                  ],
+                  "collapsed": true,
+                  "modifiedTime": {
+                    "$date": "2023-11-13T11:31:00.326Z"
+                  }
+                }
+              ],
+              "collapsed": true,
+              "modifiedTime": {
+                "$date": "2023-11-13T09:47:40.519Z"
+              }
+            }
+          ],
+          "collapsed": true,
+          "modifiedTime": {
+            "$date": "2023-11-09T20:15:21.645Z"
+          }
+        },
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [
+            {
+              "_id": "",
+              "requestName": "New Request",
+              "requestURL": "",
+              "method": "GET",
+              "headers": [],
+              "queryParams": [],
+              "body": "",
+              "createdTime": {
+                "$date": "2023-11-14T16:59:21.131Z"
+              },
+              "modifiedTime": {
+                "$date": "2023-11-14T16:59:21.131Z"
+              }
+            }
+          ],
+          "collectionList": [
+            {
+              "collectionName": "New Child Collection ",
+              "apiList": [
+                {
+                  "_id": "",
+                  "requestName": "New Request",
+                  "requestURL": "",
+                  "method": "GET",
+                  "headers": [],
+                  "queryParams": [],
+                  "body": "",
+                  "createdTime": {
+                    "$date": "2023-11-16T03:55:03.918Z"
+                  },
+                  "modifiedTime": {
+                    "$date": "2023-11-15T18:55:03.918Z"
+                  }
+                }
+              ],
+              "collectionList": [
+                {
+                  "collectionName": "New Child Collection ",
+                  "apiList": [
+                    {
+                      "_id": "",
+                      "requestName": "New Request",
+                      "requestURL": "",
+                      "method": "GET",
+                      "headers": [],
+                      "queryParams": [],
+                      "body": "",
+                      "createdTime": {
+                        "$date": "2023-11-16T03:55:09.813Z"
+                      },
+                      "modifiedTime": {
+                        "$date": "2023-11-15T18:55:09.813Z"
+                      }
+                    }
+                  ],
+                  "collectionList": [],
+                  "collapsed": false,
+                  "modifiedTime": {
+                    "$date": "2023-11-15T18:55:07.270Z"
+                  }
+                }
+              ],
+              "collapsed": false,
+              "modifiedTime": {
+                "$date": "2023-11-15T18:54:59.321Z"
+              }
+            }
+          ],
+          "collapsed": true,
+          "modifiedTime": {
+            "$date": "2023-11-14T06:55:11.765Z"
+          }
+        },
+        {
+          "collectionName": "New Child Collection ",
+          "apiList": [],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-15T22:15:24.180Z"
+          }
+        }
+      ],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-09T20:15:19.248Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:29:25.859Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-15T23:21:46.450Z"
+      }
+    },
+    {
+      "collectionName": "컬렉션 이름",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T12:47:57.544Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T03:47:57.544Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T12:49:18.687Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T03:49:18.687Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T12:49:43.836Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T03:49:43.836Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T12:50:29.776Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T03:50:29.776Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T12:57:35.095Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T03:57:35.095Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T23:21:54.587Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T14:17:08.580Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6540e7115a40cf75f485d552",
+  "collectionName": "수정?",
+  "apiList": [
+    {
+      "requestName": "test"
+    }
+  ],
+  "collectionList": [
+    {
+      "collectionName": "아메리카노",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [
+            null
+          ],
+          "queryParams": [
+            null
+          ],
+          "body": "{}",
+          "createdTime": {
+            "$date": "2023-11-13T00:53:18.915Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-13T00:53:18.915Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false
+    },
+    {
+      "collectionName": "임시2",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [
+            null
+          ],
+          "queryParams": [
+            null
+          ],
+          "body": "{}",
+          "createdTime": {
+            "$date": "2023-11-13T00:55:29.815Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-13T00:55:29.815Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false
+    },
+    {
+      "collectionName": "name?",
+      "apiList": [],
+      "collectionList": [
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [
+            {
+              "_id": "",
+              "requestName": "New Request",
+              "requestURL": "",
+              "method": "GET",
+              "headers": [
+                null
+              ],
+              "queryParams": [
+                null
+              ],
+              "body": "{}",
+              "createdTime": {
+                "$date": "2023-11-13T01:23:09.550Z"
+              },
+              "modifiedTime": {
+                "$date": "2023-11-13T01:23:09.550Z"
+              }
+            }
+          ],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-12T16:23:06.436Z"
+          }
+        }
+      ],
+      "collapsed": false
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-14T16:45:24.197Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-14T16:45:25.150Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-14T16:45:25.778Z"
+      }
+    }
+  ],
+  "collapsed": true,
+  "modifiedTime": {
+    "$date": "2023-11-15T01:45:25.804Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6551c5e6a43287700e2ae936",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-13T06:44:54.819Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity",
+  "collapsed": "true"
+},
+{
+  "_id": "6551c639a43287700e2ae937",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-13T06:46:17.636Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity",
+  "collapsed": "true"
+},
+{
+  "_id": "6551c681a43287700e2ae938",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-13T06:47:29.817Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity",
+  "collapsedf": "true"
+},
+{
+  "_id": "6551c6baa43287700e2ae939",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-13T06:48:26.317Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity",
+  "collapsed": "true"
+},
+{
+  "_id": "6551c6eca43287700e2ae93a",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-13T06:49:16.111Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity",
+  "collapsed": "true"
+},
+{
+  "_id": "6551cdc954767c7e361684f0",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-13T07:18:33.236Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity",
+  "collapsed": "true"
+},
+{
+  "_id": "6551cf8f54767c7e361684f1",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "testtest",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T07:02:04.443Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T22:02:04.443Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T07:20:52.602Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T22:02:53.207Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T08:19:23.770Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6551cfdf54767c7e361684f2",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-13T07:27:27.613Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6551d47954767c7e361684f3",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-13T07:47:05.422Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6551d55454767c7e361684f4",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-13T07:50:44.999Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6552bcb554767c7e361684f5",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [
+            {
+              "_id": "",
+              "requestName": "New Request",
+              "requestURL": "",
+              "method": "GET",
+              "headers": [],
+              "queryParams": [],
+              "body": "",
+              "createdTime": {
+                "$date": "2023-11-15T00:13:38.951Z"
+              },
+              "modifiedTime": {
+                "$date": "2023-11-15T00:13:38.951Z"
+              }
+            }
+          ],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-14T15:13:35.496Z"
+          }
+        }
+      ],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-13T15:18:12.554Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "modifiedTime": {
+        "$date": "2023-11-14T03:34:02.773Z"
+      }
+    }
+  ],
+  "modifiedTime": {
+    "$date": "2023-11-15T00:13:38.973Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65533445be825c1c08168d6c",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-14T08:48:05.369Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65533448be825c1c08168d6d",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-14T08:48:08.150Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65533467be825c1c08168d6e",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-14T08:48:39.110Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65533476be825c1c08168d6f",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-14T08:48:54.792Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65533477be825c1c08168d70",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-14T08:48:55.191Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65533477be825c1c08168d71",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-14T08:48:55.381Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65533477be825c1c08168d72",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-14T08:48:55.578Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65533477be825c1c08168d73",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-14T08:48:55.803Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65541cf6d9ed5a190fce1495",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-14T16:27:40.234Z"
+      }
+    }
+  ],
+  "modifiedTime": {
+    "$date": "2023-11-15T01:27:40.252Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65541d9ac258f11de521eb73",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T01:23:38.884Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65541dbed9ed5a190fce1496",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-15T01:25:31.087Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T01:25:31.087Z"
+          }
+        }
+      ],
+      "collectionList": [
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [
+            {
+              "_id": "",
+              "requestName": "New Request",
+              "requestURL": "",
+              "method": "GET",
+              "headers": [],
+              "queryParams": [],
+              "body": "",
+              "createdTime": {
+                "$date": "2023-11-15T01:25:33.733Z"
+              },
+              "modifiedTime": {
+                "$date": "2023-11-15T01:25:33.733Z"
+              }
+            },
+            {
+              "_id": "",
+              "requestName": "New Request",
+              "requestURL": "",
+              "method": "GET",
+              "headers": [],
+              "queryParams": [],
+              "body": "",
+              "createdTime": {
+                "$date": "2023-11-15T07:24:00.793Z"
+              },
+              "modifiedTime": {
+                "$date": "2023-11-15T07:24:00.793Z"
+              }
+            }
+          ],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-14T16:25:29.383Z"
+          }
+        }
+      ],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-14T16:24:36.122Z"
+      }
+    }
+  ],
+  "modifiedTime": {
+    "$date": "2023-11-15T07:24:00.911Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65544576d9ed5a190fce1497",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T04:13:42.504Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655446bdd9ed5a190fce1498",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T04:19:09.946Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655446dad9ed5a190fce1499",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T04:19:38.728Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554470ed9ed5a190fce149a",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T04:20:30.825Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65546157d9ed5a190fce149b",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T06:12:39.168Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65546ed4d5d64162ac414e59",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:10:12.741Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65546ed5d5d64162ac414e5a",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:10:13.572Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65546ed5d5d64162ac414e5b",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:10:13.858Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65546ed6d5d64162ac414e5c",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:10:14.031Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655471d5230b627d92ea01f1",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:23:01.243Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655471d5230b627d92ea01f2",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:23:01.769Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655471d5230b627d92ea01f3",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:23:01.920Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655471d9230b627d92ea01f4",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:23:05.795Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655471f8230b627d92ea01f5",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:23:36.178Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547212230b627d92ea01f8",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:02.464Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547212230b627d92ea01f9",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:02.830Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547218230b627d92ea01fa",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:08.263Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547218230b627d92ea01fb",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:08.412Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554721f230b627d92ea01fc",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:15.148Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554721f230b627d92ea01fd",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:15.319Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554721f230b627d92ea01fe",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:15.552Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554721f230b627d92ea01ff",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:15.739Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554721f230b627d92ea0200",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:15.928Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547227230b627d92ea0201",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:23.481Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547233230b627d92ea0202",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:35.312Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554723a230b627d92ea0204",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:24:42.603Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655472edd9ed5a190fce149e",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:27:41.458Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547310d9ed5a190fce149f",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:28:16.412Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655473f9d9ed5a190fce14a1",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:32:09.641Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547428a1fff047e1c698ac",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:32:56.662Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655474eca1fff047e1c698ad",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:36:12.728Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655474f4a1fff047e1c698ae",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:36:20.242Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554750da1fff047e1c698af",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:36:45.829Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554757d9c7c5721dd4e6b57",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:38:37.726Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655475e49c7c5721dd4e6b58",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:40:20.150Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655475fb9c7c5721dd4e6b59",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:40:43.016Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655476c69c7c5721dd4e6b5a",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:44:06.427Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655477a3d9ed5a190fce14a2",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:47:47.660Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655478c69c7c5721dd4e6b5c",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:52:38.193Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554791a9c7c5721dd4e6b5d",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:54:02.079Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655479ebaae111153c4bbd3c",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:57:31.867Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655479faaae111153c4bbd3d",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:57:46.604Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547a0faae111153c4bbd3e",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T07:58:07.864Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547c17a1a1ba1d7939a898",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:06:47.753Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547c37a1a1ba1d7939a899",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:07:19.631Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547ed1b65aae5d2182a12d",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [],
+          "collectionList": [
+            {
+              "collectionName": "New Child Collection ",
+              "apiList": [
+                {
+                  "_id": "",
+                  "requestName": "New Request",
+                  "requestURL": "",
+                  "method": "GET",
+                  "headers": [],
+                  "queryParams": [],
+                  "body": "",
+                  "createdTime": {
+                    "$date": "2023-11-15T08:20:56.667Z"
+                  },
+                  "modifiedTime": {
+                    "$date": "2023-11-15T08:20:56.667Z"
+                  }
+                },
+                {
+                  "_id": "",
+                  "requestName": "New Request",
+                  "requestURL": "",
+                  "method": "GET",
+                  "headers": [],
+                  "queryParams": [],
+                  "body": "",
+                  "createdTime": {
+                    "$date": "2023-11-15T08:20:57.912Z"
+                  },
+                  "modifiedTime": {
+                    "$date": "2023-11-15T08:20:57.912Z"
+                  }
+                }
+              ],
+              "collectionList": [],
+              "collapsed": false,
+              "modifiedTime": {
+                "$date": "2023-11-15T08:20:46.388Z"
+              }
+            }
+          ],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-15T08:20:43.216Z"
+          }
+        }
+      ],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T08:20:34.715Z"
+      }
+    }
+  ],
+  "modifiedTime": {
+    "$date": "2023-11-15T08:20:58.084Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547ee1b65aae5d2182a12e",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:18:41.821Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547eebb65aae5d2182a12f",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:18:51.445Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547f01b65aae5d2182a130",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:19:13.515Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65547f06b65aae5d2182a131",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "테스트",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-15T08:20:25.733Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T08:20:25.733Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T08:20:20.848Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-16T00:03:07.546Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T00:03:08.062Z"
+      }
+    }
+  ],
+  "modifiedTime": {
+    "$date": "2023-11-16T00:03:25.046Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65548026b65aae5d2182a13f",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "루트 콜렉션",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "리퀘스트ㄴㅇㄹ",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "path": "new Document / 루트 콜렉션 / ",
+          "createdTime": {
+            "$date": "2023-11-15T08:24:21.767Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T08:24:21.767Z"
+          }
+        }
+      ],
+      "collectionList": [
+        {
+          "collectionName": "하위 콜렉션",
+          "apiList": [],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-16T04:35:38.819Z"
+          }
+        }
+      ],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T08:24:19.096Z"
+      }
+    }
+  ],
+  "modifiedTime": {
+    "$date": "2023-11-16T13:43:17.952Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554806faae111153c4bbd3f",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:25:19.251Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554808faae111153c4bbd40",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:25:51.920Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65548204aae111153c4bbd41",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:32:04.508Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65548215aae111153c4bbd42",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:32:21.457Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554821aaae111153c4bbd43",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:32:26.172Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65548224aae111153c4bbd44",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:32:36.581Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554822faae111153c4bbd45",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:32:47.634Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65548238aae111153c4bbd46",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:32:56.726Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65548243aae111153c4bbd48",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:33:07.329Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65548252aae111153c4bbd49",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:33:22.354Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554825caae111153c4bbd4a",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:33:32.134Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655482c8aae111153c4bbd4c",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "modifiedTime": {
+    "$date": "2023-11-16T08:20:35.784Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554833faae111153c4bbd4e",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:37:19.365Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65548542aae111153c4bbd50",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:45:54.939Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554864daae111153c4bbd51",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T08:50:21.911Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655486c87ca580661a2f1f7d",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "collapsed": false,
+  "createdTime": {
+    "$date": "2023-11-15T08:52:24.417Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554beace6b6444121d12d36",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T12:50:52.298Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6554beaee6b6444121d12d37",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "createdTime": {
+    "$date": "2023-11-15T12:50:54.467Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65553c8bad9bb361e9c6f4db",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-15T21:47:47.143Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T21:47:47.143Z"
+          }
+        }
+      ],
+      "collectionList": [
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [
+            {
+              "_id": "",
+              "requestName": "New Request",
+              "requestURL": "",
+              "method": "GET",
+              "headers": [],
+              "queryParams": [],
+              "body": "",
+              "createdTime": {
+                "$date": "2023-11-15T21:47:55.862Z"
+              },
+              "modifiedTime": {
+                "$date": "2023-11-15T21:47:55.862Z"
+              }
+            }
+          ],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-15T21:47:52.781Z"
+          }
+        }
+      ],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T21:47:40.831Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-15T21:48:13.174Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65555753ad9bb361e9c6f4dd",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T01:24:47.414Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T16:24:47.414Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T01:24:48.000Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T16:24:48.000Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T01:24:48.561Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T16:24:48.561Z"
+          }
+        }
+      ],
+      "collectionList": [
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-15T16:24:45.143Z"
+          }
+        }
+      ],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T16:24:41.452Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T01:24:48.579Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655558c4ad9bb361e9c6f4df",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-15T23:48:23.991Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T23:48:23.991Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T23:48:21.122Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-15T23:48:25.522Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655566331af2b176fadf49fb",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [],
+          "collectionList": [
+            {
+              "collectionName": "New Child Collection ",
+              "apiList": [],
+              "collectionList": [
+                {
+                  "collectionName": "New Child Collection ",
+                  "apiList": [],
+                  "collectionList": [],
+                  "collapsed": false,
+                  "modifiedTime": {
+                    "$date": "2023-11-15T20:11:47.331Z"
+                  }
+                }
+              ],
+              "collapsed": false,
+              "modifiedTime": {
+                "$date": "2023-11-15T20:11:41.331Z"
+              }
+            }
+          ],
+          "collapsed": true,
+          "modifiedTime": {
+            "$date": "2023-11-15T20:11:33.899Z"
+          }
+        },
+        {
+          "collectionName": "New Root Collection",
+          "apiList": [],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-15T20:11:50.721Z"
+          }
+        }
+      ],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:11:16.994Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:32:35.166Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T05:32:35.187Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6555a7d57009942f8cdc69f9",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "이름수정",
+          "requestURL": "http://",
+          "method": "PATCH",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T07:17:32.978Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T22:17:32.978Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "POST",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T07:17:34.470Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T22:17:34.470Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T07:17:34.636Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T22:17:34.636Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T07:17:34.762Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-15T22:17:34.762Z"
+          }
+        }
+      ],
+      "collectionList": [
+        {
+          "collectionName": "New Child Collection ",
+          "apiList": [
+            {
+              "_id": "",
+              "requestName": "New Request",
+              "requestURL": "http://",
+              "method": "GET",
+              "headers": [],
+              "queryParams": [],
+              "body": "",
+              "createdTime": {
+                "$date": "2023-11-16T07:22:11.519Z"
+              },
+              "modifiedTime": {
+                "$date": "2023-11-15T22:22:11.519Z"
+              }
+            }
+          ],
+          "collectionList": [],
+          "collapsed": false,
+          "modifiedTime": {
+            "$date": "2023-11-15T22:21:09.788Z"
+          }
+        }
+      ],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:32:46.648Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:32:46.971Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:32:47.136Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:32:47.338Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:32:47.503Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:33:05.698Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:33:36.756Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": true,
+      "modifiedTime": {
+        "$date": "2023-11-15T20:44:59.278Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T08:24:03.280Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6555be005ee82b61b62252b8",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T22:00:31.915Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T08:09:52.604Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6555be035ee82b61b62252b9",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-15T22:00:38.753Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T07:02:44.060Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6555d2ae7009942f8cdc69fb",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T08:28:36.450Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6555f5f8ca97c62712596061",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T11:53:40.333Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6555f5f9ca97c62712596062",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "collapsed": false,
+  "createdTime": {
+    "$date": "2023-11-16T10:59:05.068Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6555f5f9ca97c62712596063",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "collapsed": false,
+  "createdTime": {
+    "$date": "2023-11-16T10:59:05.285Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6556017c8d71c76caff6c651",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T11:49:43.983Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655606212654067f7381eba0",
+  "collectionName": "new Document",
+  "collectionList": [],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T13:25:04.225Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655615d4cd52ff786c85c1e5",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "New Request",
+          "requestURL": "http://",
+          "method": "GET",
+          "headers": [],
+          "queryParams": [],
+          "body": "",
+          "createdTime": {
+            "$date": "2023-11-16T13:15:16.296Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T13:15:16.296Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T13:15:12.049Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T13:21:26.674Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6556174d2e26fe514f50d4cb",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T04:21:22.302Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T04:21:34.624Z"
+      }
+    },
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T04:21:35.872Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T13:21:35.889Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655617e38d71c76caff6c652",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "ㅁㄴㅇㄻㄴㅇㄹ",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "ㅁㄴㅇㄹ",
+          "requestURL": "http:/ㅁㄴㅇㄻㄴㅇㄹ",
+          "method": "GET",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "path": "new Document / ㅁㄴㅇㄻㄴㅇㄹ / ",
+          "createdTime": {
+            "$date": "2023-11-16T13:26:32.798Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T04:26:32.798Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T04:26:30.882Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T13:43:21.371Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6556184c44658209c7b9de7c",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "New Root Collection",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "ttttttttttttttttttt",
+          "requestURL": "http://ttttttttttttttttf",
+          "method": "GET",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "path": "new Document / New Root Collection / ",
+          "createdTime": {
+            "$date": "2023-11-16T13:25:41.055Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T13:25:41.055Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T13:25:34.374Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T13:39:09.463Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6556189344658209c7b9de7d",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "API TEST",
+      "apiList": [],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T13:26:48.364Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T13:39:36.647Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "65561d363391d9542baf1a59",
+  "collectionName": "SAPIER",
+  "collectionList": [
+    {
+      "collectionName": "API TEST",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "TEST1",
+          "requestURL": "https://jsonplaceholder.typicode.com/users",
+          "method": "GET",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "path": "new Document / API TEST / ",
+          "createdTime": {
+            "$date": "2023-11-16T13:46:49.477Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T13:46:49.477Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "TEST2",
+          "requestURL": "http://TEEST2",
+          "method": "GET",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "path": "new Document / API TEST / ",
+          "createdTime": {
+            "$date": "2023-11-16T13:46:51.839Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T13:46:51.839Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T13:46:37.407Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T13:52:10.832Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655620183391d9542baf1a62",
+  "collectionName": "SAPIER",
+  "collectionList": [
+    {
+      "collectionName": "TEST",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "dummyData1",
+          "requestURL": "https://jsonplaceholder.typicode.com/users",
+          "method": "GET",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "path": "SAPIER / TEST / ",
+          "createdTime": {
+            "$date": "2023-11-16T14:00:38.529Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T14:00:38.529Z"
+          }
+        },
+        {
+          "_id": "",
+          "requestName": "dummyData2",
+          "requestURL": "https://sapier.co.kr/api/v1/users",
+          "method": "GET",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "path": "SAPIER / TEST / ",
+          "createdTime": {
+            "$date": "2023-11-16T14:00:42.640Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T14:00:42.640Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T13:58:54.260Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T14:01:21.846Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "6556217d3391d9542baf1a65",
+  "collectionName": "SAPIER",
+  "collectionList": [
+    {
+      "collectionName": "API TESTS",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "dummyData",
+          "requestURL": "https://jsonplaceholder.typicode.com/users",
+          "method": "PATCH",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "{\"adfadfasdfasdf\":1234}",
+          "path": "SAPIER / API TESTS / ",
+          "createdTime": {
+            "$date": "2023-11-16T14:09:43.284Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T14:09:43.284Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T14:09:16.128Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T14:42:43.271Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+},
+{
+  "_id": "655625dd3391d9542baf1a69",
+  "collectionName": "new Document",
+  "collectionList": [
+    {
+      "collectionName": "Test",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "dummyData",
+          "requestURL": "https://jsonplaceholder.typicode.com/users",
+          "method": "GET",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "path": "new Document / Test / ",
+          "createdTime": {
+            "$date": "2023-11-16T14:23:35.031Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T14:23:35.031Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T14:23:31.661Z"
+      }
+    },
+    {
+      "collectionName": "Test2",
+      "apiList": [
+        {
+          "_id": "",
+          "requestName": "dummyData2",
+          "requestURL": "http://https://jsonplaceholder.typicode.com/users",
+          "method": "GET",
+          "headers": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "queryParams": [
+            {
+              "active": "",
+              "description": "",
+              "value": "",
+              "key": ""
+            }
+          ],
+          "body": "",
+          "path": "new Document / Test2 / ",
+          "createdTime": {
+            "$date": "2023-11-16T14:25:25.146Z"
+          },
+          "modifiedTime": {
+            "$date": "2023-11-16T14:25:25.146Z"
+          }
+        }
+      ],
+      "collectionList": [],
+      "collapsed": false,
+      "modifiedTime": {
+        "$date": "2023-11-16T14:25:08.052Z"
+      }
+    }
+  ],
+  "collapsed": false,
+  "modifiedTime": {
+    "$date": "2023-11-16T14:26:03.467Z"
+  },
+  "_class": "com.esfp.sapaier.domain.collection.repository.entity.CollectionEntity"
+}]

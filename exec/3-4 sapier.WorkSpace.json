@@ -1,0 +1,115 @@
+[{
+  "_id": "654af12dc8980d2ce6358291",
+  "name": "test",
+  "color": "#658DC6",
+  "collectionList": [
+    {
+      "collectionKey": "6540e57875812f72d1ffa19c",
+      "collectionName": "도큐먼트"
+    },
+    {
+      "collectionKey": "655566331af2b176fadf49fb",
+      "collectionName": "New Document"
+    },
+    {
+      "collectionKey": "6555a7d57009942f8cdc69f9",
+      "collectionName": "New Document"
+    },
+    {
+      "collectionKey": "6556017c8d71c76caff6c651",
+      "collectionName": "New Document"
+    }
+  ],
+  "memberList": [
+    {
+      "uuId": "ee6e41bb-0aa0-4c09-817b-dbf43549e3aa",
+      "userPermission": "admin"
+    },
+    {
+      "uuId": "f86ca031-d950-4231-b757-9c2b542d5ef6",
+      "userPermission": "admin"
+    },
+    {
+      "uuId": "00669f83-4ac0-47f1-8203-f904f8d46923",
+      "userPermission": "member"
+    },
+    {
+      "uuId": "4140904e-acd6-409b-a2b6-bbd1dd44f5ec",
+      "userPermission": "member"
+    },
+    {
+      "uuId": "fa1d9dbb-8c2c-44bc-a5f6-f2ac9645caa7",
+      "userPermission": "member"
+    },
+    {
+      "uuId": "321c90d5-7ba9-4f51-b84d-85b34bcf6190",
+      "userPermission": "viewer"
+    }
+  ],
+  "modifiedTime": {
+    "$date": "2023-11-16T11:48:12.973Z"
+  },
+  "summaryData": "개인 워크스페이스 Overview 입니다. 워크스페이스 요약, 설명이나 컬렉션을 고정할 수 있습니다. 요약, 설명은 클릭하면 수정이 되고, 다른곳을 누르면 저장됩니다. 글자수(높이)가 제한되어 있습니다. setting에서는 기타 워크스페이스 설정이나 삭제 및 탈퇴 할 수 있습니다.",
+  "documentData": "개인 워크스페이스 Overview 입니다. 워크스페이스 요약, 설명이나 컬렉션을 고정할 수 있습니다. 요약, 설명은 클릭하면 수정이 되고, 다른곳을 누르면 저장됩니다. 글자수(높이)가 제한되어 있습니다. setting에서는 기타 워크스페이스 설정이나 삭제 및 탈퇴 할 수 있습니다.",
+  "_class": "com.esfp.sapaier.domain.workspace.document.WorkSpace"
+},
+{
+  "_id": "655620043391d9542baf1a61",
+  "name": "TEST",
+  "color": "#0F4C81",
+  "collectionList": [
+    {
+      "collectionKey": "6556217d3391d9542baf1a65",
+      "collectionName": "SAPIER"
+    }
+  ],
+  "memberList": [
+    {
+      "uuId": "42288876-bd50-4d9e-936d-a92f1cb70c3d",
+      "userPermission": "admin"
+    },
+    {
+      "uuId": "321c90d5-7ba9-4f51-b84d-85b34bcf6190",
+      "userPermission": "viewer"
+    },
+    {
+      "uuId": "321c90d5-7ba9-4f51-b84d-85b34bcf6190",
+      "userPermission": "viewer"
+    },
+    {
+      "uuId": "4140904e-acd6-409b-a2b6-bbd1dd44f5ec",
+      "userPermission": "viewer"
+    }
+  ],
+  "modifiedTime": {
+    "$date": "2023-11-16T14:04:45.993Z"
+  },
+  "summaryData": "요약\n",
+  "documentData": "설명",
+  "_class": "com.esfp.sapaier.domain.workspace.document.WorkSpace"
+},
+{
+  "_id": "655625ad3391d9542baf1a68",
+  "name": "TEST2",
+  "color": "#0F4C81",
+  "collectionList": [
+    {
+      "collectionKey": "655625dd3391d9542baf1a69",
+      "collectionName": "New Document"
+    }
+  ],
+  "memberList": [
+    {
+      "uuId": "42288876-bd50-4d9e-936d-a92f1cb70c3d",
+      "userPermission": "admin"
+    },
+    {
+      "uuId": "fa1d9dbb-8c2c-44bc-a5f6-f2ac9645caa7",
+      "userPermission": "viewer"
+    }
+  ],
+  "Admin": "42288876-bd50-4d9e-936d-a92f1cb70c3d",
+  "summaryData": "개인 워크스페이스 Overview 입니다. 워크스페이스 요약, 설명이나 컬렉션을 고정할 수 있습니다. 요약, 설명은 클릭하면 수정이 되고, 다른곳을 누르면 저장됩니다. 글자수(높이)가 제한되어 있습니다. setting에서는 기타 워크스페이스 설정이나 삭제 및 탈퇴 할 수 있습니다.",
+  "documentData": "개인 워크스페이스 Overview 입니다. 워크스페이스 요약, 설명이나 컬렉션을 고정할 수 있습니다. 요약, 설명은 클릭하면 수정이 되고, 다른곳을 누르면 저장됩니다. 글자수(높이)가 제한되어 있습니다. setting에서는 기타 워크스페이스 설정이나 삭제 및 탈퇴 할 수 있습니다.",
+  "_class": "com.esfp.sapaier.domain.workspace.document.WorkSpace"
+}]

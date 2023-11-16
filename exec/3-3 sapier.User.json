@@ -1,0 +1,162 @@
+[{
+  "_id": {
+    "$oid": "653ef9b6895c1b5063e9a7e3"
+  },
+  "nickname": "kims",
+  "email": "abc@gmail.com",
+  "uuId": "1"
+},
+{
+  "_id": {
+    "$oid": "653efebc895c1b5063e9a7e4"
+  },
+  "nickname": "Fizi",
+  "email": "abcd@gmail.com",
+  "uuId": "2"
+},
+{
+  "_id": {
+    "$oid": "653eff09895c1b5063e9a7e5"
+  },
+  "nickname": "wonjun(천원)",
+  "email": "abcddd@gmail.com",
+  "uuId": "3"
+},
+{
+  "_id": "6541b2e34ae5e263755ef1bc",
+  "uuid": "42288876-bd50-4d9e-936d-a92f1cb70c3d",
+  "nickname": "sju3358 (dev)",
+  "email": "tjdfkr011.dev@gmail.com",
+  "socialId": "103019670560931326045",
+  "socialProvider": "GOOGLE",
+  "profileImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocJvUsbMuOwXRXtOwxq-bBqvK_nYO-OoCfsApVzWkN_AnA=s96-c",
+  "countOfApiRequest": 0,
+  "workspaces": [],
+  "role": "ADMIN"
+},
+{
+  "_id": "6541d84a2ce64065bf79919d",
+  "uuid": "fa1d9dbb-8c2c-44bc-a5f6-f2ac9645caa7",
+  "nickname": "tmp",
+  "email": "kjwkjw1104@gmail.com",
+  "socialId": "111353353544649571657",
+  "socialProvider": "GOOGLE",
+  "profileImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocLZbcY7VeJhrl80bW0ikHNgP9OtmyfUkDPFO-J_hpSwIQ=s96-c",
+  "countOfApiRequest": 0,
+  "workspaces": [],
+  "role": "ADMIN"
+},
+{
+  "_id": "6541f9f5a9587044f43b4e9e",
+  "uuid": "ec634402-443f-443a-a768-35ca22db9f69",
+  "nickname": "sju3358",
+  "email": "tjdfkr011@gmail.com",
+  "socialId": "102370657213006233319",
+  "socialProvider": "GOOGLE",
+  "profileImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocKAMyJjpcmW8nKFUBbBf1bd55JjxGBXo7PDTdJOE0bT=s96-c",
+  "countOfApiRequest": 0,
+  "workspaces": [],
+  "role": "USER"
+},
+{
+  "_id": "6541fa195450155e8ea46ea3",
+  "uuid": "00669f83-4ac0-47f1-8203-f904f8d46923",
+  "nickname": "Jade_Good",
+  "email": "kangsm423@gmail.com",
+  "socialId": "111617454816428264900",
+  "socialProvider": "GOOGLE",
+  "profileImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocJdW1eo-uQFSeuMW08fIK_WdMelz9VlzCOikHtQ-CkAaHc=s96-c",
+  "countOfApiRequest": 0,
+  "workspaces": [
+    "654ae70a5b971741a2467b51"
+  ],
+  "role": "USER"
+},
+{
+  "_id": "6541feb438e0c653f648bf56",
+  "uuid": "4140904e-acd6-409b-a2b6-bbd1dd44f5ec",
+  "nickname": "조성락",
+  "email": "tjdfkr011.dev@gmail.com",
+  "socialId": "44466109",
+  "socialProvider": "GITHUB",
+  "profileImageUrl": "https://avatars.githubusercontent.com/u/44466109?v=4",
+  "countOfApiRequest": 0,
+  "workspaces": [],
+  "role": "USER"
+},
+{
+  "_id": "654210baf65340002755675a",
+  "uuid": "ee6e41bb-0aa0-4c09-817b-dbf43549e3aa",
+  "nickname": "용용",
+  "email": "kimsy980311@gmail.com",
+  "socialId": "117178391345582046723",
+  "socialProvider": "GOOGLE",
+  "profileImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocKjq9SZa7oU7d1NPvvGV32FHq8NrjIVJEIfSIExZ7Uc=s96-c",
+  "countOfApiRequest": 0,
+  "workspaces": [],
+  "role": "USER"
+},
+{
+  "_id": "65422a2708ec670fd2645315",
+  "uuid": "f86ca031-d950-4231-b757-9c2b542d5ef6",
+  "nickname": "최경인",
+  "email": "a27313797@gmail.com",
+  "socialId": "101677256784864192677",
+  "socialProvider": "GOOGLE",
+  "profileImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocL7ZFNXzy4H5yQq8-6eXFH0L99yeaTeyp5MVzPBWMVa=s96-c",
+  "countOfApiRequest": 0,
+  "workspaces": [
+    "2",
+    "6"
+  ],
+  "role": "USER"
+},
+{
+  "_id": "654462b75d7f2a436c34e02e",
+  "uuid": "ad780a5d-894a-42f9-ac32-931608bd862d",
+  "nickname": "Dummy",
+  "email": "tjdfkr011sub@gmail.com",
+  "socialId": "115996256133188094662",
+  "socialProvider": "GOOGLE",
+  "profileImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocKDQ8KPHHq4cjrWS9Jwt0uOWLFEXx2tEa42ANNEB-Nf=s96-c",
+  "countOfApiRequest": 0,
+  "workspaces": [],
+  "role": "USER"
+},
+{
+  "_id": "65482a5d8c4cd90474269838",
+  "uuid": "44d05974-8a7b-4d5b-8711-e74eb7f91437",
+  "nickname": "Soomin_Kang",
+  "email": "kangsm423@gmail.com",
+  "socialId": "36834513",
+  "socialProvider": "GITHUB",
+  "profileImageUrl": "https://avatars.githubusercontent.com/u/36834513?v=4",
+  "countOfApiRequest": 0,
+  "workspaces": [],
+  "role": "USER"
+},
+{
+  "_id": "6548c1ee5e7b225f8e3a622a",
+  "uuid": "321c90d5-7ba9-4f51-b84d-85b34bcf6190",
+  "nickname": "천원준",
+  "email": "chunjh1101@gmail.com",
+  "socialId": "106883962314681734873",
+  "socialProvider": "GOOGLE",
+  "profileImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocLIs40TwQtmzXC0R8LlNbS9UxDiJMcFELDrZe_cYYcw=s96-c",
+  "countOfApiRequest": 0,
+  "workspaces": [],
+  "role": "ADMIN"
+},
+{
+  "_id": "655463bdd5d64162ac414e58",
+  "uuid": "4a2de65a-fb8c-4706-87c3-4425c00467f0",
+  "nickname": "Stardust Ziggy",
+  "email": "2k20odyssey@gmail.com",
+  "socialId": "105593195564495998203",
+  "socialProvider": "GOOGLE",
+  "profileImageUrl": "https://lh3.googleusercontent.com/a/ACg8ocIZ2eB2S1THp-mXiiIkw94vpalaKC4N01hB8TO7XZdqkQ=s96-c",
+  "countOfApiRequest": 0,
+  "workspaces": [],
+  "role": "USER",
+  "_class": "com.esfp.sapaier.domain.user.repository.entity.User"
+}]
