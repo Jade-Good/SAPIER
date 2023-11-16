@@ -68,6 +68,7 @@ export default defineComponent({
             const workspaceName = await this.getWorkspaceName(workspaceKey);
             console.log("워크스페이스명 : ", workspaceName, typeof(workspaceName));
             // 여기서 workspaceName을 사용하거나 데이터에 할당합니다.
+            return workspaceName
             } catch (err) {
             console.log('에러 발생 : ', err);
             }
