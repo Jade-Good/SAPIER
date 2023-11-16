@@ -3,7 +3,8 @@ import axios from 'axios';
 import { defineComponent, ref, onMounted } from 'vue';
 // const historyStore = useHistoryStore()
 const collectionStore = useCollectionStore()
-const workspaceName = ref(String)
+// const workspaceStore = useWorkspaceStore()
+// const workspaceName = ref('workspace')
 
 export default defineComponent({
     setup(){
@@ -12,6 +13,8 @@ export default defineComponent({
         const HistoryListStore = useHistoryListStore()
         const HistoryListRef = ref([]) //필요없을 시 제거
         // const UserStore = useUserStore()
+        const workspaceList = useWorkspaceListStore()
+        const workspaceListRef = ref([])
         
 
 
@@ -33,17 +36,38 @@ export default defineComponent({
                     //     HistoryListStore.historyList.push(value)
                     // })
                     // HistoryList = response.data
-                    console.log('axios.get 성공, 이름: ', response.data)
+                    console.log('history axios.get 성공, 이름: ', response.data)
             } catch(err){
-                console.log('axios.get 실패', err)
+                console.log('history axios.get 실패', err)
+            }
+        }
+        async function getWorkspaceList(){
+            try{
+                // const uuid = UserStore.uuid
+                // console.log('uuid: ', uuid)
+                const response = await axios.get(`/api/v1/workspaces`)
+                console.log('workspace axios.get 성공, 이름: ', response.data)
+                console.log(response.data)
+                
+                console.log('workspaceListStore에 저장 시도')
+                workspaceList.workspaceList = response.data
+                console.log('workspaceListStore에 저장 성공')
+                console.log('workspaceListStore: ', workspaceList.workspaceList)
+                workspaceListRef.value = response.data
+            } catch(err){
+                console.log('workspace axios.get 실패', err)
             }
         }
         onMounted(()=>{
-            getHistoryList()
+            getHistoryList(),
+            getWorkspaceList()
         })
         return{
             HistoryListRef,
+            workspaceListRef
         }
+
+        
             
     },
     data(){
@@ -74,20 +98,21 @@ export default defineComponent({
         //     console.log('에러 발생 : ', err);
         //     }
         // },
-        async getWorkspaceName(workspaceKey){
-            try{
-                const response = await axios.get(`/api/v1/workspaces/${workspaceKey}/name`)
-                workspaceName.value = response.data
-                console.log("워크스페이스명: ", workspaceName.value, typeof(workspaceName.value))
-                console.log(response)
+        
+        // async getWorkspaceName(workspaceKey){
+        //     try{
+        //         const response = await axios.get(`/api/v1/workspaces/${workspaceKey}/name`)
+        //         workspaceName.value = response.data
+        //         console.log("워크스페이스명: ", workspaceName.value, typeof(workspaceName.value))
+        //         console.log(response)
                 
-                return workspaceName.value
-            }
-            catch(err){
-                console.log('axios 실패 : ', err)
-            }
-        },
-        truncateText(text: string, maxLength: number) {
+        //         return workspaceName.value
+        //     }
+        //     catch(err){
+        //         console.log('axios 실패 : ', err)
+        //     }
+        // },
+        truncateText(text, maxLength: number) {
             if (!text)
                 return '' // 또는 다른 기본값을 반환할 수 있습니다.
 
@@ -96,7 +121,46 @@ export default defineComponent({
 
             else
                 return text
+        },
+        getWorkspace(workspaceKey, workspaceListRef){
+            console.log('workspaceListRef :', workspaceListRef)
+            let result
+            workspaceListRef.forEach(function(ws){
+                console.log(ws.name)
+                console.log("target ws key: ", ws.key)
+                console.log("input wskey: ", workspaceKey)
+                console.log("equal?: ", ws.key == workspaceKey)
+                if(ws.key == workspaceKey){
+                    result =  ws
+                }
+            })
+            return result
+        },
+        setWorkspaceColor(workspaceKey, workspaceListRef){
+            const ws = this.getWorkspace(workspaceKey, workspaceListRef)
+            return {
+                background: ws.color
+            }
+        },
+        setStatusColor(statusCode: number){
+            console.log('status Code : ', statusCode, statusCode/100)
+            let result = '#C9C9C9'
+            switch(Math.floor(statusCode / 100)){
+                case 2:
+                    result = '#6EC465'
+                    break
+                case 4:
+                    result = '#E64F47'
+                    break
+                case 5:
+                    result = '#EFA44A'
+                    break
+            }
+            return {
+                color: result
+            }
         }
+
     }
 })
 </script>
@@ -110,26 +174,29 @@ export default defineComponent({
                     <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
                         <div class="flexbox" @click="selectHistory(history)">
                             <!-- <div class="first-box">{{ /*histories.workspaceKey*/ }}[hi]</div> -->
-                            <div class="first-box">
-                                <div class="box">
-                                    <div id="workSpaceListData" class="workspaceId">
-                                        {{ truncateText(histories.workspaceKey, 4) }}
+                            <div class="left-box">
+                                <div class="first-box">
+                                    <div class="box" :style="setWorkspaceColor(histories.workspaceKey, workspaceListRef)">
+                                        <div id="workSpaceListData" class="workspaceId">
+                                            <!-- {{ truncateText(histories.workspaceKey, 4) }} -->
+                                            {{ truncateText(getWorkspace(histories.workspaceKey, workspaceListRef).name, 4) }}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- <div>{{ getWorkspaceName(histories.workspaceKey) }}</div> -->
-                            <!-- <div>{{ history.request.method }}</div> -->
-                            <div class="second-box">
-                                <div class="methodContainer">
-                                    <img v-if="history.request.method === 'GET'" src="./workspace/get.svg" class="method-icon">
-                                    <img v-else-if="history.request.method === 'POST'" src="./workspace/post.svg" class="method-icon">
-                                    <img v-else-if="history.request.method === 'DELETE'" src="./workspace/delete-image.svg" class="method-icon">
-                                    <img v-else-if="history.request.method === 'PATCH'" src="./workspace/patch.svg" class="method-icon">
-                                    <img v-else-if="history.request.method === 'PUT'" src="./workspace/put.svg" class="method-icon">
-                                    <img v-else-if="history.request.method === 'OPTION'" src="./workspace/option.svg" class="method-icon">
-                                    <img v-else-if="history.request.method === 'HEAD'" src="./workspace/head.svg" class="method-icon">
+                                <!-- <div>{{ getWorkspaceName(histories.workspaceKey) }}</div> -->
+                                <!-- <div>{{ history.request.method }}</div> -->
+                                <div class="second-box">
+                                    <div class="methodContainer">
+                                        <img v-if="history.request.method === 'GET'" src="./workspace/get.svg" class="method-icon">
+                                        <img v-else-if="history.request.method === 'POST'" src="./workspace/post.svg" class="method-icon">
+                                        <img v-else-if="history.request.method === 'DELETE'" src="./workspace/delete-image.svg" class="method-icon">
+                                        <img v-else-if="history.request.method === 'PATCH'" src="./workspace/patch.svg" class="method-icon">
+                                        <img v-else-if="history.request.method === 'PUT'" src="./workspace/put.svg" class="method-icon">
+                                        <img v-else-if="history.request.method === 'OPTION'" src="./workspace/option.svg" class="method-icon">
+                                        <img v-else-if="history.request.method === 'HEAD'" src="./workspace/head.svg" class="method-icon">
+                                    </div>
+                                    <div :style="setStatusColor(history.response.statusCode)" class="statusCode">{{ history.response.statusCode }}</div>
                                 </div>
-                                <div>{{ history.response.statusCode }}</div>
                             </div>
                             <div class="last-box">
                                 <div>{{ history.request.requestName }}</div>
@@ -145,8 +212,13 @@ export default defineComponent({
 </template>
 
 <style>
+ul, li{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
 .date{
-    border-bottom: 2px solid #000000;
+    border-top: 2px solid #C9C9C9;
 }
 
 .historyList{
@@ -158,32 +230,52 @@ export default defineComponent({
     overflow:auto;
 }
 .history{
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
+    border-top: 0.5px solid #C9C9C9;
+    /* border-bottom: 0.5px solid #000000; */
     /* border-color: #000000; */
+    width: 90%;
 }
 .flexbox{
     display: flex;
+    justify-content: space-between;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.left-box{
+    display: flex;
     justify-content: flex-start;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .first-box{
     margin-left: 5px;
+    align-self: center;
 }
 
 .second-box{
     /* display: flex; */
     /* justify-content: flex-start; */
     /* align-items: flex-start; */
+    /* justify-content: space-around; */
+    /* align-items: space-between; */
     flex-direction: column;
     margin-left: 5px;
+    align-self: center;
 }
+
+.second-box > div{
+    text-align: center;
+}
+
 .last-box{
     /* display: flex; */
     /* justify-content: flex-start; */
     /* align-items: flex-start; */
     flex-direction: column;
     text-align: end;
+    align-self: center;
 }
 
 .box{
@@ -201,6 +293,9 @@ export default defineComponent({
     line-height: 50px; /* 텍스트를 수직 중앙으로 정렬 */
   font-size: 14px;
 
+}
+.statusCode{
+    font-weight: bold;
 }
 
 </style>
