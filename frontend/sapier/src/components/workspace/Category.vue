@@ -5,7 +5,7 @@ export default defineComponent({
     const collectionStore = useCollectionStore()
     const collectionList = ref([])
     const workspaceStore = useWorkspaceStore()
-    const workspaceListStore = useWorkspaceListStore()
+    // const workspaceListStore = useWorkspaceListStore()
     const idList: string[] = []
 
     watchEffect(() => {
@@ -19,7 +19,7 @@ export default defineComponent({
       }
       else { idList.length = 0 }
 
-      console.log('idList : ', idList)
+      // console.log('idList : ', idList)
 
       const collectionId = {
         collectionId: idList,
@@ -68,7 +68,7 @@ export default defineComponent({
 
     const saveData = async (documnetIndex) => {
       const modifyData = collectionStore.collection
-      const dataToSave = JSON.stringify(collectionStore.collection)
+      // const dataToSave = JSON.stringify(collectionStore.collection)
       // console.log('현재 인덱스 호출: ', documnetIndex)
       const nowIndex = documnetIndex
       try {
@@ -137,8 +137,9 @@ export default defineComponent({
 
     // const busStore = useEventBusStore()
 
-    const selectAPI = (api) => {
+    const selectAPI = (api: any, index: number) => {
       collectionStore.request = api
+      collectionStore.selectDocument = index
       // console.log('부모 api 호출: ', api)
       // console.log('스토어에 저장되나?', collectionStore.request)
     }
@@ -149,7 +150,7 @@ export default defineComponent({
 
         const response = await axios.get(`/api/v1/collection/${collectionId}`)
         documentName.value[index] = response.data
-        console.log('axios.get 성공, 이름:', response.data)
+        // console.log('axios.get 성공, 이름:', response.data)
       }
       catch (error) {
         console.error('axios.get 실패', error)
@@ -276,7 +277,7 @@ export default defineComponent({
       <ul v-show="!documentId.collapsed">
         <li v-for="collection in documentId" :key="collection.collectionName">
           <div class="setRow">
-            <span :style="{ marginLeft: '6px' }" class="collname">
+            <span :style="{ paddingLeft: '1rem' }" class="collname">
               <div class="boxSize" @click="toggleCollapse(collection)">
                 <img v-if="collection.collapsed" src="./close.svg" class="folderOpenImg">
                 <img v-else src="./open.svg" class="folderOpenImg">
@@ -321,9 +322,9 @@ export default defineComponent({
           </button><button class="btn" @click="addRootRequest(collection, index)">
             R리퀘추가
           </button> -->
-          <ul v-show="!collection.collapsed" :style="{ marginLeft: '6px' }">
+          <ul v-show="!collection.collapsed" :style="{ paddingLeft: '1rem' }">
             <li v-for="api in collection.apiList" :key="api.requestName" class="divBlock">
-              <div class="requestBox">
+              <div class="requestBox" @click="selectAPI(api, index)">
                 <div class="methodContainer">
                   <img v-if="api.method === 'GET'" src="./get.svg" class="method-icon">
                   <img v-else-if="api.method === 'POST'" src="./post.svg" class="method-icon">
@@ -333,7 +334,7 @@ export default defineComponent({
                   <img v-else-if="api.method === 'OPTION'" src="./option.svg" class="method-icon">
                   <img v-else-if="api.method === 'HEAD'" src="./head.svg" class="method-icon">
                 </div>
-                <a class="delReqName" @click="selectAPI(api)">
+                <a class="delReqName">
                   {{ api.requestName }}
                 </a><div class="dropdown">
                   <div class="setRow">
@@ -421,6 +422,11 @@ export default defineComponent({
   margin-bottom: 5px;
   margin-top: 5px;
 }
+
+.setRow:hover {
+  background-color: var(--color-gray1-hover);
+}
+
 .dropdown-list {
   display: none;
   position: absolute;
@@ -516,6 +522,10 @@ li {
   color: var(--color-gray4);
 }
 
+.documentNameDiv:hover {
+  background-color: var(--color-gray1-hover);
+}
+
 .nameChange{
   width: 40 px;
 }
@@ -546,7 +556,14 @@ li {
   justify-content: space-between;
   margin-bottom: 5px;
   margin-top: 5px;
+  padding-left: 1rem;
+
 }
+
+.requestBox:hover {
+  background-color: var(--color-gray1-hover);
+}
+
 .folderImg{
   padding-right: 5px;
 }

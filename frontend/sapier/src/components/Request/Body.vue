@@ -2,6 +2,25 @@
 import VueJsoneditor from 'vue3-ts-jsoneditor'
 
 const requestBody = inject('requestBody')
+const jsonData = ref(null)
+const isMounted = useMounted()
+
+if (isMounted) {
+  try {
+    jsonData.value = JSON.parse(requestBody.value)
+  }
+  catch (error) {
+    // JSON 파싱 오류가 발생하면 처리할 내용 추가
+    console.error('Invalid JSON format')
+  }
+}
+
+// JSON 데이터가 변경될 때마다 jsonString을 업데이트
+watch(jsonData, (newVal) => {
+  if (typeof newVal === 'string')
+    newVal = JSON.parse(newVal)
+  requestBody.value = JSON.stringify(newVal)
+})
 </script>
 
 <template>
@@ -17,14 +36,10 @@ const requestBody = inject('requestBody')
       </div>
     </div> -->
     <VueJsoneditor
-      v-model:json="requestBody" h-full
+      v-model="jsonData" h-full
       w-full
-      height="300"
-      mode="text"
-      :query-languages-ids="queryLanguages"
-      @error="onError"
-      @focus="onFocus"
-      @blur="onBlur"
+      height="auto"
+      mode="tree"
     />
 
     <div />

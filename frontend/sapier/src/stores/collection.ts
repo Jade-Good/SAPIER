@@ -17,7 +17,7 @@ interface RequestInfo {
   headers: Table[]
   body: string
   queryParams: Table[]
-  path: string[]
+  path: string
 }
 
 interface Response {
@@ -27,11 +27,11 @@ interface Response {
   responseHeaders: any
   responseBody: string
 
-  responseTime:number
+  responseTime: number
 
   errorMsg: string
   errorStackTrace: string
-  
+
 }
 
 interface Table {
@@ -44,20 +44,23 @@ interface Table {
 export type { CollectionTree }
 
 export const useCollectionStore = defineStore(
-  'collection', {
-    state : () => {
+  'collection',
+  {
+    state: () => {
       const collection = ref<CollectionTree | null>(null)
       const request = ref<RequestInfo | null>(null)
       const response = ref<Response>()
+      const selectDocument = ref()
 
       return {
         collection,
         request,
         response,
-      };
+        selectDocument,
+      }
     },
     persist: true,
-  }
+  },
 )
 
 if (import.meta.hot)
