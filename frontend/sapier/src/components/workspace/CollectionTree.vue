@@ -1,112 +1,100 @@
-<script lang="ts">
+<script setup lang="ts">
+const { collection, level, index, path } = defineProps(['collection', 'level', 'index', 'path'])
+
 const collectionStore = useCollectionStore()
-export default {
+const saveData = inject<Function>('saveData')
 
-  props: {
-    collection: Object,
-    childCollection: Object,
-    level: Number,
-    index: Number,
-  },
-  setup() {
-    const saveData = inject('saveData', null)
+const editing = ref(false)
+const newName = computed(collection.childCollection ? collection.childCollection.collectionName : '')
 
-    return {
-      saveData,
-    }
-  },
-  data() {
-    return {
-      editing: false,
-      newName: this.childCollection ? this.childCollection.collectionName : '',
-    }
-  },
-  methods: {
-    saveChanges(index) {
-      if (this.saveData)
-        this.saveData(index)
-    },
-    addChildCollection(collection, index) {
-      const newCollection = createNewCollection()
-
-      if (!collection.collectionList)
-        collection.collectionList = []
-
-      collection.collectionList.push(newCollection)
-      this.saveChanges(index)
-    },
-
-    toggleEditing(collection, index) {
-      collection.editing = !collection.editing
-      if (!collection.editing) {
-        collection.newName = collection.collectionName
-        this.saveCollectionName(collection, index)
-      }
-    },
-
-    saveCollectionName(collection, index) {
-      collection.collectionName = collection.newName
-      this.toggleEditing(collection)
-      this.saveChanges(index)
-    },
-    deleteCollection(collection, index) {
-      if (collection.collectionList && collection.collectionList.length > 0) {
-        for (const childCollection of collection.collectionList)
-          this.deleteCollection(childCollection, index) // 재귀적으로 하위 컬렉션 삭제
-      }
-      const collectionIndex = this.collection.collectionList.indexOf(collection)
-      if (collectionIndex > -1)
-        this.collection.collectionList.splice(collectionIndex, 1) // 현재 컬렉션 삭제
-      this.saveChanges(index)
-    },
-    selectAPI(api: any, index: any) {
-      collectionStore.request = api
-      collectionStore.selectDocument = index
-      // console.log('부모 api 호출: ', api)
-      // console.log('스토어에 저장되나?', collectionStore.request)
-    },
-    addChildRequest(childCollection, index) {
-      const newApi = {
-        body: '',
-
-        createdTime: new Date().toISOString(),
-
-        headers: [],
-
-        method: 'GET',
-
-        modifiedTime: new Date().toISOString(),
-
-        queryParams: [],
-
-        requestName: 'New Request',
-
-        requestURL: '',
-        id: '',
-
-      }
-
-      if (childCollection.apiList === null)
-        childCollection.apiList = []
-        // console.log('null배열 추가')
-
-      childCollection.apiList.push(newApi)
-      // console.log('수정된 collection.apiList', childCollection.apiList)
-      this.saveChanges(index)
-    },
-    deleteChildRequest(childCollection, api, documentIndex) {
-      const index = childCollection.apiList.indexOf(api)
-      if (index !== -1) {
-        childCollection.apiList.splice(index, 1)
-        this.saveChanges(documentIndex)
-      }
-    },
-    toggleCollapse(collection) {
-      collection.collapsed = !collection.collapsed
-      // console.log('토글 함수 호출', collection.collapsed)
-    },
-  },
+function saveChanges(index: number) {
+  if (saveData)
+    saveData(index)
 }
+
+function addChildCollection(collection: any, index: number) {
+  const newCollection = createNewCollection()
+
+  if (!collection.collectionList)
+    collection.collectionList = []
+
+  collection.collectionList.push(newCollection)
+  saveChanges(index)
+}
+
+function toggleEditing(collection: any, index: number) {
+  collection.editing = !collection.editing
+  if (!collection.editing) {
+    collection.newName = collection.collectionName
+    saveCollectionName(collection, index)
+  }
+}
+
+function saveCollectionName() {
+  collection.collectionName = collection.newName
+  toggleEditing(collection, index)
+  saveChanges(index)
+}
+
+function deleteCollection(collection: any, index: number) {
+  if (collection.collectionList && collection.collectionList.length > 0) {
+    for (const childCollection of collection.collectionList)
+      deleteCollection(childCollection, index) // 재귀적으로 하위 컬렉션 삭제
+  }
+  const collectionIndex = collection.collectionList.indexOf(collection)
+  if (collectionIndex > -1)
+    collection.collectionList.splice(collectionIndex, 1) // 현재 컬렉션 삭제
+  saveChanges(index)
+}
+
+function getPath(index: number, collectionName: string) {
+  return `${path} ${collectionName} / `
+}
+
+function selectAPI(api: any, index: any) {
+  collectionStore.request = api
+  collectionStore.selectDocument = index
+  collectionStore.request.path = path
+
+  // console.log('부모 api 호출: ', api)
+  // console.log('스토어에 저장되나?', collectionStore.request)
+}
+function addChildRequest(collection: any, index: number) {
+  const newApi = {
+    body: '',
+    createdTime: new Date().toISOString(),
+    headers: [],
+    method: 'GET',
+    modifiedTime: new Date().toISOString(),
+    queryParams: [],
+    requestName: 'New Request',
+    requestURL: 'http://',
+    id: '',
+
+  }
+
+  if (collection.apiList === null)
+    collection.apiList = []
+  // console.log('null배열 추가')
+
+  collection.apiList.push(newApi)
+  // console.log('수정된 collection.apiList', childCollection.apiList)
+  saveChanges(index)
+}
+
+function deleteChildRequest(childCollection, api, documentIndex) {
+  const index = childCollection.apiList.indexOf(api)
+  if (index !== -1) {
+    childCollection.apiList.splice(index, 1)
+    saveChanges(documentIndex)
+  }
+}
+
+function toggleCollapse() {
+  collection.collapsed = !collection.collapsed
+  // console.log('토글 함수 호출', collection.collapsed)
+}
+
 function createNewCollection() {
   const newCollection = {
     collectionName: 'New Child Collection ',
@@ -121,87 +109,76 @@ function createNewCollection() {
 </script>
 
 <template>
-  <ul>
-    <li v-for="childCollection in collection.collectionList" :key="childCollection.collectionId">
-      <div class="setRow">
-        <span :style="{ paddingLeft: `${level * 6}px` }" class="collname">
-          <div class="boxSize" @click="toggleCollapse(childCollection)">
-            <img v-if="childCollection.collapsed" src="./close.svg" class="folderOpenImg">
-            <img v-else src="./open.svg" class="folderOpenImg">
-            <img src="./folder.svg" class="folderImg">
-            <span v-if="!childCollection.editing" class="rootCollName">{{ childCollection.collectionName }}</span>
-            <input
-              v-else
-              v-model="childCollection.collectionName"
-              class="nameChange"
-
-              @keyup.enter="saveCollectionName(childCollection, index)"
-            ></div>
-          <!-- <button class="btn" @click="toggleEditing(childCollection)">{{ childCollection.editing ? '완료' : '수정' }}</button> -->
-
-        </span>
-        <div class="dropdown">
-          <!-- <div class="dropdown-btn"> -->
-          <img src="./etc.svg" class="dropdown-btn"> <!-- 뒤 -->
-          <!-- </div> -->
-          <ul class="dropdown-list">
-            <li @click="addChildCollection(childCollection, index)">
-              add collection
-            </li>
-            <li @click="deleteCollection(childCollection, index)">
-              delete collection
-            </li>
-            <li @click="addChildRequest(childCollection, index)">
-              add request
-            </li>
-            <li @click="toggleEditing(childCollection, index)">
-              modify name
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- <button class="btn" @click="deleteCollection(childCollection, index)">
-        자식 삭제
-      </button>
-      <button class="btn" @click="addChildCollection(childCollection, index)">
-        자식 추가
-      </button><button class="btn" @click="addChildRequest(childCollection, index)">
-        C리퀘추가
-      </button> -->
-      <ul v-show="!childCollection.collapsed">
-        <ul v-if="childCollection.apiList && childCollection.apiList.length > 0" :style="{ paddingLeft: `${level * 6}px` }">
-          <li v-for="api in childCollection.apiList" :key="api.requestName" class="divBlock">
-            <div class="requestBox" @click="selectAPI(api, index)">
-              <div class="methodContainer">
-                <img v-if="api.method === 'GET'" src="./get.svg" class="method-icon">
-                <img v-else-if="api.method === 'POST'" src="./post.svg" class="method-icon">
-                <img v-else-if="api.method === 'DELETE'" src="./delete-image.svg" class="method-icon">
-                <img v-else-if="api.method === 'PATCH'" src="./patch.svg" class="method-icon">
-                <img v-else-if="api.method === 'PUT'" src="./put.svg" class="method-icon">
-                <img v-else-if="api.method === 'OPTION'" src="./option.svg" class="method-icon">
-                <img v-else-if="api.method === 'HEAD'" src="./head.svg" class="method-icon">
-              </div>
-              <a class="delReqName">{{ api.requestName }}</a>
-              <div class="dropdown">
-                <div class="setRow">
-                  <img src="./etc.svg" class="dropdown-btn-del">
-                  <ul class="dropdown-list-del">
-                    <li @click="deleteChildRequest(childCollection, api, index)">
-                      delete request
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          <!-- <button class="btn" @click="deleteChildRequest(childCollection, api, index)">
-            C리퀘삭제
-          </button> -->
-          </li>
-        </ul>
-        <CollectionTree :collection="childCollection" :level="level + 1" :index="index" />
+  <!-- <li v-for="childCollection in collection.collectionList" :key="childCollection.collectionId"> -->
+  <div class="setRow" @click="toggleCollapse()">
+    <span :style="{ paddingLeft: `${level}rem` }" class="collname">
+      <div class="boxSize">
+        <img v-if="collection.collapsed" src="./close.svg" class="folderOpenImg">
+        <img v-else src="./open.svg" class="folderOpenImg">
+        <img src="./folder.svg" class="folderImg">
+        <span v-if="!collection.editing" class="rootCollName">{{ collection.collectionName }}</span>
+        <input
+          v-else
+          v-model="collection.collectionName"
+          class="nameChange"
+          @blur="saveCollectionName()"
+          @keyup.enter="saveCollectionName()"
+        ></div>
+    </span>
+    <div class="dropdown">
+      <img src="./etc.svg" class="dropdown-btn">
+      <ul class="dropdown-list">
+        <li @click.stop="addChildCollection()">
+          add collection
+        </li>
+        <li @click.stop="deleteCollection()">
+          delete collection
+        </li>
+        <li @click.stop="addChildRequest()">
+          add request
+        </li>
+        <li @click.stop="toggleEditing()">
+          modify name
+        </li>
       </ul>
-    </li>
+    </div>
+  </div>
+
+  <ul v-show="!collection.collapsed">
+    <div v-for="(collectionItem, idx) in collection.collectionList" :key="idx">
+      <CollectionTree :collection="collectionItem" :level="level + 1" :index="index" :path="getPath(index, collectionItem.collectionName)" />
+    </div>
+
+    <ul v-if="collection.apiList && collection.apiList.length > 0">
+      <li v-for="api in collection.apiList" :key="api.requestName" class="divBlock">
+        <div class="requestBox" :style="{ paddingLeft: `${level + 1}rem` }" @click="selectAPI(api, index)">
+          <div class="methodContainer">
+            <img v-if="api.method === 'GET'" src="./get.svg" class="method-icon">
+            <img v-else-if="api.method === 'POST'" src="./post.svg" class="method-icon">
+            <img v-else-if="api.method === 'DELETE'" src="./delete-image.svg" class="method-icon">
+            <img v-else-if="api.method === 'PATCH'" src="./patch.svg" class="method-icon">
+            <img v-else-if="api.method === 'PUT'" src="./put.svg" class="method-icon">
+            <img v-else-if="api.method === 'OPTION'" src="./option.svg" class="method-icon">
+            <img v-else-if="api.method === 'HEAD'" src="./head.svg" class="method-icon">
+          </div>
+          <a class="delReqName">{{ api.requestName }}</a>
+          <div class="dropdown">
+            <div class="setRow">
+              <img src="./etc.svg" class="dropdown-btn-del">
+              <ul class="dropdown-list-del">
+                <li @click="deleteChildRequest(collection, api, index)">
+                  delete request
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <!-- <CollectionTree v-if="collection.childCollection" :collection="collection.childCollection" :level="level + 1" :index="index" :path="getPath(index, collection.collectionName)" /> -->
+    <!-- </ul> -->
+    <!-- </li> -->
   </ul>
 </template>
 
@@ -228,12 +205,12 @@ function createNewCollection() {
   display: inline-block;
   background-color: transparent;
 }
+
 .setRow .dropdown-btn .dropdown-btn-del{
   background-color: #fff;
   padding: 8px 12px;
   cursor: pointer;
   background-color: transparent;
-
 }
 
 .setRow {
@@ -247,6 +224,7 @@ function createNewCollection() {
   max-width: 100%;
   margin-bottom: 7px;
   margin-top: 5px;
+  cursor: pointer;
 }
 
 .setRow:hover {
@@ -375,6 +353,7 @@ li {
   align-items: center; /* 수직 가운데 정렬 */
   justify-content: space-between;
   padding-left: 1rem;
+  cursor: pointer;
 }
 
 .requestBox:hover {

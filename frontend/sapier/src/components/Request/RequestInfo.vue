@@ -95,7 +95,7 @@ function setValues() {
   // console.log('api : ', useCollection.request)
 
   requestName.value = useCollection.request.requestName
-  // path.value = useCollection.request.path
+  path.value = useCollection.request.path
   selectMethod.value = useCollection.request.method
   requestURL.value = useCollection.request.requestURL
   requestBody.value = useCollection.request.body
