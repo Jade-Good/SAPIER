@@ -12,12 +12,17 @@ interface memberInfoList {
 
 export type { memberInfoList }
 
-export const useMemberStore = defineStore('memberList', () => {
-  const memberInfoList = ref < memberInfoList | null > (null)
+export const useMemberStore = defineStore(
+  'memberList', 
+  {
+    state : () => {
+      const memberInfoList = ref < memberInfoList | null > (null)
 
-  return {
-    memberInfoList,
-  }
+      return {
+        memberInfoList,
+      }
+    },
+    persist : true
 })
 
 if (import.meta.hot)

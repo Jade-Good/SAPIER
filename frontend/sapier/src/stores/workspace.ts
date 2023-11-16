@@ -22,18 +22,23 @@ interface WorkspaceInfo {
 
 export type { WorkspaceInfo }
 
-export const useWorkspaceStore = defineStore('workspace', () => {
-  const workspaceInfo = ref < WorkspaceInfo | null > (null)
-  const selectedWorkspaceIndex = ref<number | null>(0)
+export const useWorkspaceStore = defineStore(
+  'workspace', 
+  {
+    state : () => {
+      const workspaceInfo = ref < WorkspaceInfo | null > (null)
+      const selectedWorkspaceIndex = ref<number | null>(0)
 
-  return {
-    workspaceInfo,
-    updateWorkspaceName(newName: string) {
-      if (this.workspaceInfo)
-        this.workspaceInfo.name = newName
+      return {
+        workspaceInfo,
+        updateWorkspaceName(newName: string) {
+          if (this.workspaceInfo)
+            this.workspaceInfo.name = newName
+        },
+        selectedWorkspaceIndex,
+      };
     },
-    selectedWorkspaceIndex,
-  }
+    persist : true,
 })
 
 if (import.meta.hot)

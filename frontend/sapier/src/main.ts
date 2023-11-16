@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import NProgress from 'nprogress'
 import axios from './plugins/axios'
-
+import piniaPluginPersistedstate  from 'pinia-plugin-persistedstate';
 import App from './App.vue'
 import generatedRoutes from '~pages'
 
@@ -13,6 +13,7 @@ import 'uno.css'
 
 const app = createApp(App)
 const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate );
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: generatedRoutes,
@@ -34,13 +35,14 @@ router.afterEach(() => {
   NProgress.done()
 })
 
-const userStore = useUserStore()
-const storedUserInfo = localStorage.getItem('sapier-user')
-if (storedUserInfo) {
-  const userInfo = JSON.parse(storedUserInfo)
-  userStore.userInfo = userInfo
-  console.log(`userStore: ${userStore.userInfo}`)
-}
+// const userStore = useUserStore()
+
+// const storedUserInfo = localStorage.getItem('sapier-user')
+// if (storedUserInfo) {
+//   const userInfo = JSON.parse(storedUserInfo)
+//   userStore.userInfo = userInfo
+//   console.log(`userStore: ${userStore.userInfo}`)
+// }
 router.beforeEach((to) => {
   const userStore = useUserStore()
   if (to.meta.requiresAuth === true && !userStore.userInfo) {

@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import JsonPretty from 'vue-json-pretty'
+import 'vue-json-pretty/lib/styles.css'
+
 const useCollection = useCollectionStore()
 const requestCode = ref(0)
 const requestHeaders = ref({})
-const requestBody = ref(JSON.stringify({}, null, 2))
-const textarea = ref<null | HTMLTextAreaElement>(null)
+const requestBody = ref({})
 
 watch(() => useCollection.response, () => {
   if (useCollection.response) {
@@ -11,7 +13,7 @@ watch(() => useCollection.response, () => {
 
     requestCode.value = useCollection.response.statusCode
     requestHeaders.value = useCollection.response.responseHeaders
-    requestBody.value = JSON.stringify(JSON.parse(useCollection.response.responseBody), null, 4)
+    requestBody.value = JSON.parse(useCollection.response.responseBody)
   }
 })
 
@@ -42,29 +44,12 @@ function resultCodeStyle() {
     lineHeight: 'normal',
   }
 }
-
-// textarea 높이를 자동으로 조절하는 함수
-function adjustTextareaHeight() {
-  if (textarea.value) {
-    textarea.value.style.height = 'auto' // 초기 높이를 자동으로 설정
-    textarea.value.style.height = `${textarea.value.scrollHeight}px` // 스크롤 높이를 설정
-  }
-}
-
-watch(requestBody, () => {
-  adjustTextareaHeight()
-})
-
-// 컴포넌트가 마운트된 후 textarea 높이 조절
-onMounted(() => {
-  adjustTextareaHeight()
-})
 </script>
 
 <template>
   <div h-full>
     <p style="font-size: var(--font-H3-size);" p-3>
-      Response{{ }}
+      Response
     </p>
     <div v-if="requestCode > 0" :style="resultCodeStyle()">
       {{ requestCode }}
@@ -100,7 +85,7 @@ onMounted(() => {
         >
           BODY
         </p>
-        <textarea ref="textarea" v-model="requestBody" class="bodyText" readonly />
+        <JsonPretty :data="requestBody" style="user-select: text; overflow: scroll;" h-full />
       </div>
     </div>
   </div>
@@ -122,18 +107,6 @@ td {
   /* 텍스트를 상단에 정렬합니다. */
   word-wrap: break-word;
   /* 너무 긴 텍스트가 있는 경우 자동 줄바뀜 활성화 */
-}
-
-textarea:focus {
-  outline: none;
-}
-
-textarea.bodyText {
-  padding: 1rem;
-  height: 100%;
-  width: 100%;
-  resize: none;
-  overflow: auto;
 }
 
 .resize-line {

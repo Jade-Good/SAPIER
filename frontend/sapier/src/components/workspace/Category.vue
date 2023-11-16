@@ -351,6 +351,7 @@ function toggleCollapse(index: number) {
 
 <style scoped>
 .category{
+  width: 25rem;
   position: relative;
   overflow-x: auto;
   white-space: nowrap;
@@ -399,6 +400,11 @@ function toggleCollapse(index: number) {
   margin-bottom: 5px;
   margin-top: 5px;
 }
+
+.setRow:hover {
+  background-color: var(--color-gray1-hover);
+}
+
 .dropdown-list {
   display: none;
   position: absolute;
@@ -427,7 +433,7 @@ function toggleCollapse(index: number) {
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  border-radius: 15px;
+  border-radius: 0.3rem;
 
 }
 
@@ -495,6 +501,10 @@ li {
   cursor: pointer;
 }
 
+.documentNameDiv:hover {
+  background-color: var(--color-gray1-hover);
+}
+
 .nameChange{
   width: 40 px;
 }
@@ -525,7 +535,14 @@ li {
   justify-content: space-between;
   margin-bottom: 5px;
   margin-top: 5px;
+  padding-left: 1rem;
+
 }
+
+.requestBox:hover {
+  background-color: var(--color-gray1-hover);
+}
+
 .folderImg{
   padding-right: 5px;
 }

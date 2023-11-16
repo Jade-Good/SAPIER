@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const axios = inject('$axios')
+
 const useCollection = useCollectionStore()
 const userInfo = useUserStore()
 const selectedWorkspaceIndex = useWorkspaceStore(0)
@@ -12,6 +13,7 @@ const copySelectMethod = ref('')
 const requestURL = ref('http://')
 const copyRequestURL = ref('')
 const requestName = ref('New Request')
+const path = ref('Collection1 / Collection2 / ')
 const copyRequestName = ref('')
 const queryParams = reactive({
   rows: [
@@ -96,7 +98,6 @@ function setValues() {
   path.value = useCollection.request.path
   selectMethod.value = useCollection.request.method
   requestURL.value = useCollection.request.requestURL
-  requestName.value = useCollection.request.requestName
   requestBody.value = useCollection.request.body
 
   if (useCollection.request.headers[0])
@@ -129,7 +130,7 @@ function copyRows(objs: any) {
   return result
 }
 
-function requestSave() {
+async function requestSave() {
   if (!useCollection.request || !isSaveEnable.value)
     return
 
@@ -139,6 +140,18 @@ function requestSave() {
   useCollection.request.body = requestBody.value
   useCollection.request.headers = requestHeaders.rows
   useCollection.request.queryParams = queryParams.rows
+
+  try {
+    // console.log('전송데이터', modifyData)
+    // console.log('JSON: ', dataToSave)
+
+    const res = await axios.patch(`/api/v1/collection/modify/${useCollection.selectDocument}`, useCollection.collection)
+    // console.log('데이터 저장 성공', res)
+  }
+  catch (error) {
+    console.error('데이터 저장 실패:', error)
+  }
+
   setValues()
 }
 
@@ -215,10 +228,6 @@ function setRequestStyle() {
     paddingBottom: '3rem',
 
     overflow: 'auto',
-
-    /* Style */
-    border: '1px solid red',
-
   }
 };
 
@@ -282,7 +291,7 @@ async function sendAPI() {
     body: '',
   }
 
-  console.log('sendData : ', sendData)
+  // console.log('sendData : ', sendData)
 
   try {
     const res = await axios.post(`/api/v1/collection/request`, sendData)
@@ -352,18 +361,9 @@ async function saveHistory() {
       <div flex flex-justify-between pb-3 pl-3>
         <div flex flex-gap-1 line-height-9>
           <p color-gray>
-            Server
+            {{ path }}
           </p>
-          <p color-gray>
-            /
-          </p>
-          <p color-gray>
-            Bubble
-          </p>
-          <p color-gray>
-            /
-          </p>
-          <p>{{ requestName }}</p>
+          <input v-model="requestName">
         </div>
         <div flex flex-gap-3>
           <div :class="isSaveEnable ? 'grayBtn' : 'grayBtnOff'" @click="requestSave">
@@ -433,7 +433,7 @@ async function saveHistory() {
       <Settings v-if="requestTap === 'Settings'" />
     </div>
     <div class="resize-line" @mousedown="startResizing" @mousemove="handleResizing" @mouseup="stopResizing" />
-    <Response name="Response" w-full border border-blue :style="setResponseStyle()" />
+    <Response name="Response" w-full :style="setResponseStyle()" />
   </div>
 </template>
 

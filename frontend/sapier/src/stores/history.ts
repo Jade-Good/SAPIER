@@ -45,17 +45,23 @@ interface Table {
 
 export type { HistoryInfo }
 
-export const useHistoryStore = defineStore('history', ()=>{
-    const history = ref < HistoryInfo | null > (null)
-    const request = ref < RequestInfo | null >(null)
-    const response = ref < Response >()
+export const useHistoryStore = defineStore(
+    'history', 
+    {
+        state : ()=>{
+            const history = ref < HistoryInfo | null > (null)
+            // const request = ref < RequestInfo | null >(null)
+            // const response = ref < Response >()
 
-    return {
-        history,
-        request,
-        response
+            return {
+                history,
+                // request,
+                // response
+                };
+        },
+        persist : true
     }
-})
+)
 
 if (import.meta.hot)
     import.meta.hot.accept(acceptHMRUpdate(useHistoryStore as any, import.meta.hot))

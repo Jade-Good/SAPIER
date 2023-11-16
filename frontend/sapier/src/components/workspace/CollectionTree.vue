@@ -226,6 +226,11 @@ function createNewCollection() {
   margin-top: 5px;
   cursor: pointer;
 }
+
+.setRow:hover {
+  background-color: var(--color-gray1-hover);
+}
+
 .dropdown-list {
   display: none;
   position: absolute;
@@ -238,7 +243,7 @@ function createNewCollection() {
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  border-radius: 15px;
+  border-radius: 0.3rem;
 
 }
 
@@ -254,7 +259,7 @@ function createNewCollection() {
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  border-radius: 15px;
+  border-radius: 0.3rem;
 
 }
 
@@ -350,6 +355,11 @@ li {
   padding-left: 1rem;
   cursor: pointer;
 }
+
+.requestBox:hover {
+  background-color: var(--color-gray1-hover);
+}
+
 .folderImg{
   padding-right: 5px;
 }

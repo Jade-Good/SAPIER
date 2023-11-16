@@ -1,0 +1,10 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="dropdown toggle">
+<mask id="mask0_1255_1785" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+<rect id="Bounding box" width="20" height="20" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_1255_1785)">
+<path id="expand_more" d="M10.0006 12.7824L5.28906 8.0709L6.06308 7.29688L10.0006 11.2344L13.9381 7.29688L14.7121 8.0709L10.0006 12.7824Z" fill="#838383"/>
+</g>
+</g>
+</svg>

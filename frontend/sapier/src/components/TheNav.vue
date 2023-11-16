@@ -24,7 +24,7 @@ function enter() {
       <button mx-2>
         <div i-carbon-settings />
       </button>
-      <button mx-2>
+      <button mx-2 onclick="location.href='/histories/history';">
         <div i-carbon-recently-viewed />
       </button>
       <button mx-2>

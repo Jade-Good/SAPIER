@@ -8,12 +8,17 @@ interface WorkspaceList {
 
 export type { WorkspaceList }
 
-export const useWorkspaceListStore = defineStore('workspaceList', () => {
-  const WorkspaceList = ref < WorkspaceList | null > (null)
+export const useWorkspaceListStore = defineStore(
+  'workspaceList', 
+  {
+    state : () => {
+      const WorkspaceList = ref < WorkspaceList | null > (null)
 
-  return {
-    WorkspaceList,
-  }
+      return {
+        WorkspaceList,
+      };
+    },
+    persist : true,
 })
 
 if (import.meta.hot)

@@ -26,7 +26,7 @@ public class RequestEntity {
 	private HashMap<String, String>[] headers;
 	private HashMap<String, String>[] queryParams;
 	private String body;
-	private String[] path;
+	private String path;
 
 	@CreatedDate
 	private Instant createdTime;
@@ -43,7 +43,7 @@ public class RequestEntity {
 			", headers=" + Arrays.toString(headers) +
 			", queryParams=" + Arrays.toString(queryParams) +
 			", body='" + body + '\'' +
-			", path=" + Arrays.toString(path) +
+			", path='" + path + '\'' +
 			", createdTime=" + createdTime +
 			", modifiedTime=" + modifiedTime +
 			'}';
