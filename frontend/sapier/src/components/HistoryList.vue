@@ -212,9 +212,19 @@ export default defineComponent({
 </template>
 
 <style>
+.historyList *{
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+
+}
 ul, li{
     margin-left: 0px;
     margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 98%;
 }
 
 .date{
@@ -233,8 +243,11 @@ ul, li{
     border-top: 0.5px solid #C9C9C9;
     /* border-bottom: 0.5px solid #000000; */
     /* border-color: #000000; */
-    width: 90%;
+    width: 100%;
 }
+
+
+
 .flexbox{
     display: flex;
     justify-content: space-between;
