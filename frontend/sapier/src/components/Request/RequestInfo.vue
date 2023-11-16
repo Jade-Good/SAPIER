@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const axios = inject('$axios')
+
 const useCollection = useCollectionStore()
 const userInfo = useUserStore()
 const selectedWorkspaceIndex = useWorkspaceStore(0)
@@ -127,7 +128,7 @@ function copyRows(objs: any) {
   return result
 }
 
-function requestSave() {
+async function requestSave() {
   if (!useCollection.request || !isSaveEnable.value)
     return
 
@@ -137,6 +138,18 @@ function requestSave() {
   useCollection.request.body = requestBody.value
   useCollection.request.headers = requestHeaders.rows
   useCollection.request.queryParams = queryParams.rows
+
+  try {
+    // console.log('전송데이터', modifyData)
+    // console.log('JSON: ', dataToSave)
+
+    const res = await axios.patch(`/api/v1/collection/modify/${useCollection.selectDocument}`, useCollection.collection)
+    console.log('데이터 저장 성공', res)
+  }
+  catch (error) {
+    console.error('데이터 저장 실패:', error)
+  }
+
   setValues()
 }
 
