@@ -166,6 +166,13 @@ export default defineComponent({
 </script>
 <template>
     <div class="historyList">
+        <div class="headerflex">
+            <div class="left-header">
+                <div id="historyLogo" i-carbon-recently-viewed />
+                <div>History</div>
+            </div>
+            <div class="right-header" i-carbon-close  />
+        </div>
         <ul>
             <li v-for="(dailyHistory, dIdx) in HistoryListRef" :key="dIdx">
                 <div class="date">{{ dailyHistory.date }}</div>
@@ -212,6 +219,39 @@ export default defineComponent({
 </template>
 
 <style>
+.headerflex{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 98%;
+    /* position: fixed;
+    height: 70px; */
+}
+
+.left-header{
+    display:flex;
+    justify-content: flex-start;
+}
+
+.left-header > div{
+    align-self: center;
+    margin-left: 5px;
+    font-size: 30px;
+}
+
+.right-header{
+    align-self: center;
+    width: 30px;
+    height: 30px;
+}
+
+#historyLogo{
+    width: 30px;
+    height: 30px;
+}
+
+
 .historyList *{
     margin-left: 0px;
     margin-right: 0px;
