@@ -86,6 +86,16 @@ export default defineComponent({
             catch(err){
                 console.log('axios 실패 : ', err)
             }
+        },
+        truncateText(text: string, maxLength: number) {
+            if (!text)
+                return '' // 또는 다른 기본값을 반환할 수 있습니다.
+
+            if (text.length > maxLength)
+                return `${text.slice(0, maxLength)}`
+
+            else
+                return text
         }
     }
 })
@@ -100,7 +110,13 @@ export default defineComponent({
                     <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
                         <div class="flexbox" @click="selectHistory(history)">
                             <!-- <div class="first-box">{{ /*histories.workspaceKey*/ }}[hi]</div> -->
-                            <div class="first-box">[hi]</div>
+                            <div class="first-box">
+                                <div class="box">
+                                    <div id="workSpaceListData" class="workspaceId">
+                                        {{ truncateText(histories.workspaceKey, 4) }}
+                                    </div>
+                                </div>
+                            </div>
                             <!-- <div>{{ getWorkspaceName(histories.workspaceKey) }}</div> -->
                             <!-- <div>{{ history.request.method }}</div> -->
                             <div class="second-box">
@@ -134,7 +150,7 @@ export default defineComponent({
 }
 
 .historyList{
-    background: #C9C9C9;
+    background: #F0F0F0;
     border-color: #B6B6B6;
     display: flex; /* 부모 요소를 플렉스 컨테이너로 설정 */
     align-items: center;
@@ -162,6 +178,24 @@ export default defineComponent({
     /* justify-content: flex-start; */
     /* align-items: flex-start; */
     flex-direction: column;
+    text-align: end;
+}
+
+.box{
+  margin-top: 5px ;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000; /* 테두리 스타일 및 색상 설정 */
+  background-color:#0F4C81; /* 배경색 설정 */
+  color:#F0F0F0;
+  cursor: pointer;
+}
+.workspaceId{
+  text-align: center; /* 텍스트 가운데 정렬 */
+    line-height: 50px; /* 텍스트를 수직 중앙으로 정렬 */
+  font-size: 14px;
+
 }
 
 </style>
