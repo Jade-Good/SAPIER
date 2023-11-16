@@ -118,6 +118,15 @@ function getPath(index: number, collectionName: string) {
   return `${documentName.value[index]} / ${collectionName} / `
 }
 
+function selectAPI(api: any, index: any) {
+  collectionStore.request = api
+  collectionStore.selectDocument = index
+  collectionStore.request.path = path
+
+  // console.log('부모 api 호출: ', api)
+  // console.log('스토어에 저장되나?', collectionStore.request)
+}
+
 async function getDocumentName(index: number) {
   try {
     const collectionId = idList[index]
@@ -221,7 +230,8 @@ function toggleCollapse(index: number) {
       <div class="documentNameDiv" @click="toggleCollapse(index)">
         <img v-if="documentCollapsed[index]" src="./close.svg" class="folderOpenImg">
         <img v-else src="./open.svg" class="folderOpenImg">
-        <img src="./folder.svg" class="docFolderImg"> <div class="leftSortDocument">
+        <img src="./folder.svg" class="docFolderImg">
+        <div class="leftSortDocument">
           {{ documentName[index] }}
         </div>
         <!-- <img src="./add.svg" class="addImg" @click.stop="addRootCollection(index)"> -->
@@ -246,125 +256,33 @@ function toggleCollapse(index: number) {
 
       <div v-show="!documentCollapsed[index]">
         <div v-for="(collection, idx) in document" :key="idx">
-          <CollectionTree :collection="collection" :level="1" :index="index" :path="getPath(index, collection.collectionName)" />
+          <CollectionTree :collection="collection" :level="1" :index="index"
+            :path="getPath(index, collection.collectionName)" />
         </div>
       </div>
-
-      <!-- <ul v-show="!documentId.collapsed">
-        <li v-for="collection in documentId" :key="collection.collectionName">
-          <div class="setRow" @click="toggleCollapse(collection)">
-            <span :style="{ paddingLeft: '1rem' }" class="collname">
-              <div class="boxSize">
-                <img v-if="collection.collapsed" src="./close.svg" class="folderOpenImg">
-                <img v-else src="./open.svg" class="folderOpenImg">
-                <img src="./folder.svg" class="folderImg">
-                <span v-if="!collection.editing" class="rootCollName">{{ collection.collectionName }}</span>
-                <input
-                  v-else
-                  v-model="collection.newName"
-                  class="nameChange"
-                  @blur="saveCollectionName(collection, index)"
-                  @keyup.enter="saveCollectionName(collection, index)"
-                ></div>
-              <!-- <div class="dropdown">
-                <div class="dropdown-btn">
-                  <img src="./etc.svg" class="dropdown-btn">
-                </div>
-                <ul class="dropdown-list">
-                  <li @click="addChildCollection(collection, index)">
-                    add collection
-                  </li>
-                  <li @click="deleteCollection(documentId, collection, index)">
-                    delete collection
-                  </li>
-                  <li @click="addRootRequest(collection, index)">
-                    add request
-                  </li>
-                  <li>delete request</li>
-                </ul>
-              </div> -->
-      <!-- <button class="btn" @click="toggleEditing(collection)">{{ collection.editing ? '완료' : '수정' }}</button> -->
-      </span>
-
-      <div class="dropdown">
-        <img src="./etc.svg" class="dropdown-btn">
-        <ul class="dropdown-list">
-          <li @click="addChildCollection(collection, index)">
-            add collection
-          </li>
-          <li @click="deleteCollection(documentId, collection, index)">
-            delete collection
-          </li>
-          <li @click="addRootRequest(collection, index)">
-            add request
-          </li>
-          <li @click="toggleEditing(collection)">
-            modify name
-          </li>
-        </ul>
-      </div>
+      <br>
     </div>
-    <ul v-show="!collection.collapsed">
-      <li v-for="api in collection.apiList" :key="api.requestName" class="divBlock">
-        <div class="requestBox" :style="{ paddingLeft: '2rem' }" @click="selectAPI(api, index, collection.collectionName)">
-          <div class="methodContainer">
-            <img v-if="api.method === 'GET'" src="./get.svg" class="method-icon">
-            <img v-else-if="api.method === 'POST'" src="./post.svg" class="method-icon">
-            <img v-else-if="api.method === 'DELETE'" src="./delete-image.svg" class="method-icon">
-            <img v-else-if="api.method === 'PATCH'" src="./patch.svg" class="method-icon">
-            <img v-else-if="api.method === 'PUT'" src="./put.svg" class="method-icon">
-            <img v-else-if="api.method === 'OPTION'" src="./option.svg" class="method-icon">
-            <img v-else-if="api.method === 'HEAD'" src="./head.svg" class="method-icon">
-          </div>
-          <a class="delReqName" @click="selectAPI(api)">
-            {{ api.requestName }}
-          </a><div class="dropdown">
-            <div class="setRow">
-              <img src="./etc.svg" class="dropdown-btn-del">
-              <ul class="dropdown-list-del">
-                <li @click="deleteRootRequest(collection, api, index)">
-                  delete request
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </li>
-
-      <CollectionTree :collection="collection" :level="2" :index="index" :path="getPath(index, collection.collectionName)" />
-    </ul>
-    </li>
-    </ul> -->
-    <!-- <button class="btn" @click="addRootCollection(index)">
-        루트폴더 추가
-      </button> -->
-    <br>
-    <!-- <button class="btn" @click="saveData">
-        저장
-      </button> -->
-  </div>
-    <!-- <button class="er" @click="addCollectionDocument()">
-      document 추가
-    </button> -->
   </div>
 </template>
 
 <style scoped>
-.category{
+.category {
   width: 25rem;
   position: relative;
   overflow-x: auto;
   white-space: nowrap;
   background-color: #F0F0F0;
 }
-.btn{
+
+.btn {
   border: 1px solid black;
   background-color: white;
   color: black;
   width: 35px;
   height: 35px;
 }
-.er{
+
+.er {
   border: 1px solid black;
   background-color: red;
   color: white;
@@ -381,7 +299,8 @@ function toggleCollapse(index: number) {
   display: inline-block;
   background-color: transparent;
 }
-.setRow .dropdown-btn .dropdown-btn-del{
+
+.setRow .dropdown-btn .dropdown-btn-del {
   background-color: #fff;
   padding: 8px 12px;
   cursor: pointer;
@@ -421,7 +340,7 @@ function toggleCollapse(index: number) {
   transform: translateX(-50%);
 }
 
-.dropdown-list-del  {
+.dropdown-list-del {
   display: none;
   position: absolute;
   top: 100%;
@@ -437,7 +356,8 @@ function toggleCollapse(index: number) {
 
 }
 
-.dropdown-btn, .dropdown-btn-del{
+.dropdown-btn,
+.dropdown-btn-del {
   width: 20px;
   height: 20px;
   /* display: flex;
@@ -446,7 +366,8 @@ function toggleCollapse(index: number) {
   padding-right: 10px;
 }
 
-div.setRow , span.collname{
+div.setRow,
+span.collname {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -468,17 +389,19 @@ div.setRow , span.collname{
   cursor: pointer;
   color: var(--color-gray4);
 }
+
 /*
 .dropdown-btn img {
   background-color: var(--color-gray4)
 } */
 
-.dropdown-btn:hover + .dropdown-list,
-.dropdown-btn-del:hover + .dropdown-list-del,
+.dropdown-btn:hover+.dropdown-list,
+.dropdown-btn-del:hover+.dropdown-list-del,
 .dropdown-list:hover {
   display: block;
 }
-.dropdown-btn-del + .dropdown-list-del:hover{
+
+.dropdown-btn-del+.dropdown-list-del:hover {
   display: block;
 }
 
@@ -488,6 +411,7 @@ li {
   font-weight: var(--font-H5-weight);
 
 }
+
 .dropdown-list li:hover {
   background-color: #f1f1f1;
 }
@@ -505,33 +429,44 @@ li {
   background-color: var(--color-gray1-hover);
 }
 
-.nameChange{
+.nameChange {
   width: 40 px;
 }
 
-.boxSize{
+.boxSize {
   display: flex;
-  align-items: center; /* 수직 가운데 정렬 */
+  align-items: center;
+  /* 수직 가운데 정렬 */
   /* justify-content: space-between */
 }
+
 .delReqName {
-  white-space: nowrap;       /* 텍스트가 줄 바꿈되지 않도록 설정 */
-  overflow: hidden;          /* 넘치는 텍스트를 숨김 */
-  text-overflow: ellipsis;   /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
-  max-width: 80%;          /* 최대 너비 설정 (원하는 값으로 조정) */
+  white-space: nowrap;
+  /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  overflow: hidden;
+  /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis;
+  /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
+  max-width: 80%;
+  /* 최대 너비 설정 (원하는 값으로 조정) */
   margin-right: auto;
 }
 
-.rootCollName{
-  white-space: nowrap;       /* 텍스트가 줄 바꿈되지 않도록 설정 */
-  overflow: hidden;          /* 넘치는 텍스트를 숨김 */
-  text-overflow: ellipsis;   /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
+.rootCollName {
+  white-space: nowrap;
+  /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  overflow: hidden;
+  /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis;
+  /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
   max-width: 100%;
 
 }
+
 .requestBox {
   display: flex;
-  align-items: center; /* 수직 가운데 정렬 */
+  align-items: center;
+  /* 수직 가운데 정렬 */
   justify-content: space-between;
   margin-bottom: 5px;
   margin-top: 5px;
@@ -543,7 +478,7 @@ li {
   background-color: var(--color-gray1-hover);
 }
 
-.folderImg{
+.folderImg {
   padding-right: 5px;
 }
 
@@ -562,25 +497,33 @@ li {
   align-items: center;
 }
 
-.docFolderImg{
+.docFolderImg {
   margin-left: 3px;
   margin-right: 5px;
 }
-.documentNameDiv{
+
+.documentNameDiv {
   display: flex;
   align-items: center;
-  justify-content: center; /* 수평 가운데 정렬 */
+  justify-content: center;
+  /* 수평 가운데 정렬 */
   margin-bottom: 7px;
 }
+
 .leftSortDocument {
-  white-space: nowrap;       /* 텍스트가 줄 바꿈되지 않도록 설정 */
-  overflow: hidden;          /* 넘치는 텍스트를 숨김 */
-  text-overflow: ellipsis;   /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
-  max-width: 100%;          /* 최대 너비 설정 (원하는 값으로 조정) */
+  white-space: nowrap;
+  /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  overflow: hidden;
+  /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis;
+  /* 넘치는 텍스트에 '...'을 표시하여 잘림을 나타냄 */
+  max-width: 100%;
+  /* 최대 너비 설정 (원하는 값으로 조정) */
   margin-right: auto;
 }
+
 .addImg:hover {
-  transform: scale(1.5); /* hover시 1.2배 확대 */
+  transform: scale(1.5);
+  /* hover시 1.2배 확대 */
   /* 다른 스타일 변경이 필요하면 여기에 추가하세요. */
-}
-</style>
+}</style>
