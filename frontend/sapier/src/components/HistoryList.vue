@@ -63,15 +63,20 @@ export default defineComponent({
             console.log('request: ', collectionStore.request)
             console.log('response: ', collectionStore.response)
         },
+        async getAndDisplayWorkspaceName(workspaceKey) {
+            try {
+            const workspaceName = await this.getWorkspaceName(workspaceKey);
+            console.log("워크스페이스명 : ", workspaceName, typeof(workspaceName));
+            // 여기서 workspaceName을 사용하거나 데이터에 할당합니다.
+            } catch (err) {
+            console.log('에러 발생 : ', err);
+            }
+        },
         async getWorkspaceName(workspaceKey){
             try{
-                let workspaceName = ""
                 const response = await axios.get(`/api/v1/workspaces/${workspaceKey}/name`)
-                    .then(ws =>{
-                        workspaceName = ws.data
-                        console.log("워크스페이스명 : ", workspaceName)
-                    })
-                
+                const workspaceName = response.data
+                console.log("워크스페이스명: ", workspaceName, typeof(workspaceName))
                 console.log(response)
                 
                 return workspaceName
@@ -93,7 +98,7 @@ export default defineComponent({
                     <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
                         <div @click="selectHistory(history)">
                             <div>{{ histories.workspaceKey }}</div>
-                            <div>{{ getWorkspaceName(histories.workspaceKey) }}</div>
+                            <div>{{ getAndDisplayWorkspaceName(histories.workspaceKey) }}</div>
                             <div>{{ history.request.method }}</div>
                             <div>{{ history.request.requestName }}</div>
                             <div>{{ history.response.statusCode }}</div>
