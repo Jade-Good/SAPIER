@@ -27,12 +27,10 @@ export default {
   },
   methods: {
     selectAPI(api) {
-      collectionStore.value.request = api
-      browser.storage.local.set({ collection: collectionStore })
+      browser.storage.local.set({ request: api })
       console.log('자식 api 호출: ', api)
-      console.log('스토어에 저장되나?', collectionStore.value.request)
-      browser.storage.local.get(['collection']).then((data) => {
-        console.log('스토어에 저장 :', data.collection)
+      browser.storage.local.get(['request']).then((data) => {
+        console.log('request스토어에 저장 :', data.request)
       })
     },
     toggleCollapse(collection) {

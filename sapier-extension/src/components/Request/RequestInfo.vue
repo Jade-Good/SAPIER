@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const axios = inject('$axios')
-const useCollection = ref<any>(null)
+const useRequest = ref<any>(null)
 
 const selectMethod = ref('GET')
 const copySelectMethod = ref('')
@@ -32,10 +31,26 @@ const isSaveEnable = computed(() => {
        || copyQueryParams.value !== JSON.stringify(queryParams.rows)
 })
 
-browser.storage.local.get(['collection']).then((data) => {
-  useCollection.value = data.collection
-  console.log('스토어에 w저장 :', data.collection)
-})
+function getRequest() {
+  browser.storage.local.get(['request']).then((data) => {
+    useRequest.value = data.request
+    console.log('request 스토어에 저장 :', data.request)
+  })
+}
+getRequest()
+
+browser.storage.onChanged.addListener(requestChange)
+function requestChange(changes, area) {
+  const changedItems = Object.keys(changes)
+  for (const item of changedItems) {
+    if (item === 'request') {
+      getRequest()
+      console.log(`${item} has changed:`)
+      console.log('Old value: ', changes[item].oldValue)
+      console.log('New value: ', changes[item].newValue)
+    }
+  }
+}
 
 provide('queryParams', queryParams)
 provide('requestHeaders', requestHeaders)
@@ -75,9 +90,10 @@ onMounted(() => {
   window.addEventListener('mouseup', stopResizing)
 })
 
-// watch(() => useCollection.value.request, () => {
-//   setValues()
-// })
+watch(() => useRequest.value, () => {
+  console.log('ㅁㅁㅁㅁㅁㅁㅁㅁ')
+  setValues()
+})
 
 onUnmounted(() => {
   document.removeEventListener('click', handleDocumentClick)
@@ -87,25 +103,29 @@ onUnmounted(() => {
 
 // ---------------- 데이터 바인딩과 수정/저장 ----------------
 function setValues() {
-  if (!useCollection.value.request)
+  console.log('setValues api is 0', useRequest.value)
+  if (!useRequest.value)
     return
 
-  // console.log('api : ', useCollection.request)
+  console.log('setValues api : ', useRequest.value)
 
-  selectMethod.value = useCollection.value.request.method
-  requestURL.value = useCollection.value.request.requestURL
-  requestName.value = useCollection.value.request.requestName
-  requestBody.value = useCollection.value.request.body
+  selectMethod.value = useRequest.value.method
+  requestURL.value = useRequest.value.requestURL
+  requestName.value = useRequest.value.requestName
+  requestBody.value = useRequest.value.body
 
-  if (useCollection.value.request.headers[0])
-    requestHeaders.rows = copyRows(useCollection.value.request.headers)
-  else
-    requestHeaders.rows = [{ active: '', key: '', value: '', description: '' }]
+  if (useRequest.value.headers[0]) {
+    console.log('헤더 설정 : ', useRequest.value.headers)
+    requestHeaders.rows = copyRows(useRequest.value.headers)
+  }
 
-  if (useCollection.value.request.queryParams[0])
-    queryParams.rows = copyRows(useCollection.value.request.queryParams)
-  else
-    queryParams.rows = [{ active: '', key: '', value: '', description: '' }]
+  else { requestHeaders.rows = [{ active: '', key: '', value: '', description: '' }] }
+
+  if (useRequest.value.queryParams[0]) {
+    console.log('파라미터 설정 : ', useRequest.value.queryParams)
+    queryParams.rows = copyRows(useRequest.value.queryParams)
+  }
+  else { queryParams.rows = [{ active: '', key: '', value: '', description: '' }] }
 
   copySelectMethod.value = selectMethod.value
   copyRequestURL.value = requestURL.value
@@ -118,25 +138,30 @@ function setValues() {
 function copyRows(objs: any) {
   const result = []
 
-  objs.forEach ((obj) => {
-    if (obj.active !== '')
-      result.push({ active: obj.active, key: obj.key, value: obj.value, description: obj.description })
-  })
+  let i = 0
+  while (objs[`${i}`] !== undefined) {
+    const param = objs[`${i}`]
+    if (param !== '')
+      result.push({ active: param.active, key: param.key, value: param.value, description: param.description })
+    i = i + 1
+  }
+
+  // 대상이 배열인지 확인
 
   result.push({ active: '', key: '', value: '', description: '' })
   return result
 }
 
 function requestSave() {
-  if (!useCollection.value.request || !isSaveEnable.value)
+  if (!useRequest.value || !isSaveEnable.value)
     return
 
-  useCollection.value.request.method = selectMethod.value
-  useCollection.value.request.requestURL = requestURL.value
-  useCollection.value.request.requestName = requestName.value
-  useCollection.value.request.body = requestBody.value
-  useCollection.value.request.headers = requestHeaders.rows
-  useCollection.value.request.queryParams = queryParams.rows
+  useRequest.value.method = selectMethod.value
+  useRequest.value.requestURL = requestURL.value
+  useRequest.value.requestName = requestName.value
+  useRequest.value.body = requestBody.value
+  useRequest.value.headers = requestHeaders.rows
+  useRequest.value.queryParams = queryParams.rows
   setValues()
 }
 
@@ -282,10 +307,40 @@ async function sendAPI() {
   // console.log('sendData : ', sendData)
 
   try {
-    const res = await axios.post('/api/v1/collection/request', sendData)
     // console.log('API 전송 성공', res.data)
-
-    useCollection.value.response = res.data
+    browser.storage.local.get(['token']).then(async (value) => {
+      await fetch('https://sapier.co.kr/api/v1/collection/request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${value.token}`,
+        },
+        body: JSON.stringify(sendData),
+      })
+        .then((response) => {
+          // console.log(response)
+          if (!response.ok)
+            throw new Error('네트워크 응답이 정상적이지 않습니다.')
+          return response.text()
+        })
+        .then((text) => {
+          try {
+            return JSON.parse(text)
+          }
+          catch (error) {
+            console.error('JSON 파싱 오류:', error)
+            // 파싱 오류 처리
+          }
+        })
+        .then((data) => {
+          // 데이터 할당
+          browser.storage.local.set({ response: data })
+          console.log('response 할당 성공', data)
+          return data
+        })
+        .catch(error => console.error('Error:', error))
+    })
   }
   catch (error) {
     console.error('API 전송 실패:', error)
@@ -296,7 +351,7 @@ async function sendAPI() {
 <template>
   <div h-full flex flex-col border>
     <div name="Request" :style="setRequestStyle()">
-      <div flex flex-justify-between pb-3 pl-3>
+      <!-- <div flex flex-justify-between pb-3 pl-3>
         <div flex flex-gap-1 line-height-9>
           <p color-gray>
             Server
@@ -322,7 +377,7 @@ async function sendAPI() {
             Copy
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div flex-justify-betwee h-14 flex>
         <div w-full flex flex-gap-4 border border-rounded p-2 style="border-color: var(--color-gray4);">

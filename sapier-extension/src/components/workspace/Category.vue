@@ -71,8 +71,8 @@ export default defineComponent({
           .then((data) => {
             if (data) {
               collectionStore.value = data
-              console.log('response:', data)
-              console.log('collectionStore: ', collectionStore.value)
+              console.log('collectionStore1:', data)
+              console.log('collectionStore2: ', collectionStore.value)
               browser.storage.local.set({ collection: data })
               for (let i = 0; i < data.length; i++) {
                 collectionList.value.push(data[i].collectionList)
@@ -93,15 +93,11 @@ export default defineComponent({
     })
 
     const selectAPI = (api) => {
-      if (collectionStore.value) {
-        collectionStore.value.request = api
-        browser.storage.local.set({ collection: collectionStore })
-        console.log('자식 api 호출: ', api)
-        console.log('스토어에 저장되나?', collectionStore.value.request)
-        browser.storage.local.get(['collection']).then((data) => {
-          console.log('스토어에 w저장 :', data.collection)
-        })
-      }
+      browser.storage.local.set({ request: api })
+      console.log('자식 api 호출: ', api)
+      browser.storage.local.get(['request']).then((data) => {
+        console.log('request스토어에 저장 :', data.request)
+      })
     }
 
     const documentName = ref<string[]>([])
@@ -136,11 +132,11 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      // console.log('idList getDocumentName 하는중', idList.length)
-      // for (let i = 0; i < idList.length; i++) {
-      //   await getDocumentName(i)
-      //   console.log('getDocumentName 하는중', idList.length)
-      // }
+      console.log('idList getDocumentName 하는중', idList.length)
+      for (let i = 0; i < idList.length; i++) {
+        await getDocumentName(i)
+        console.log('getDocumentName 하는중', idList.length)
+      }
     })
 
     const toggleCollapse = (collection) => {
