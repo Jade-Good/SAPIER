@@ -164,7 +164,11 @@ export default defineComponent({
 }
 .flexbox{
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
+}
+
+.first-box{
+    margin-left: 5px;
 }
 
 .second-box{
@@ -172,6 +176,7 @@ export default defineComponent({
     /* justify-content: flex-start; */
     /* align-items: flex-start; */
     flex-direction: column;
+    margin-left: 5px;
 }
 .last-box{
     /* display: flex; */
