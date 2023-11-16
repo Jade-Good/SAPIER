@@ -99,7 +99,8 @@ export default defineComponent({
                     <!-- <div>{{ histories.workspaceKey }}</div> -->
                     <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
                         <div class="flexbox" @click="selectHistory(history)">
-                            <div class="first-box">{{ /*histories.workspaceKey*/ }}[hi]</div>
+                            <!-- <div class="first-box">{{ /*histories.workspaceKey*/ }}[hi]</div> -->
+                            <div class="first-box">[hi]</div>
                             <!-- <div>{{ getWorkspaceName(histories.workspaceKey) }}</div> -->
                             <!-- <div>{{ history.request.method }}</div> -->
                             <div class="second-box methodContainer">
@@ -117,10 +118,7 @@ export default defineComponent({
                         </div>
                     </li>
                 </ul>
-                <!-- <div>{{ history.request.requestName }}</div>
-                <div>{{ history.request.method }}</div>
-                <div>{{ history.response.status }}</div>
-                <div>{{ history.response.responseTime }}</div> -->
+
             </li>
         </ul>
     </div>
