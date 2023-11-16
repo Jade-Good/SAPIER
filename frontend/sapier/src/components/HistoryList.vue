@@ -102,13 +102,13 @@ export default defineComponent({
                             <div>{{ getAndDisplayWorkspaceName(histories.workspaceKey) }}</div>
                             <div>{{ history.request.method }}</div>
                             <div class="methodContainer">
-                                <img v-if="history.request.method === 'GET'" src="./components/workspace/get.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'POST'" src="./components/workspace/post.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'DELETE'" src="./components/workspace/delete-image.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'PATCH'" src="./components/workspace/patch.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'PUT'" src="./components/workspace/put.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'OPTION'" src="./components/workspace/option.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'HEAD'" src="./components/workspace/head.svg" class="method-icon">
+                                <img v-if="history.request.method === 'GET'" src="./workspace/get.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'POST'" src="./workspace/post.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'DELETE'" src="./workspace/delete-image.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'PATCH'" src="./workspace/patch.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'PUT'" src="./workspace/put.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'OPTION'" src="./workspace/option.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'HEAD'" src="./workspace/head.svg" class="method-icon">
                             </div>
                             <div>{{ history.request.requestName }}</div>
                             <div>{{ history.response.statusCode }}</div>
@@ -136,6 +136,7 @@ export default defineComponent({
     display: flex; /* 부모 요소를 플렉스 컨테이너로 설정 */
     align-items: center;
     flex-direction: column;
+    overflow:auto;
 }
 .history{
     border-top: 1px solid #000000;
