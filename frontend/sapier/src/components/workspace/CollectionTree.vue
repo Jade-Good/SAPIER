@@ -40,9 +40,9 @@ function getPath(idx: number, collectionName:string) {
   return `${path} ${collectionName} / `
 }
 
-function selectAPI(api: any, index: any) {
+function selectAPI(api: any) {
   collectionStore.request = api
-  collectionStore.selectDocument = index
+  collectionStore.selectDocument = documentIdx
   collectionStore.request.path = path
 
   // console.log('부모 api 호출: ', api)
@@ -143,7 +143,7 @@ function createNewCollection() {
 
     <ul v-if="parentCollectionList[index].apiList && parentCollectionList[index].apiList.length > 0">
       <li v-for="(api, idx) in parentCollectionList[index].apiList" :key="idx" class="divBlock">
-        <div class="requestBox" :style="{ paddingLeft: `${level + 1}rem` }" @click="selectAPI(api, index)">
+        <div class="requestBox" :style="{ paddingLeft: `${level + 1}rem` }" @click="selectAPI(api)">
           <div class="methodContainer">
             <img v-if="api.method === 'GET'" src="./get.svg" class="method-icon">
             <img v-else-if="api.method === 'POST'" src="./post.svg" class="method-icon">
