@@ -91,6 +91,7 @@ provide('saveData', saveData)
 
 function toggleEditing(documentIdx: number) {
   documentEdit.value[documentIdx] = !documentEdit.value[documentIdx]
+  saveData(documentIdx)
 }
 
 async function saveCollectionName(documentIdx: number) {
@@ -102,7 +103,7 @@ async function saveCollectionName(documentIdx: number) {
 
 function deleteDocument(index: number) {
   collectionList.value.splice(index, 1)
-  saveData(index)
+  saveData(documentIdx)
 }
 
 function createNewRootCollection() {
