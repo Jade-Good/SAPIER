@@ -1,5 +1,6 @@
 <script lang="ts">
 import axios from 'axios';
+import { type } from 'os';
 import { defineComponent, ref, onMounted } from 'vue';
 // const historyStore = useHistoryStore()
 const collectionStore = useCollectionStore()
@@ -69,7 +70,7 @@ export default defineComponent({
                 const response = await axios.get(`/api/v1/workspaces/${workspaceKey}/name`)
                     .then(ws =>{
                         workspaceName = ws.data
-                        console.log("워크스페이스명 : ", workspaceName)
+                        console.log("워크스페이스명 : ", workspaceName, typeof(workspaceName))
                     })
                 
                 console.log(response)
