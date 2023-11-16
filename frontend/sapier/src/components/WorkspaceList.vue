@@ -17,26 +17,31 @@ const isMounted = useMounted()
 const currentComponent = ref<Component | null>(MainInfo)// 초기값은 MainInfo 컴포넌트로 설정
 // const currentUserComponent = ref<Component | null>(UserInfo)
 const workspaceinfo = ref<any>(null) // workspaceInfoOne 데이터를 저장할 ref
+const fontColor = ref('#F0F0F0')
 
-// const dataElement = document.getElementById('workSpaceListData')
+// watch(() => WorkspaceOneInfo.workspaceInfo.color, () => {
+//   // if (newWorkspaceOne) {
+//   //   Object.keys(dropdownData.value).forEach((uuid) => {
+//   //     dropdownData.value[uuid].isOpen = false
+//   //   })
+//   //   try {
+//   //     const res = await axios.get(`/api/v1/workspaces/members/${newWorkspaceOne.key}`)
+//   //     // console.log(res)
+//   //     memberInfo.memberInfoList = res.data
+//   //   }
+//   //   catch (error) {
+//   //     console.error('memberList 가져오기 실패 : ', error)
+//   //   }
+//   // }
+//   // // console.log('iwejfopjwefopjweopopwnerw[voerokopr]')
 
-// if (isMounted) {
-//   axios
-//     .get(`/api/v1/workspaces`)
-//     .then((res) => {
-//       // console.log('워크스페이스 리스트 : ', res)
-//       WorkspaceListInfo.workspaceInfo = res.data
-//       // dataElement.textContent = WorkspaceListInfo.workSpaceInfo.
-//     })
-//     .catch((error) => {
-//       console.error('워크스페이스 리스트 조회 실패 : ', error)
-//     },
-//     )
-// }
-
-// function handleWorkspaceClick(index) {
-//   WorkspaceListInfo.selectedWorkspaceIndex = index
-// }
+//   // // console.log(WorkspaceOneInfo.workspaceInfo)
+//   // changeBoxColor(WorkspaceOneInfo.workspaceInfo?.color)
+//   if (WorkspaceOneInfo.workspaceInfo.color === '#C9C9C9' || WorkspaceOneInfo.workspaceInfo.color === '#White')
+//     fontColor.value = '#F0F0F0'
+//   else
+//     fontColor.value = 'black'
+// })
 
 function truncateText(text: string, maxLength: number) {
   if (!text)
@@ -51,16 +56,9 @@ function truncateText(text: string, maxLength: number) {
 
 function showInfoComponent(workspaceInfoOne: any, index) {
   currentComponent.value = WorkspaceInfo // WorkspaceInfo 컴포넌트로 변경
-  // workspaceinfo.value = workspaceInfoOne
-  // console.log('----------main------------')
-  // console.log(workspaceinfo)
   WorkspaceOneInfo.workspaceInfo = workspaceInfoOne
   WorkspaceOneInfo.selectedWorkspaceIndex = index
   collectionStore.request = null
-  // WorkspaceOneInfo.$patch(workspaceInfoOne)
-//
-  // console.log(WorkspaceOneInfo)
-  // console.log('asdfasfasdfadsfasdf')
 }
 
 async function addWorkSpace() {
@@ -119,8 +117,7 @@ async function addWorkSpace() {
 }
 
 .list{
-  background: #C9C9C9;
-  border-color: #B6B6B6;
+  /* border-color: #B6B6B6; */
   display: flex; /* 부모 요소를 플렉스 컨테이너로 설정 */
   align-items: center;
   flex-direction: column;
