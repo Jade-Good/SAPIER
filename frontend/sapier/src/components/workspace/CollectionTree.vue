@@ -1,53 +1,42 @@
 <script setup lang="ts">
-const { collection, level, index, path } = defineProps(['collection', 'level', 'index', 'path'])
+const { parentCollectionList, level, index, documentIdx, path} = defineProps(['parentCollectionList', 'level', 'index', 'documentIdx', 'path'])
 
 const collectionStore = useCollectionStore()
 const saveData = inject<Function>('saveData')
 
-const editing = ref(false)
-const newName = computed(collection.childCollection ? collection.childCollection.collectionName : '')
+// const editing = ref(false)
+// const newName = computed(collection.childCollection ? collection.childCollection.collectionName : '')
 
-function saveChanges(index: number) {
+function saveChanges() {
   if (saveData)
-    saveData(index)
+    saveData(documentIdx)
 }
 
-function addChildCollection(collection: any, index: number) {
+function addChildCollection() {
   const newCollection = createNewCollection()
 
-  if (!collection.collectionList)
-    collection.collectionList = []
+  if (!parentCollectionList[index].collectionList)
+  parentCollectionList[index].collectionList = []
 
-  collection.collectionList.push(newCollection)
-  saveChanges(index)
+  parentCollectionList[index].collectionList.push(newCollection)
+  saveChanges()
 }
 
-function toggleEditing(collection: any, index: number) {
-  collection.editing = !collection.editing
-  if (!collection.editing) {
-    collection.newName = collection.collectionName
-    saveCollectionName(collection, index)
-  }
+function toggleEditing() {
+  parentCollectionList[index].editing = !parentCollectionList[index].editing
 }
 
 function saveCollectionName() {
-  collection.collectionName = collection.newName
-  toggleEditing(collection, index)
-  saveChanges(index)
+  toggleEditing()
+  saveChanges()
 }
 
-function deleteCollection(collection: any, index: number) {
-  if (collection.collectionList && collection.collectionList.length > 0) {
-    for (const childCollection of collection.collectionList)
-      deleteCollection(childCollection, index) // 재귀적으로 하위 컬렉션 삭제
-  }
-  const collectionIndex = collection.collectionList.indexOf(collection)
-  if (collectionIndex > -1)
-    collection.collectionList.splice(collectionIndex, 1) // 현재 컬렉션 삭제
-  saveChanges(index)
+function deleteCollection() {
+  parentCollectionList.splice(index, 1) // 현재 컬렉션 삭제
+  saveChanges()
 }
 
-function getPath(index: number, collectionName: string) {
+function getPath(idx: number, collectionName:string) {
   return `${path} ${collectionName} / `
 }
 
@@ -59,39 +48,37 @@ function selectAPI(api: any, index: any) {
   // console.log('부모 api 호출: ', api)
   // console.log('스토어에 저장되나?', collectionStore.request)
 }
-function addChildRequest(collection: any, index: number) {
+function addChildRequest() {
   const newApi = {
     body: '',
-    createdTime: new Date().toISOString(),
     headers: [],
     method: 'GET',
-    modifiedTime: new Date().toISOString(),
     queryParams: [],
     requestName: 'New Request',
     requestURL: 'http://',
     id: '',
-
+    createdTime: new Date().toISOString(),
+    modifiedTime: new Date().toISOString(),
   }
 
-  if (collection.apiList === null)
-    collection.apiList = []
-  // console.log('null배열 추가')
+  console.log('parentCollectionList[index] : ', parentCollectionList[index])
 
-  collection.apiList.push(newApi)
+  if (parentCollectionList[index].apiList === null)
+    parentCollectionList[index].apiList = []
+  console.log('parentCollectionList[index].apiList : ', parentCollectionList[index].apiList)
+
+  parentCollectionList[index].apiList.push(newApi)
   // console.log('수정된 collection.apiList', childCollection.apiList)
-  saveChanges(index)
+  saveChanges()
 }
 
-function deleteChildRequest(childCollection, api, documentIndex) {
-  const index = childCollection.apiList.indexOf(api)
-  if (index !== -1) {
-    childCollection.apiList.splice(index, 1)
-    saveChanges(documentIndex)
-  }
+function deleteChildRequest(idx :number) {
+  parentCollectionList[index].apiList.splice(idx, 1)
+  saveChanges()
 }
 
 function toggleCollapse() {
-  collection.collapsed = !collection.collapsed
+  parentCollectionList[index].collapsed = !parentCollectionList[index].collapsed
   // console.log('토글 함수 호출', collection.collapsed)
 }
 
@@ -111,20 +98,24 @@ function createNewCollection() {
 <template>
   <!-- <li v-for="childCollection in collection.collectionList" :key="childCollection.collectionId"> -->
   <div class="setRow" @click="toggleCollapse()">
+
     <span :style="{ paddingLeft: `${level}rem` }" class="collname">
       <div class="boxSize">
-        <img v-if="collection.collapsed" src="./close.svg" class="folderOpenImg">
+        <img v-if="parentCollectionList[index].collapsed" src="./close.svg" class="folderOpenImg">
         <img v-else src="./open.svg" class="folderOpenImg">
         <img src="./folder.svg" class="folderImg">
-        <span v-if="!collection.editing" class="rootCollName">{{ collection.collectionName }}</span>
+
+        <span v-if="!parentCollectionList[index].editing" class="rootCollName">{{ parentCollectionList[index].collectionName }}</span>
         <input
           v-else
-          v-model="collection.collectionName"
+          v-model="parentCollectionList[index].collectionName"
           class="nameChange"
           @blur="saveCollectionName()"
           @keyup.enter="saveCollectionName()"
-        ></div>
+        >
+      </div>
     </span>
+
     <div class="dropdown">
       <img src="./etc.svg" class="dropdown-btn">
       <ul class="dropdown-list">
@@ -144,13 +135,14 @@ function createNewCollection() {
     </div>
   </div>
 
-  <ul v-show="!collection.collapsed">
-    <div v-for="(collectionItem, idx) in collection.collectionList" :key="idx">
-      <CollectionTree :collection="collectionItem" :level="level + 1" :index="index" :path="getPath(index, collectionItem.collectionName)" />
+  <ul v-show="!parentCollectionList[index].collapsed">
+    <div v-for="(collectionItem, idx) in parentCollectionList[index].collectionList" :key="idx">
+      <CollectionTree :parentCollectionList="parentCollectionList[index].collectionList" :level="level + 1" :index="idx" :documentIdx="documentIdx"
+            :path="getPath(idx, collectionItem.collectionName)" />
     </div>
 
-    <ul v-if="collection.apiList && collection.apiList.length > 0">
-      <li v-for="api in collection.apiList" :key="api.requestName" class="divBlock">
+    <ul v-if="parentCollectionList[index].apiList && parentCollectionList[index].apiList.length > 0">
+      <li v-for="(api, idx) in parentCollectionList[index].apiList" :key="idx" class="divBlock">
         <div class="requestBox" :style="{ paddingLeft: `${level + 1}rem` }" @click="selectAPI(api, index)">
           <div class="methodContainer">
             <img v-if="api.method === 'GET'" src="./get.svg" class="method-icon">
@@ -166,7 +158,7 @@ function createNewCollection() {
             <div class="setRow">
               <img src="./etc.svg" class="dropdown-btn-del">
               <ul class="dropdown-list-del">
-                <li @click="deleteChildRequest(collection, api, index)">
+                <li @click="deleteChildRequest(idx)">
                   delete request
                 </li>
               </ul>
@@ -176,9 +168,6 @@ function createNewCollection() {
       </li>
     </ul>
 
-    <!-- <CollectionTree v-if="collection.childCollection" :collection="collection.childCollection" :level="level + 1" :index="index" :path="getPath(index, collection.collectionName)" /> -->
-    <!-- </ul> -->
-    <!-- </li> -->
   </ul>
 </template>
 
