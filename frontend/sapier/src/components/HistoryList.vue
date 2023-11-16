@@ -136,10 +136,25 @@ export default defineComponent({
             })
             return result
         },
+        getWorkspaceName(workspaceKey, workspaceListRef){
+            const ws = this.getWorkspace(workspaceKey, workspaceListRef)
+            let result = 'workspace'
+            if(typeof ws != 'undefined'){
+                result = ws.name
+            }
+            return result
+        },
         setWorkspaceColor(workspaceKey, workspaceListRef){
             const ws = this.getWorkspace(workspaceKey, workspaceListRef)
+            let result
+            if(typeof ws == "undefined"){
+                result = '#0F4C81'
+            }
+            else{
+                result = ws.color
+            }
             return {
-                background: ws.color
+                background: result
             }
         },
         setStatusColor(statusCode: number){
@@ -186,7 +201,7 @@ export default defineComponent({
                                     <div class="box" :style="setWorkspaceColor(histories.workspaceKey, workspaceListRef)">
                                         <div id="workSpaceListData" class="workspaceId">
                                             <!-- {{ truncateText(histories.workspaceKey, 4) }} -->
-                                            {{ truncateText(getWorkspace(histories.workspaceKey, workspaceListRef).name, 4) }}
+                                            {{ truncateText(getWorkspaceName(histories.workspaceKey, workspaceListRef), 4) }}
                                         </div>
                                     </div>
                                 </div>
