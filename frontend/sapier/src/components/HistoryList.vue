@@ -101,6 +101,15 @@ export default defineComponent({
                             <div>{{ histories.workspaceKey }}</div>
                             <div>{{ getAndDisplayWorkspaceName(histories.workspaceKey) }}</div>
                             <div>{{ history.request.method }}</div>
+                            <div class="methodContainer">
+                                <img v-if="history.request.method === 'GET'" src="./get.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'POST'" src="./post.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'DELETE'" src="./delete-image.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'PATCH'" src="./patch.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'PUT'" src="./put.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'OPTION'" src="./option.svg" class="method-icon">
+                                <img v-else-if="history.request.method === 'HEAD'" src="./head.svg" class="method-icon">
+                            </div>
                             <div>{{ history.request.requestName }}</div>
                             <div>{{ history.response.statusCode }}</div>
                             <div>{{ history.response.responseTime }}ms</div>
