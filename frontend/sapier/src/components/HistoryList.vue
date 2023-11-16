@@ -148,14 +148,16 @@ export default defineComponent({
 }
 
 .second-box{
-    display: flex;
+    /* display: flex; */
     /* justify-content: flex-start; */
-    align-items: flex-start;
+    /* align-items: flex-start; */
+    flex-direction: column;
 }
 .last-box{
-    display: flex;
+    /* display: flex; */
     /* justify-content: flex-start; */
-    align-items: flex-start;
+    /* align-items: flex-start; */
+    flex-direction: column;
 }
 
 </style>
