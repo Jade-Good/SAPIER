@@ -77,8 +77,6 @@ watch(() => WorkspaceOneInfo.workspaceInfo, () => {
 }
 
 .list{
-  background: #C9C9C9;
-  border-color: #B6B6B6;
   display: flex; /* 부모 요소를 플렉스 컨테이너로 설정 */
   align-items: center;
   flex-direction: column;

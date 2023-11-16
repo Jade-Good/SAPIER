@@ -9,19 +9,15 @@ const axios = inject('$axios')
 const WorkspaceOneInfo = useWorkspaceStore()
 const dropdownData = ref<Record<string, { isOpen: boolean }>>({})
 
-// const { workspaceone } = defineProps(['workspaceone'])
-
 const memberInfo = useMemberStore()
 const userInfo = useUserStore()
 const route = useRouter()
 
 const isMounted = useMounted()
 
-// const workspaceName = ref(workspaceone.name)
-const shouldRender = ref(true) // 초기값 설정
 const searchInput = ref('')
-
-const boxColor = ref('yellow') // 초기 색상 설정
+const fontColor = ref('#F0F0F0')
+const boxColor = ref('#0b3f6c') // 초기 색상 설정
 const colors = ['#0b3f6c', '#0F4C81', '#658DC6', '#C9C9C9', 'White'] // 사용할 색상 목록
 const alphabet = ['A', 'B', 'C', 'D', 'E'] // 사용할 색상 목록
 function firstChangeBoxColor(color) {
@@ -29,7 +25,11 @@ function firstChangeBoxColor(color) {
   WorkspaceOneInfo.workspaceInfo.color = color
 }
 
-function changeBoxColor(color) {
+function changeBoxColor(color, index) {
+  if (index === 3 || index === 4)
+    fontColor.value = 'black'
+  else
+    fontColor.value = '#F0F0F0'
   boxColor.value = color
   WorkspaceOneInfo.workspaceInfo.color = color
 
@@ -231,6 +231,13 @@ function sendEmail() {
     })
   searchInput.value = ''
 }
+
+function getColorStyle(index) {
+  return {
+    backgroundColor: colors[index],
+    color: index === 3 || index === 4 ? 'black' : 'white',
+  }
+}
 </script>
 
 <template>
@@ -247,8 +254,8 @@ function sendEmail() {
           </div>
         </h5>
         <div class="workspacemaindiv">
-          <div v-if="shouldRender">
-            <div class="box" :style="{ backgroundColor: boxColor }">
+          <div>
+            <div class="box" :style="{ backgroundColor: boxColor, color: fontColor }">
               <div id="workSpaceListData" class="workspaceId">
                 {{ truncateText(WorkspaceOneInfo.workspaceInfo.name, 4) }}
               </div>
@@ -261,8 +268,9 @@ function sendEmail() {
             <input class="workspaceInput" :value="WorkspaceOneInfo.workspaceInfo.name" type="text" @keyup.enter="updateWorkspaceName($event.target.value)"><!-- v-model="workspaceone.name" -->
 
             <div class="changeColor_div">
-              <div v-for="(color, index) in colors" :key="alphabet[index]" class="changeColor" @click="changeBoxColor(color)">
-                <div class="color_type" :style="{ backgroundColor: color }">
+              <div v-for="(color, index) in colors" :key="alphabet[index]" class="changeColor" @click="changeBoxColor(color, index)">
+                <div class="color_type" :style="getColorStyle(index)">
+                  <!-- { backgroundColor: color }" -->
                   {{ alphabet[index] }}
                 </div>
               </div>
@@ -370,7 +378,7 @@ function sendEmail() {
 .workspacemaindiv{
   display: flex;
   width: 100%;
-  padding-top: 3em;
+  padding-top: 2em;
   justify-content: space-between;
   padding-bottom: 2rem;
   border-bottom: 1px solid #888;
@@ -395,6 +403,7 @@ function sendEmail() {
 }
 .box{
   margin-top: 5px ;
+  margin-left: 10px ;
   border-radius: 10px;
   width: 200px;
   height: 200px;
@@ -413,7 +422,9 @@ function sendEmail() {
   display: flex;
   align-items: center; /* 세로 중앙 정렬 */
   justify-content: center; /* 세로 중앙 정렬 (다른 요소와 함께 사용할 때 유용) */
-
+  width:100%;
+  height: 100%;
+  color: #F0F0F0;
 }
 .workspaceId{
   text-align: center; /* 텍스트 가운데 정렬 */
@@ -422,7 +433,7 @@ function sendEmail() {
 }
 .informationText{
   margin-top:0.2rem;
-  font-size: var(--font-H5-size);
+  font-size: 14px;
   font-weight: 500;
 
 }
@@ -461,11 +472,13 @@ function sendEmail() {
 }
 .changeColor_div{
   display: flex;
-  align-items: center; /* 세로 중앙 정렬 */
+  align-items: center;
+  width: 2000px;
+  margin-top: 1rem;
 }
 .changeColor{
-    width: 30px;
-    /* height: 20%; */
+    width: 40px;
+    height: 40px;
     border-radius: 70%;
     overflow: hidden;
     margin: 0.5%;
@@ -476,7 +489,8 @@ function sendEmail() {
 }
 .workspaceName{
   margin-top: 0.5rem;
-  font-size: var(--font-H6-size);
+  margin-bottom: 0.5rem;
+  font-size: 12px;
   color: #888; /* 힌트 텍스트의 색상 설정 */
 
 }
@@ -551,8 +565,9 @@ function sendEmail() {
   left: 1rem;
   background-color: white;
   border: 1px solid #ccc;
-  border-top: none;
   z-index: 1;
+  border-radius:5px; /* 주위 라운드 설정 */
+
 }
 
 .dropdown-menu div {

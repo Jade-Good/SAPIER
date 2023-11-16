@@ -41,6 +41,9 @@ public class WorkSpace {
     private LocalDateTime modifiedTime;
     @NotNull
     private String Admin;
+    private String summaryData;
+    private String documentData;
+
 //    private Date modifiedTime;
 
     @Builder

@@ -37,7 +37,7 @@ if (isMounted) {
 
 <template>
   <TheNav />
-  <div>빙글빙글</div>
+  <div>.</div>
 </template>
 
 <style>

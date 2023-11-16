@@ -18,6 +18,8 @@ interface WorkspaceInfo {
   color: string
   pinnedList: pinnedList[]
   admin: string
+  summaryData: string
+  documentData: string
 }
 
 export type { WorkspaceInfo }

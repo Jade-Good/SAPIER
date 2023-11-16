@@ -167,7 +167,7 @@ public class WorkSpaceService {
 
 	public String generateHtmlBody(String workspaceidx) {
 		return
-			"<html><body><h1>invite workspace</h1><p>인증 버튼:</p> <a href=\"https://sapier.co.kr/workspace/invite?key="
+			"<html><body><h1>invite workspace</h1><p>인증 버튼:</p> <a href=\"https://sapier.co.kr/workSpace/invite?key="
 				+ workspaceidx + "\" target=\"_blank\">초대 링크</a></body></html>";
 
 	}
