@@ -164,7 +164,7 @@ export default defineComponent({
 }
 .flexbox{
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-around;
 }
 
 .second-box{
@@ -189,7 +189,7 @@ export default defineComponent({
   border: 2px solid #000; /* 테두리 스타일 및 색상 설정 */
   background-color:#0F4C81; /* 배경색 설정 */
   color:#F0F0F0;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .workspaceId{
   text-align: center; /* 텍스트 가운데 정렬 */
