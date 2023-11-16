@@ -65,9 +65,16 @@ export default defineComponent({
         },
         async getWorkspaceName(workspaceKey){
             try{
+                let workspaceName = ""
                 const response = await axios.get(`/api/v1/workspaces/${workspaceKey}/name`)
-                console.log(response.data)
-                return response.data.value
+                    .then(ws =>{
+                        workspaceName = ws.data
+                        console.log("워크스페이스명 : ", workspaceName)
+                    })
+                
+                console.log(response)
+                
+                return workspaceName
             }
             catch(err){
                 console.log('axios 실패 : ', err)
@@ -86,7 +93,7 @@ export default defineComponent({
                     <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
                         <div @click="selectHistory(history)">
                             <div>{{ histories.workspaceKey }}</div>
-                            <div>{{ getWorkspaceName(histories.workspaceKey) }}</div>
+                            <div>{{ getWorkspaceName(histories.workspaceKey).value }}</div>
                             <div>{{ history.request.method }}</div>
                             <div>{{ history.request.requestName }}</div>
                             <div>{{ history.response.statusCode }}</div>
