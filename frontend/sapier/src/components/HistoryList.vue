@@ -103,18 +103,22 @@ export default defineComponent({
                             <div class="first-box">[hi]</div>
                             <!-- <div>{{ getWorkspaceName(histories.workspaceKey) }}</div> -->
                             <!-- <div>{{ history.request.method }}</div> -->
-                            <div class="second-box methodContainer">
-                                <img v-if="history.request.method === 'GET'" src="./workspace/get.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'POST'" src="./workspace/post.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'DELETE'" src="./workspace/delete-image.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'PATCH'" src="./workspace/patch.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'PUT'" src="./workspace/put.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'OPTION'" src="./workspace/option.svg" class="method-icon">
-                                <img v-else-if="history.request.method === 'HEAD'" src="./workspace/head.svg" class="method-icon">
+                            <div class="second-box">
+                                <div class="methodContainer">
+                                    <img v-if="history.request.method === 'GET'" src="./workspace/get.svg" class="method-icon">
+                                    <img v-else-if="history.request.method === 'POST'" src="./workspace/post.svg" class="method-icon">
+                                    <img v-else-if="history.request.method === 'DELETE'" src="./workspace/delete-image.svg" class="method-icon">
+                                    <img v-else-if="history.request.method === 'PATCH'" src="./workspace/patch.svg" class="method-icon">
+                                    <img v-else-if="history.request.method === 'PUT'" src="./workspace/put.svg" class="method-icon">
+                                    <img v-else-if="history.request.method === 'OPTION'" src="./workspace/option.svg" class="method-icon">
+                                    <img v-else-if="history.request.method === 'HEAD'" src="./workspace/head.svg" class="method-icon">
+                                </div>
+                                <div>{{ history.response.statusCode }}</div>
                             </div>
-                            <div class="second-box">{{ history.response.statusCode }}</div>
-                            <div class="last-box">{{ history.request.requestName }}</div>
-                            <div class="last-box">{{ history.response.responseTime }}ms</div>
+                            <div class="last-box">
+                                <div>{{ history.request.requestName }}</div>
+                                <div>{{ history.response.responseTime }}ms</div>
+                            </div>
                         </div>
                     </li>
                 </ul>
