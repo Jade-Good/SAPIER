@@ -288,7 +288,7 @@ async function sendAPI() {
     requestURL: convertParamsToURL(),
     method: selectMethod.value,
     headers: getActiveHeaders(),
-    body: '',
+    body: requestBody.value,
   }
 
   // console.log('sendData : ', sendData)
@@ -299,7 +299,7 @@ async function sendAPI() {
 
     useCollection.response = res.data
 
-    saveHistory()
+    saveHistory(sendData)
   }
   catch (error) {
     console.error('API 전송 실패:', error)
@@ -334,13 +334,22 @@ function getActiveHeaders() {
 }
 
 // Reuqest history 저장
-async function saveHistory() {
+async function saveHistory(sendData: any) {
+  console.log(useCollection.request)
   const history = {
-    request: useCollection.request,
+    request: {
+      requestName: requestName.value,
+      requestURL: sendData.requestURL,
+      method: sendData.method,
+      headers: requestHeaders.rows,
+      body: requestBody.value,
+      path: path
+    },
     response: useCollection.response,
     uuid: userInfo.userInfo?.uuid,
     workspaceId: workspaceList.WorkspaceList[selectedWorkspaceIndex.selectedWorkspaceIndex].key,
   }
+  console.log(history.request)
 
   // console.log('history : ', history)
 
