@@ -3,6 +3,7 @@ import axios from 'axios';
 import { defineComponent, ref, onMounted } from 'vue';
 // const historyStore = useHistoryStore()
 const collectionStore = useCollectionStore()
+const workspaceName = ref(String)
 
 export default defineComponent({
     setup(){
@@ -63,24 +64,24 @@ export default defineComponent({
             console.log('request: ', collectionStore.request)
             console.log('response: ', collectionStore.response)
         },
-        async getAndDisplayWorkspaceName(workspaceKey) {
-            try {
-            const workspaceName = await this.getWorkspaceName(workspaceKey);
-            console.log("워크스페이스명 : ", workspaceName, typeof(workspaceName));
-            // 여기서 workspaceName을 사용하거나 데이터에 할당합니다.
-            return workspaceName
-            } catch (err) {
-            console.log('에러 발생 : ', err);
-            }
-        },
+        // async getAndDisplayWorkspaceName(workspaceKey) {
+        //     try {
+        //     const workspaceName = await this.getWorkspaceName(workspaceKey);
+        //     console.log("워크스페이스명 : ", workspaceName, typeof(workspaceName));
+        //     // 여기서 workspaceName을 사용하거나 데이터에 할당합니다.
+        //     return workspaceName
+        //     } catch (err) {
+        //     console.log('에러 발생 : ', err);
+        //     }
+        // },
         async getWorkspaceName(workspaceKey){
             try{
                 const response = await axios.get(`/api/v1/workspaces/${workspaceKey}/name`)
-                const workspaceName = response.data
-                console.log("워크스페이스명: ", workspaceName, typeof(workspaceName))
+                workspaceName.value = response.data
+                console.log("워크스페이스명: ", workspaceName.value, typeof(workspaceName.value))
                 console.log(response)
                 
-                return workspaceName
+                return workspaceName.value
             }
             catch(err){
                 console.log('axios 실패 : ', err)
@@ -99,7 +100,7 @@ export default defineComponent({
                     <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
                         <div @click="selectHistory(history)">
                             <div>{{ histories.workspaceKey }}</div>
-                            <div>{{ getAndDisplayWorkspaceName(histories.workspaceKey) }}</div>
+                            <div>{{ getWorkspaceName(histories.workspaceKey) }}</div>
                             <div>{{ history.request.method }}</div>
                             <div class="methodContainer">
                                 <img v-if="history.request.method === 'GET'" src="./workspace/get.svg" class="method-icon">
