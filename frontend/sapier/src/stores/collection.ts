@@ -17,7 +17,7 @@ interface RequestInfo {
   headers: Table[]
   body: string
   queryParams: Table[]
-  path: string[]
+  path: string
 }
 
 interface Response {

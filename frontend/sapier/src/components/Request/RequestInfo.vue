@@ -13,6 +13,7 @@ const copySelectMethod = ref('')
 const requestURL = ref('http://')
 const copyRequestURL = ref('')
 const requestName = ref('New Request')
+const path = ref('Collection1 / Collection2 / ')
 const copyRequestName = ref('')
 const queryParams = reactive({
   rows: [
@@ -93,9 +94,10 @@ function setValues() {
 
   // console.log('api : ', useCollection.request)
 
+  requestName.value = useCollection.request.requestName
+  // path.value = useCollection.request.path
   selectMethod.value = useCollection.request.method
   requestURL.value = useCollection.request.requestURL
-  requestName.value = useCollection.request.requestName
   requestBody.value = useCollection.request.body
 
   if (useCollection.request.headers[0])
@@ -144,7 +146,7 @@ async function requestSave() {
     // console.log('JSON: ', dataToSave)
 
     const res = await axios.patch(`/api/v1/collection/modify/${useCollection.selectDocument}`, useCollection.collection)
-    console.log('데이터 저장 성공', res)
+    // console.log('데이터 저장 성공', res)
   }
   catch (error) {
     console.error('데이터 저장 실패:', error)
@@ -289,7 +291,7 @@ async function sendAPI() {
     body: '',
   }
 
-  console.log('sendData : ', sendData)
+  // console.log('sendData : ', sendData)
 
   try {
     const res = await axios.post(`/api/v1/collection/request`, sendData)
@@ -359,18 +361,9 @@ async function saveHistory() {
       <div flex flex-justify-between pb-3 pl-3>
         <div flex flex-gap-1 line-height-9>
           <p color-gray>
-            Server
+            {{ path }}
           </p>
-          <p color-gray>
-            /
-          </p>
-          <p color-gray>
-            Bubble
-          </p>
-          <p color-gray>
-            /
-          </p>
-          <p>{{ requestName }}</p>
+          <input v-model="requestName">
         </div>
         <div flex flex-gap-3>
           <div :class="isSaveEnable ? 'grayBtn' : 'grayBtnOff'" @click="requestSave">
