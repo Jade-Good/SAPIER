@@ -3,7 +3,7 @@ const requestBody = inject('requestBody')
 </script>
 
 <template>
-  <div class="p-3" h-full flex flex-col>
+  <div h-full flex flex-col>
     <div flex flex-gap-2>
       <div class="formStyleBtn">
         raw

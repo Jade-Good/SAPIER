@@ -27,30 +27,20 @@ getRequest()
 // }
 
 onMounted(() => {
-  console.log('2222222')
   queryParams.rows.forEach(() => {
     isHighLight.value.push(false)
   })
 })
 
 watch(() => useRequest.value, () => {
-  console.log('3333333')
   queryParams.rows.forEach(() => {
     isHighLight.value.push(false)
   })
 })
-
-function rowHighLight(row: number) {
-  isHighLight.value[row] = true
-}
-function clearHighLight(row: number) {
-  isHighLight.value[row] = false
-}
 </script>
 
 <template>
-  <div class="p-3" select-none>
-    <p>Queary Params</p>
+  <div select-none>
     <table name="headersTable" class="w-full text-left" select-none>
       <colgroup>
         <col class="act">
@@ -74,13 +64,22 @@ function clearHighLight(row: number) {
             <span v-else />
           </td>
           <td>
-            <input v-model="param.key" placeholder="Key" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)">
+            <div h-full w-full class="param-text">
+              {{ param.key }}
+            </div>
+            <!-- <input v-model="param.key" placeholder="Key" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)"> -->
           </td>
           <td>
-            <input v-model="param.value" placeholder="Value" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)">
+            <div h-full w-full class="param-text">
+              {{ param.value }}
+            </div>
+            <!-- <input v-model="param.value" placeholder="Value" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)"> -->
           </td>
           <td>
-            <input v-model="param .description" placeholder="Description" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)">
+            <div h-full w-full class="param-text">
+              {{ param.description }}
+            </div>
+            <!-- <input v-model="param .description" placeholder="Description" h-full w-full @focus="rowHighLight(index)" @blur="clearHighLight(index)"> -->
           </td>
         </tr>
       </tbody>
@@ -89,6 +88,12 @@ function clearHighLight(row: number) {
 </template>
 
 <style scoped>
+.param-text{
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
 table,
 th,
 td {
