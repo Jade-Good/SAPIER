@@ -32,11 +32,11 @@ const copyRequestBody = ref('')
 
 const isSaveEnable = computed(() => {
   return copySelectMethod.value !== selectMethod.value
-   || copyRequestURL.value !== requestURL.value
+    || copyRequestURL.value !== requestURL.value
     || copyRequestName.value !== requestName.value
-     || copyRequestBody.value !== requestBody.value
-      || copyRequestHeaders.value !== JSON.stringify(requestHeaders.rows)
-       || copyQueryParams.value !== JSON.stringify(queryParams.rows)
+    || copyRequestBody.value !== requestBody.value
+    || copyRequestHeaders.value !== JSON.stringify(requestHeaders.rows)
+    || copyQueryParams.value !== JSON.stringify(queryParams.rows)
 })
 
 provide('queryParams', queryParams)
@@ -121,7 +121,7 @@ function setValues() {
 function copyRows(objs: any) {
   const result = []
 
-  objs.forEach ((obj) => {
+  objs.forEach((obj) => {
     if (obj.active !== '')
       result.push({ active: obj.active, key: obj.key, value: obj.value, description: obj.description })
   })
@@ -387,18 +387,14 @@ async function saveHistory() {
           </div>
 
           <div v-if="isMethodList" class="methodList">
-            <div
-              v-for="(method, idx) in methodList" :key="idx" :style="setMethodColor(method)"
-              @click="changeMethod(method)"
-            >
+            <div v-for="(method, idx) in methodList" :key="idx" :style="setMethodColor(method)"
+              @click="changeMethod(method)">
               {{ method }}
             </div>
           </div>
 
-          <div
-            style="border-color: var(--color-gray4); font-size: var(--font-H5-size); line-height: 2.5rem;" w-full
-            border-l pl-2
-          >
+          <div style="border-color: var(--color-gray4); font-size: var(--font-H5-size); line-height: 2.5rem;" w-full
+            border-l pl-2>
             <input v-model="requestURL" type="text" w-full pl-2>
           </div>
         </div>
@@ -475,9 +471,11 @@ input:focus {
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
 
 }
+
 .methodList div:hover {
   background-color: var(--color-gray1);
 }
+
 .methodList div:active {
   background-color: var(--color-gray1-hover);
 }
@@ -554,6 +552,7 @@ input:focus {
 .grayBtn:hover {
   background-color: var(--color-gray1-hover);
 }
+
 .grayBtn:active {
   background-color: var(--color-gray1-active);
 }
