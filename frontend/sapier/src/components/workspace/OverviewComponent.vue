@@ -168,7 +168,7 @@ const editedText = ref('개인 워크스페이스 Overview 입니다.워크스�
 
 function saveText(text) {
   overviewText.value = text
-  saveToDatabase(overviewText.value, number)
+  saveToDatabase(overviewText.value)
 }
 function saveDocText(text) {
   overviewDocumentText.value = text
