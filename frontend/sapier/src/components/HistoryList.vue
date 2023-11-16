@@ -93,7 +93,7 @@ export default defineComponent({
                     <li class="history" v-for="(history, hIdx) in histories.historyList" :key="hIdx">
                         <div @click="selectHistory(history)">
                             <div>{{ histories.workspaceKey }}</div>
-                            <div>{{ getWorkspaceName(histories.workspaceKey).value }}</div>
+                            <div>{{ getWorkspaceName(histories.workspaceKey) }}</div>
                             <div>{{ history.request.method }}</div>
                             <div>{{ history.request.requestName }}</div>
                             <div>{{ history.response.statusCode }}</div>
