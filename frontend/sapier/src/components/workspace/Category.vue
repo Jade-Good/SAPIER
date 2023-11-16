@@ -79,7 +79,8 @@ async function saveData(documentIndex: number) {
   try {
     console.log('전송데이터', modifyData)
     // console.log('JSON: ', dataToSave)
-
+    
+    console.log('url', `/api/v1/collection/modify/${documentIndex}`)
     const res = await axios.patch(`/api/v1/collection/modify/${documentIndex}`, modifyData)
     console.log('데이터 저장 성공', res)
   }

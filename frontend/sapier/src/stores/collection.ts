@@ -8,6 +8,7 @@ interface CollectionTree {
   modifiedTime: string
   request: RequestInfo
   collapsed: boolean
+  id:string
 }
 
 interface RequestInfo {
