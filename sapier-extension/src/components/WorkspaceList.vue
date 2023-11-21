@@ -26,48 +26,6 @@ browser.storage.local.get(['workspaceList']).then((data) => {
   workspaceListInfo.value = data.workspaceList
   console.log(`workspaceList : ${data.workspaceList}`)
 })
-// async function getWorkspaceList() {
-//   try {
-//     await browser.storage.local.get(['token']).then(async (value) => {
-//       await fetch('https://sapier.co.kr/api/v1/workspaces', {
-//         method: 'GET',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'Accept': 'application/json',
-//           'Authorization': `Bearer ${value.token}`,
-//         },
-//       })
-//         .then((response) => {
-//           console.log(response)
-//           if (!response.ok)
-//             throw new Error('네트워크 응답이 정상적이지 않습니다.')
-//           return response.text()
-//         })
-//         .then((text) => {
-//           try {
-//             return JSON.parse(text)
-//           }
-//           catch (error) {
-//             console.error('JSON 파싱 오류:', error)
-//             // 파싱 오류 처리
-//           }
-//         })
-//         .then((data) => {
-//           // 데이터 할당
-//           workspaceListInfo.value = data
-//           console.log('데이터 할당 성공', workspaceListInfo.value[0].name)
-//           console.log(data)
-//           browser.storage.local.set({ workspaceList: workspaceListInfo })
-//         })
-//         .catch(error => console.error('Error:', error))
-//     })
-//   }
-//   catch (error) {
-//     console.error('Error getWorkspaceList:', error)
-//   }
-// }
-// getWorkspaceList()
-// onMounted(getWorkspaceList)
 </script>
 
 <template>
@@ -77,7 +35,6 @@ browser.storage.local.get(['workspaceList']).then((data) => {
         {{ truncateText(workspace.name, 4) }}
       </div>
     </div>
-    <div class="plus-box cross" />
   </div>
 </template>
 
@@ -87,7 +44,7 @@ browser.storage.local.get(['workspaceList']).then((data) => {
 }
 
 .list{
-
+  padding-top: 1rem;
   display: flex; /* 부모 요소를 플렉스 컨테이너로 설정 */
   align-items: center;
   flex-direction: column;
@@ -97,9 +54,7 @@ browser.storage.local.get(['workspaceList']).then((data) => {
   border-radius: 10px;
   width: 50px;
   height: 50px;
-  border: 2px solid #000; /* 테두리 스타일 및 색상 설정 */
-  background-color:#0F4C81; /* 배경색 설정 */
-  color:#F0F0F0;
+  background-color:#658DC6; /* 배경색 설정 */
   cursor: pointer;
 
 }
@@ -116,8 +71,11 @@ browser.storage.local.get(['workspaceList']).then((data) => {
 }
 
 .workspaceId{
+  color: #F0F0F0;
+  font-size: var(--font-H4-size);
+  font-weight: var(--font-H5-weight);
   text-align: center; /* 텍스트 가운데 정렬 */
-    line-height: 50px; /* 텍스트를 수직 중앙으로 정렬 */
+  line-height: 50px; /* 텍스트를 수직 중앙으로 정렬 */
 }
 
 .cross {

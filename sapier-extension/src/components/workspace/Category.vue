@@ -217,6 +217,11 @@ ul{
   padding-left: 0px;
   list-style-type:none
 }
+.collection-list{
+  padding-top: 1rem;
+  padding-left: 0.25rem;
+}
+
 .category{
   width: 25rem;
   position: relative;

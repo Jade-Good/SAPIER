@@ -1,20 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-// const axios = inject('$axios')
-
 const WorkspaceOneInfo = ref<any>(null)
-
-// const memberInfo = useMemberStore()
-// const isMounted = useMounted()
-// const showDropdown = ref(false)
-
-// // axios 토큰 넣기
-// browser.storage.local.get(['token']).then((data) => {
-//   // eslint-disable-next-line no-console
-//   console.log(`axios 토큰 넣기 ${data.token}`)
-//   axios.defaults.headers.common.Authorization = `Bearer ${data.token}`
-// })
 
 // WorkspaceOneInfo 얻기
 browser.storage.local.get(['workspace']).then((data) => {
@@ -22,92 +9,6 @@ browser.storage.local.get(['workspace']).then((data) => {
   console.log(`WorkspaceOneInfo 얻기 ${data.workspace}`)
   WorkspaceOneInfo.value = data.workspace
 })
-
-// if (isMounted) {
-//   // document.addEventListener('click', handleOutsideClick)
-//   axios
-//     .get(`/api/v1/workspaces/members/${WorkspaceOneInfo.value.workspaceInfo.key}`)
-//     .then((res) => {
-//       // console.log('memberList 가져오기 마운트시')
-//       // console.log(res)
-//       memberInfo.member = res.data
-//     })
-//     .catch((error) => {
-//       console.error('memberList 가져오기 : 마운트시', error)
-//     },
-//     )
-// }
-
-// workspaceone 변경 감시
-// watch(() => WorkspaceOneInfo.value.workspaceInfo, async (newWorkspaceOne) => {
-//   showDropdown.value = false
-
-//   try {
-//     const res = await axios.get(`/api/v1/workspaces/members/${WorkspaceOneInfo.value.workspaceInfo.key}`)
-//     // console.log('memberList 가져오기watch 안에서')
-//     // console.log(res)
-//     memberInfo.member = res.data
-//   }
-//   catch (error) {
-//     console.error('memberList 가져오기watch 안에서: ', error)
-//   }
-//   // }
-// })
-
-// function showUserInfo(user) {
-//   // console.log(user)
-//   localStorage.setItem('MemberData', JSON.stringify(user))
-// }
-
-// function showCollectionsDropdown() {
-//   showDropdown.value = !showDropdown.value
-// }
-
-// function addCollectionToPinned(collection) {
-//   WorkspaceOneInfo.value.workspaceInfo.pinnedList.push(collection)
-
-//   // console.log(WorkspaceOneInfo.workspaceInfo.pinnedList)
-//   // console.log(WorkspaceOneInfo.workspaceInfo)
-
-//   axios
-//     .patch(`/api/v1/workspaces/${WorkspaceOneInfo.value.workspaceInfo.key}`, WorkspaceOneInfo.value.workspaceInfo)
-//     .then((res) => {
-//       // console.log('pinnedlist 수정')
-//       // console.log(res)
-//     })
-//     .catch((error) => {
-//       console.error('pinnedlist 수정오류 : ', error)
-//     },
-//     )
-// }
-
-// function removeCollection(collectionId) {
-//   // 선택한 컬렉션을 삭제
-//   WorkspaceOneInfo.value.workspaceInfo.pinnedList = WorkspaceOneInfo.value.workspaceInfo.pinnedList.filter(data => data.collectionKey !== collectionId)
-
-//   axios
-//     .patch(`/api/v1/workspaces/${WorkspaceOneInfo.value.workspaceInfo.key}`, WorkspaceOneInfo.value.workspaceInfo)
-//     .then((res) => {
-//       // console.log('pinnedlist 삭제')
-//       // console.log(res)
-//     })
-//     .catch((error) => {
-//       console.error('pinnedlist 삭제오류 : ', error)
-//     },
-//     )
-// }
-
-// function isCollectionDisabled(collection) {
-//   if (WorkspaceOneInfo.value.workspaceInfo.pinnedList) {
-//     return WorkspaceOneInfo.value.workspaceInfo.pinnedList.some(
-//       pinnedCollection => pinnedCollection.collectionName === collection.collectionName,
-//     )
-//   }
-//   else {
-//     WorkspaceOneInfo.value.workspaceInfo.pinnedList = []
-//     return true
-//   }
-// }
 </script>
 
 <template>
@@ -133,40 +34,7 @@ browser.storage.local.get(['workspace']).then((data) => {
         </p>
       </div>
 
-      <div class="maindiv">
-        <!-- <div class="OC_maindiv_add">
-          <h5 class="maindivHeader">
-            Pinned Collections
-          </h5>
-          <div class="collection-container">
-            <div class="imgBorder">
-              <img src="/assets/workspace/add.svg" alt="Add Collection" @click="showCollectionsDropdown">
-            </div>
-            <div class="pin_add_image">
-              <div v-if="showDropdown" class="dropdown">
-                <div v-for="collection in WorkspaceOneInfo.workspaceInfo.collectionList" :key="collection.collectionKey">
-                  <div class="collectionName" :class="{ disabled: isCollectionDisabled(collection) }" @click="addCollectionToPinned(collection)">
-                    <div class="collectionNameDetail">
-                      {{ collection.collectionName }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- <div class="pinDivText">
-          <div v-for="data in WorkspaceOneInfo.workspaceInfo.pinnedList" :key="data.collectionKey" class="collection-border">
-            <div>
-              <img class="folder" src="/assets/workspace/folder.svg">
-              <div class="pinDataName">
-                {{ data.collectionName }}
-              </div>
-            </div>
-            <img class="remove-button" src="/assets/workspace/delete.svg" @click="removeCollection(data.collectionKey)">
-          </div>
-        </div> -->
-      </div>
+      <div class="maindiv" />
     </div>
 
     <div class="document-group">
@@ -188,38 +56,12 @@ browser.storage.local.get(['workspace']).then((data) => {
           setting에서는 기타 워크스페이스 설정이나 삭제 및 탈퇴 할 수 있습니다.
         </p>
       </div>
-
-      <!-- <div class="maindiv">
-        <div v-if="memberInfo.member && memberInfo.member.length >= 2">
-          <h5 class="maindivHeader">
-            Contributors
-          </h5>
-          <div class="maindivText">
-            <div w-18 border-r-2 class="list">
-              <div v-for="m in memberInfo.member" :key="m?.uuid" class="box">
-                <div id="workSpaceListData" class="workspaceId">
-                  <div class="boxs" style="background: #BDBDBD;">
-                    <img :src="m?.profileImageUrl" class="profile" alt="User Profile Image">s
-                  </div>
-                  <div class="name" @click="showUserInfo(m)">
-                    {{ m?.nickname }}
-                  </div>
-                  <div>
-                    {{ m?.email }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
 
 <style scoped>
 .mainInfo {
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -237,18 +79,11 @@ browser.storage.local.get(['workspace']).then((data) => {
 
 }
 .overview-group {
-  display: flex;
-  margin-bottom: 2em; /*그룹 간의 간격 조절*/
-  width: max-content;
-  gap: 2em;
-  margin-top:2em;
-  margin-left: 13em;
+  margin-left: 4rem;
 }
 
 .document-group {
-  display: flex;
-  gap: 2em;
-  margin-left: 13em;
+  margin-left: 4rem;
 
 }
 

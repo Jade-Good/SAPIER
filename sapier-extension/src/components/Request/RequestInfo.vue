@@ -141,28 +141,15 @@ function copyRows(objs: any) {
   let i = 0
   while (objs[`${i}`] !== undefined) {
     const param = objs[`${i}`]
-    if (param !== '')
+    if (param !== '' && param.active !== '')
       result.push({ active: param.active, key: param.key, value: param.value, description: param.description })
     i = i + 1
   }
 
   // 대상이 배열인지 확인
 
-  result.push({ active: '', key: '', value: '', description: '' })
+  // result.push({ active: '', key: '', value: '', description: '' })
   return result
-}
-
-function requestSave() {
-  if (!useRequest.value || !isSaveEnable.value)
-    return
-
-  useRequest.value.method = selectMethod.value
-  useRequest.value.requestURL = requestURL.value
-  useRequest.value.requestName = requestName.value
-  useRequest.value.body = requestBody.value
-  useRequest.value.headers = requestHeaders.rows
-  useRequest.value.queryParams = queryParams.rows
-  setValues()
 }
 
 // ---------------- 메서드 리스트 토글기능 ----------------
@@ -172,7 +159,7 @@ function setMethodBtnStyle() {
     display: 'flex',
     justifyContent: 'space-between',
     padding: '0 0.5rem 0 0.8rem',
-    width: '10rem',
+    width: '7rem',
     lineHeight: '2rem',
 
     /* Style */
@@ -229,7 +216,7 @@ function setRequestStyle() {
     display: 'flex',
     flexDirection: 'column',
 
-    width: '100%',
+    width: '96%',
     height: `${requestHigh.value}px`,
     minHeight: '10.5rem',
     maxHeight: '90%',
@@ -240,8 +227,6 @@ function setRequestStyle() {
     overflow: 'auto',
 
     /* Style */
-    border: '1px solid red',
-
   }
 }
 
@@ -351,43 +336,13 @@ async function sendAPI() {
 <template>
   <div h-full flex flex-col border>
     <div name="Request" :style="setRequestStyle()">
-      <!-- <div flex flex-justify-between pb-3 pl-3>
-        <div flex flex-gap-1 line-height-9>
-          <p color-gray>
-            Server
-          </p>
-          <p color-gray>
-            /
-          </p>
-          <p color-gray>
-            Bubble
-          </p>
-          <p color-gray>
-            /
-          </p>
-          <p>{{ requestName }}</p>
-        </div>
-        <div flex flex-gap-3>
-          <div :class="isSaveEnable ? 'grayBtn' : 'grayBtnOff'" @click="requestSave">
-            <div i-carbon-save />
-            Save
-          </div>
-          <div class="grayBtn">
-            <div i-carbon-copy-file />
-            Copy
-          </div>
-        </div>
-      </div> -->
-
-      <div flex-justify-betwee h-14 flex>
-        <div w-full flex flex-gap-4 border border-rounded p-2 style="border-color: var(--color-gray4);">
+      <div flex-justify-between h-14 flex>
+        <div w-full flex flex-gap-3 border border-rounded p-2 style="border-color: var(--color-gray4);">
           <div class="methodBtn" :style="setMethodBtnStyle()" @click="toggleMethodList()">
-            <div m-1>
+            <div m-1 style="color: var(--color-white);">
               {{ selectMethod }}
             </div>
-            <div i-carbon-chevron-down h-full />
           </div>
-
           <div v-if="isMethodList" class="methodList">
             <div
               v-for="(method, idx) in methodList" :key="idx" :style="setMethodColor(method)"
@@ -399,21 +354,22 @@ async function sendAPI() {
 
           <div
             style="border-color: var(--color-gray4); font-size: var(--font-H5-size); line-height: 2.5rem;" w-full
-            border-l pl-2
+            border-l
           >
-            <input v-model="requestURL" type="text" w-full pl-2>
+            <input v-model="requestURL" type="text" w-full>
           </div>
         </div>
-
         <div class="sendBtn" @click="sendAPI()">
-          <div flex flex-gap-2 flex-justify-center>
+          <div flex flex-gap-2 flex-justify-center style="color: var(--color-white);">
             <div i-carbon-send-alt pt-8 />
-            Send
+            <div pt-4 style="color: var(--color-white);">
+              Send
+            </div>
           </div>
         </div>
       </div>
 
-      <div flex flex-gap-5 p-3>
+      <div flex flex-gap-5>
         <div :class="[requestTap !== 'Params' ? 'tap' : 'highlight']" @click="requestTap = 'Params'">
           <p>Params</p>
         </div>
@@ -423,16 +379,11 @@ async function sendAPI() {
         <div :class="[requestTap !== 'Body' ? 'tap' : 'highlight']" @click="requestTap = 'Body'">
           <p>Body</p>
         </div>
-        <div :class="[requestTap !== 'Settings' ? 'tap' : 'highlight']" @click="requestTap = 'Settings'">
-          <p>Settings</p>
-        </div>
       </div>
 
       <Params v-if="requestTap === 'Params'" />
       <Headers v-if="requestTap === 'Headers'" />
-
       <Body v-if="requestTap === 'Body'" />
-      <Settings v-if="requestTap === 'Settings'" />
     </div>
     <div class="resize-line" @mousedown="startResizing" @mousemove="handleResizing" @mouseup="stopResizing" />
     <Response name="Response" w-full border border-blue :style="setResponseStyle()" />
@@ -440,6 +391,12 @@ async function sendAPI() {
 </template>
 
 <style scoped>
+input {
+  font-size: var(--font-H4-size);
+  border: none;
+  outline: none;
+}
+
 input:focus {
   outline: 1px solid var(--color-gray2);
   background-color: white;
@@ -487,13 +444,15 @@ input:focus {
   justify-content: center;
   gap: 1px;
 
-  width: 10rem;
+  width: 7rem;
+  height: 3rem;
   margin-left: 1rem;
+  margin-top: 0.3rem;
 
   /* Style */
   border-radius: 5px;
 
-  font-size: var(--font-H3-size);
+  font-size: var(--font-H4-size);
 
   color: white;
   background-color: var(--color-blue1);

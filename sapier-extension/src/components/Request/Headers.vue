@@ -44,8 +44,7 @@ function clearHighLight(row: number) {
 </script>
 
 <template>
-  <div class="p-3" select-none>
-    <p>Headers</p>
+  <div select-none>
     <table name="headersTable" class="w-full text-left" select-none>
       <colgroup>
         <col class="act">

@@ -22,7 +22,7 @@ browser.storage.local.get(['workspace']).then((data) => {
       </div>
     </div>
     <div class="overviewSettingHead">
-      <div class="overviewText" :class="[workspaceTap !== 'overview' ? 'tap' : 'highlight']" @click="currentComponent = OverviewComponent, workspaceTap = 'overview'">
+      <div class="overviewText">
         overview
       </div>
     </div>
@@ -42,8 +42,8 @@ browser.storage.local.get(['workspace']).then((data) => {
   display: none; /* 스크롤 바의 스크롤 박스(Thumb)를 숨깁니다. */
 }
 .list{
+  padding-top: 0.75rem;
   overflow-x: hidden;
-  border: 1px solid #000;
   display: flex; /* 부모 요소를 플렉스 컨테이너로 설정 */
   flex-direction: column; /* 아이템을 수직으로 정렬하기 위해 컬럼 방향 설정 */
 }
@@ -72,7 +72,7 @@ browser.storage.local.get(['workspace']).then((data) => {
 }
 
 .overviewSettingHead {
-
+  padding-top: 0.75rem;
   padding-bottom: 10px;
   display: flex; /* .workspaceHead를 플렉스 컨테이너로 설정 */
   align-items: center; /* 수평 가운데 정렬 */
@@ -90,7 +90,8 @@ browser.storage.local.get(['workspace']).then((data) => {
 
 }
 .overviewText{
-  margin-left: 10px; /* 이미지와 텍스트 사이의 간격을 조절 */
+  font-size: 24px;
+  margin-left: 0.25rem; /* 이미지와 텍스트 사이의 간격을 조절 */
 
 }
 .settingText{

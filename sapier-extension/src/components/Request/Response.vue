@@ -83,7 +83,7 @@ onMounted(() => {
 
 <template>
   <div h-full>
-    <p style="font-size: var(--font-H3-size);" p-3>
+    <p style="font-size: var(--font-H3-size);">
       Response{{ }}
     </p>
     <div v-if="requestCode > 0" :style="resultCodeStyle()">
